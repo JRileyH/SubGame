@@ -32,26 +32,27 @@ public class KeyMap
 			break;
 		}
 	}
-	
+
+
 	//TODO: Add interface for changing keybindings
 	
-	public void press(int c)
+	public void press(int c, boolean d)
 	{
 		if(_keymap.containsKey(c))
 		{
 			switch(_keymap.get(c))
 			{
 			case "scrollLeft":
-				Game.mf.scroll(1, 0);
+				Game.mf.player.left(d);
 				break;
 			case "scrollUp":
-				Game.mf.scroll(0, 1);
+				Game.mf.player.up(d);
 				break;
 			case "scrollRight":
-				Game.mf.scroll(-1, 0);
+				Game.mf.player.right(d);
 				break;
 			case "scrollDown":
-				Game.mf.scroll(0, -1);
+				Game.mf.player.down(d);
 				break;
 			
 			case "SwitchToUI":
@@ -67,6 +68,9 @@ public class KeyMap
 			case "SwitchToME":
 				Game.state(Game.State.MYESTATE);
 				break;
+
+				//default:
+				//	Game.mf.player.newV().incMagnitude(-1);
 			}
 		}
 		else

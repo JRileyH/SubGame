@@ -113,7 +113,7 @@ public class Game extends Canvas implements Runnable
 			}
 			if(second >= amountOfTicks)
 			{
-				tick();
+				//tick();
 				second-=amountOfTicks;
 			}
 			render();
@@ -142,7 +142,7 @@ public class Game extends Canvas implements Runnable
 		}
 	}
 
-	private int second;
+	/*private int second;
 	public void tick()
 	{//this runs once a second
 		second++;
@@ -161,7 +161,7 @@ public class Game extends Canvas implements Runnable
 				me.tick(second);
 				break;
 		}
-	}
+	}*/
 	
 	public void render()
 	{

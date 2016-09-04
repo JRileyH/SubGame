@@ -32,13 +32,13 @@ public class Keyboard implements KeyListener
 	
 	public void keyPressed(KeyEvent e) 
 	{	
-		kmap.press(e.getKeyCode());
+		kmap.press(e.getKeyCode(), true);
 	}
 
 	
 	public void keyReleased(KeyEvent e) 
 	{
-		
+		kmap.press(e.getKeyCode(), false);
 	}
 
 	public void keyTyped(KeyEvent e)
