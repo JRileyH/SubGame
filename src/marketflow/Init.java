@@ -108,6 +108,8 @@ public class Init
 
 	public void tick(int count)
 	{
+		player.tick(count);
+
 		for(City c : _cityColl.values())
 		{
 			c.tick(count);

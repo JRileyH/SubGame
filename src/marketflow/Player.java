@@ -32,9 +32,6 @@ public class Player extends Entity
     {
         timer.incTime();
 
-        System.out.println("NEW: "+newV().magnitude());
-        System.out.println(oldV().magnitude());
-        System.out.println(up+" "+down);
         //temp max speed added
         if(up && newV().magnitude()<15 && (timer.time() % 40 == 0)){newV().incMagnitude(1);}//else{newV().magDrop();}
         if(down && newV().magnitude()>-15 && (timer.time() % 40 == 0)){newV().incMagnitude(-1);}//else{newV().magDrop();}
@@ -59,9 +56,15 @@ public class Player extends Entity
         posY = (Game.HEIGHT/2)-Game.mf.mapOffsetY;
     }
 
+    public void tick(int count)
+    {
+
+    }
+
     public void render(Graphics g)
     {
         super.render(g);
+        g.drawLine((Game.WIDTH/2),(Game.HEIGHT/2),(int)((Game.WIDTH/2)-50*Math.cos(oldV.angle())),(int)((Game.HEIGHT/2)-50*Math.sin(oldV.angle())));
     }
 
     public void up(boolean u){up=u;}

@@ -3,7 +3,7 @@ package misc;
 public class Vector
 {
     private int magnitude = 0;
-    private double angle = 0;
+    private double angle = Math.PI;
 
     public void magDrop()
     {
