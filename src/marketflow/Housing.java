@@ -32,7 +32,7 @@ public class Housing extends Entity
 		{//as population goes up this gets faster. slower as it declines
 			if(ID.equals("Shell Cove")) {
 
-				System.out.println(((int)(100/multiplier)) + " - " + Population());
+				//System.out.println(((int)(100/multiplier)) + " - " + Population());
 			}
 
 			for(Stock s : stockRef.values())

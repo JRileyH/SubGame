@@ -22,6 +22,5 @@ public class Init
 		g.drawString("UserInterface", 100, 10);
 	}
 
-    public void tick(int second) {
-    }
+    public void tick(int second) {}
 }

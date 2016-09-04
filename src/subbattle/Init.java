@@ -23,5 +23,6 @@ public class Init
 	}
 
 	public void tick(int second) {
+
 	}
 }

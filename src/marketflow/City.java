@@ -48,6 +48,7 @@ public class City extends Entity
 		return basePrices;
 	}
 
+	boolean slide=true;
 	public void update(int count)
 	{
 
