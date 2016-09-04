@@ -26,28 +26,13 @@ public class Housing extends Entity
 	public void update(int count)
 	{
 
+	}
+
+	public void tick(int count)
+	{
 		float multiplier = (float)Population/(float)PopulationMax;
 
-		if(count%(int)(100/multiplier)==0)
-		{//as population goes up this gets faster. slower as it declines
-			if(ID.equals("Shell Cove")) {
-
-				//System.out.println(((int)(100/multiplier)) + " - " + Population());
-			}
-
-			for(Stock s : stockRef.values())
-			{
-				if(s.Type().equals("consumable"))
-				{
-					//System.out.println(s.Name);
-				}
-			}
-		}
-
-		if(count%100==0)
-		{//collect rents
-			incCredit(Math.round(taxRate*Population));
-		}
+		//System.out.println(Population + " - " + multiplier);
 	}
 
 	public void render(Graphics g){}

@@ -146,9 +146,9 @@ public class Entity
 
 	public void render(Graphics g)
 	{
-		g.drawImage(img, posX+Game.mf.mapOffsetX-img.getWidth()/2, posY+Game.mf.mapOffsetY-img.getHeight()/2, null);
+		g.drawImage(img, posX+Game.mf.map.OffsetX()-img.getWidth()/2, posY+Game.mf.map.OffsetY()-img.getHeight()/2, null);
 		g.drawRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
-		g.drawString(ID, posX+Game.mf.mapOffsetX-30, posY+Game.mf.mapOffsetY-20);
+		g.drawString(ID, posX+Game.mf.map.OffsetX()-30, posY+Game.mf.map.OffsetY()-20);
 	}
 	
 	public boolean Immigrate(Entity source, int amt)

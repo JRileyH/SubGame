@@ -14,6 +14,8 @@ import engine.XMLHandler;
 
 public class Init
 {
+	public WorldMap map;
+
 	public Player player;
 
 	private Map<String, City> _cityColl;
@@ -29,14 +31,6 @@ public class Init
 	private Map<String, Stock> _houseResColl;
 
 	private int scrollSpeed = 1;
-	
-	public BufferedImage mapImg;
-	public int mapWidth;
-	public int mapHeight;
-	public int mapOffsetX;
-	public int mapOffsetY;
-	public int mapEdgeX;
-	public int mapEdgeY;
 
 	public static HSSFWorkbook cityBook;
 	public static HSSFWorkbook shipBook;
@@ -45,6 +39,8 @@ public class Init
 
 	public Init(Game i, XMLHandler xmlh)
 	{
+		map = new WorldMap("res/map.jpg", 6000, 1000);
+
 		player = new Player("Playername", "Riley is sexy", null, 0, 0);	//perfect center x, y
 
 		cityBook = new HSSFWorkbook();
@@ -63,14 +59,6 @@ public class Init
 		
 		_houseColl = new HashMap<String, Housing>();
 		_houseResColl = new HashMap<String, Stock>();
-		
-		mapImg = Game.gfx.load("res/map.jpg");
-		mapWidth=mapImg.getWidth();
-		mapHeight=mapImg.getHeight();
-		mapOffsetX=0;
-		mapOffsetY=0;
-		mapEdgeX = Game.WIDTH-mapWidth;
-		mapEdgeY = Game.HEIGHT-mapHeight;
 		
 		xmlh.processMarketFlow(_cityColl,_shipColl,_genColl,_cityResColl,_shipResColl,_genResColl,_houseColl,_houseResColl);
 		for(City c : _cityColl.values())
@@ -130,9 +118,9 @@ public class Init
 
 	public void render(Graphics g)
 	{
-		g.drawImage(mapImg, mapOffsetX, mapOffsetY, null, null);
+		g.drawImage(map.Img(), map.OffsetX(), map.OffsetY(), null, null);
 		
-		g.drawString("MarketFlow " + mapOffsetX + ", " + mapOffsetY, 100, 10);
+		g.drawString("MarketFlow " + map.OffsetX() + ", " + map.OffsetY(), 100, 10);
 
 		player.render(g);
 
@@ -148,13 +136,12 @@ public class Init
 
 	public void scroll(int x, int y)
 	{
-		mapOffsetX+=x*scrollSpeed;
-		mapOffsetY+=y*scrollSpeed;
+		map.shift(x*scrollSpeed,y*scrollSpeed);
 		
-		if(mapOffsetX<mapEdgeX){mapOffsetX=mapEdgeX;}
-		if(mapOffsetY<mapEdgeY){mapOffsetY=mapEdgeY;}
-		if(mapOffsetX>0){mapOffsetX=0;}
-		if(mapOffsetY>0){mapOffsetY=0;}
+		if(map.OffsetX()<map.EdgeX()){map.OffsetX(map.EdgeX());}
+		if(map.OffsetY()<map.EdgeY()){map.OffsetY(map.EdgeY());}
+		if(map.OffsetX()>0){map.OffsetX(0);}
+		if(map.OffsetY()>0){map.OffsetY(0);}
 	}
 	
 	public void Report()

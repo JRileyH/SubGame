@@ -74,8 +74,8 @@ public class Player extends Entity
         if(right){oldV().incAngle(tack);}
 
         //Keep ship centered
-        posX = (Game.WIDTH/2)-Game.mf.mapOffsetX;
-        posY = (Game.HEIGHT/2)-Game.mf.mapOffsetY;
+        posX = (Game.WIDTH/2)-Game.mf.map.OffsetX();
+        posY = (Game.HEIGHT/2)-Game.mf.map.OffsetY();
 
         destX=(int)((Game.WIDTH/2)-10*oldV.magnitude()*Math.cos(oldV.angle()));
         destY=(int)((Game.HEIGHT/2)-10*oldV.magnitude()*Math.sin(oldV.angle()));

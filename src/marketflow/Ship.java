@@ -39,7 +39,7 @@ public class Ship extends Entity
 		dest=null;
 		maxspeed=spd;
 		img = Game.gfx.load("res/ship.png");
-		hitbox=new Rectangle(posX-img.getWidth()/2, posY-img.getHeight()/2, img.getWidth(), img.getHeight());
+		//hitbox=new Rectangle(posX-img.getWidth()/2, posY-img.getHeight()/2, img.getWidth(), img.getHeight());
 		//Game.clickables.put(this,hitbox);
 	}
 
@@ -68,120 +68,15 @@ public class Ship extends Entity
 
 	public void update(int count)
 	{
-		int mostProfit = 0;
-		switch(state)
+		if(state==State.ENROUTE)
 		{
-
-		case WAITING:
-			if(stallCount>=stallAmt)
-			{
-				stallCount = 0;
-				state = state.ASSESSING;
-				break;
-			}
-			stallCount++;
-			break;
-
-		case ASSESSING:
-			dest=null;//The city you will be travelling to
-			for (City city : cityRef.values())
-			{//check each city
-				//Ignore the city you're in
-				if(dock.ID.equals(city.ID)){continue;}
-
-				//TODO: prevent all traders going to the same place
-
-				int profit=0;//max amount of money you could make off this city
-				if(transactions.size()<maxTransactions)
-				{//don't bother checking purchase prices if your cargo is full
-				for(String stock : stockRef.keySet())
-				{//check each resource
-					//ignore resources that your dock city doesn't have
-					if(dock.Resource(stock)<=0){continue;}
-					//ignore resources you can't afford
-					if(dock.Price(stock)>Credit){continue;}
-
-					//find the profit to be made
-					int delta = city.Price(stock) - dock.Price(stock);
-					//add each resource profit to your max profit
-					if (delta > 0) {profit += delta;}
-				}}
-				for (Transaction xact : transactions)
-				{//check your record books! Maybe you can sell stuff you already have.
-					//find profit to be made
-					int delta = city.Price(xact.Resource()) - xact.Price();
-					//add each resource profit to your max profit
-					if (delta > 0) {profit += delta;}
-				}
-				if(profit>mostProfit)
-				{//if you've found a better city to go to..
-					mostProfit=profit;
-					dest=city;
-				}
-			}
-			if(dest==null)
-			{//if you haven't found a city to go to...
-				if(dock.ID.equals(home.ID))
-				{//if you're already home.. just chill.
-					state = State.WAITING;
-					break;
-				}
-				//other wise.. head home to kill time for a bit
-				dest = home;
-				state = State.ENROUTE;
-			}
-			else
-			{//start loading up for the trip!
-				state=State.LOADING;
-			}
-			break;
-
-		case LOADING:
-			String Cargo = null;//The cargo you will buy this tick.
-			//if you've got too much cargo already... just go!
-			if(transactions.size()>=maxTransactions){
-				state = State.ENROUTE;
-				break;
-			}
-
-			for(String stock : stockRef.keySet())
-			{//for each resource
-				//ignore resources that your dock city doesn't have
-				if(dock.Resource(stock)<=0){continue;}
-				//ignore resources you can't afford
-				if(dock.Price(stock)>Credit){continue;}
-
-				//find the profit to be made
-				int delta = dest.Price(stock) - dock.Price(stock);
-				if (delta > mostProfit)
-				{//If this is the best transaction you can make...
-					mostProfit = delta;
-					Cargo = stock;
-				}
-			}
-			if(Cargo==null)
-			{
-				state = State.ENROUTE;
-				break;
-			}
-
-			if(Buy(dock, Cargo, dock.Price(Cargo), 1))
-			{
-				transactions.add(new Transaction(count, Cargo, dock.Price(Cargo)));
-			}
-			else
-			{
-				System.out.println(ID+": Failed to buy "+Cargo);
-			}
-			break;
-		case ENROUTE:
 			//Go go go!
 			double angle = Math.atan2(dest.Y() - posY, dest.X() - posX);
 
 			posX += speed * Math.cos(angle);
 			posY += speed * Math.sin(angle);
 
-			hitbox.setLocation(posX+Game.mf.mapOffsetX-img.getWidth()/2, posY+Game.mf.mapOffsetY-img.getHeight()/2);
+			//hitbox.setLocation(posX+Game.mf.mapOffsetX-img.getWidth()/2, posY+Game.mf.mapOffsetY-img.getHeight()/2);
 
 			double a = dest.X()-posX;
 			double b = dest.Y()-posY;
@@ -195,45 +90,157 @@ public class Ship extends Entity
 				speed++;
 				if(speed>=maxspeed){speed=maxspeed;}
 			}
-			
-			break;
-		case UNLOADING:
-			Transaction sale = null;//the good you will be selling!
-			for(Transaction xact : transactions)
-			{//for each transaction in your records
-				//ignore transaction if the city can't afford it.
-				if(dest.Credit()<dest.Price(xact.Resource())){continue;}
-
-				int delta = dest.Price(xact.Resource())-xact.Price();
-				if(delta>mostProfit)
-				{
-					mostProfit=delta;
-					sale=xact;
-				}
-			}
-			if(sale==null)
-			{//if you're all out of profitable transactions to be had..
-				dock=dest;
-				dest=null;
-				state=State.ASSESSING;
-				break;
-			}
-
-			if(Sell(dest, sale.Resource(),dest.Price(sale.Resource()),1))
-			{//try to tell the stupid stuff
-				transactions.remove(sale);
-			}
-			else
-			{//What? for some reason you couldn't sell that resource.. so don't keep trying.
-				System.out.println(ID+": Failed to sell "+sale.Resource());
-			}
-			break;
-		case REASSESSING:
-			break;
-		default:
-			break;
 		}
 	}
+
+	public void tick(int count)
+	{
+		int mostProfit = 0;
+		switch(state)
+		{
+			case WAITING:
+				if(stallCount>=stallAmt)
+				{
+					stallCount = 0;
+					state = state.ASSESSING;
+					break;
+				}
+				stallCount++;
+				break;
+
+			case ASSESSING:
+				dest=null;//The city you will be travelling to
+				for (City city : cityRef.values())
+				{//check each city
+					//Ignore the city you're in
+					if(dock.ID.equals(city.ID)){continue;}
+
+					//TODO: prevent all traders going to the same place
+
+					int profit=0;//max amount of money you could make off this city
+					if(transactions.size()<maxTransactions)
+					{//don't bother checking purchase prices if your cargo is full
+						for(String stock : stockRef.keySet())
+						{//check each resource
+							//ignore resources that your dock city doesn't have
+							if(dock.Resource(stock)<=0){continue;}
+							//ignore resources you can't afford
+							if(dock.Price(stock)>Credit){continue;}
+
+							//find the profit to be made
+							int delta = city.Price(stock) - dock.Price(stock);
+							//add each resource profit to your max profit
+							if (delta > 0) {profit += delta;}
+						}}
+					for (Transaction xact : transactions)
+					{//check your record books! Maybe you can sell stuff you already have.
+						//find profit to be made
+						int delta = city.Price(xact.Resource()) - xact.Price();
+						//add each resource profit to your max profit
+						if (delta > 0) {profit += delta;}
+					}
+					if(profit>mostProfit)
+					{//if you've found a better city to go to..
+						mostProfit=profit;
+						dest=city;
+					}
+				}
+				if(dest==null)
+				{//if you haven't found a city to go to...
+					if(dock.ID.equals(home.ID))
+					{//if you're already home.. just chill.
+						state = State.WAITING;
+						break;
+					}
+					//other wise.. head home to kill time for a bit
+					dest = home;
+					state = State.ENROUTE;
+				}
+				else
+				{//start loading up for the trip!
+					state=State.LOADING;
+				}
+				break;
+
+			case LOADING:
+				String Cargo = null;//The cargo you will buy this tick.
+				//if you've got too much cargo already... just go!
+				if(transactions.size()>=maxTransactions){
+					state = State.ENROUTE;
+					break;
+				}
+
+				for(String stock : stockRef.keySet())
+				{//for each resource
+					//ignore resources that your dock city doesn't have
+					if(dock.Resource(stock)<=0){continue;}
+					//ignore resources you can't afford
+					if(dock.Price(stock)>Credit){continue;}
+
+					//find the profit to be made
+					int delta = dest.Price(stock) - dock.Price(stock);
+					if (delta > mostProfit)
+					{//If this is the best transaction you can make...
+						mostProfit = delta;
+						Cargo = stock;
+					}
+				}
+				if(Cargo==null)
+				{
+					state = State.ENROUTE;
+					break;
+				}
+
+				if(Buy(dock, Cargo, dock.Price(Cargo), 1))
+				{
+					transactions.add(new Transaction(count, Cargo, dock.Price(Cargo)));
+				}
+				else
+				{
+					System.out.println(ID+": Failed to buy "+Cargo);
+				}
+				break;
+			case ENROUTE:
+
+				break;
+			case UNLOADING:
+				Transaction sale = null;//the good you will be selling!
+				for(Transaction xact : transactions)
+				{//for each transaction in your records
+					//ignore transaction if the city can't afford it.
+					if(dest.Credit()<dest.Price(xact.Resource())){continue;}
+
+					int delta = dest.Price(xact.Resource())-xact.Price();
+					if(delta>mostProfit)
+					{
+						mostProfit=delta;
+						sale=xact;
+					}
+				}
+				if(sale==null)
+				{//if you're all out of profitable transactions to be had..
+					dock=dest;
+					dest=null;
+					state=State.ASSESSING;
+					break;
+				}
+
+				if(Sell(dest, sale.Resource(),dest.Price(sale.Resource()),1))
+				{//try to tell the stupid stuff
+					transactions.remove(sale);
+				}
+				else
+				{//What? for some reason you couldn't sell that resource.. so don't keep trying.
+					System.out.println(ID+": Failed to sell "+sale.Resource());
+				}
+				break;
+			case REASSESSING:
+				break;
+			default:
+				break;
+		}
+	}
+
 	public void render(Graphics g)
 	{
 		super.render(g);

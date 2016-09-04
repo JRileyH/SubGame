@@ -90,6 +90,25 @@ public class Generator extends Entity
 	
 	public void update(int count)
 	{
+
+	}
+
+	public void tick(int count)
+	{
+		/*if(ID.equals("Vole Pits"))
+		{
+			float multiplier = (float) Population / (float) PopulationMax;
+			System.out.println(ID + ": " + Population + " - " + multiplier);
+
+		}*/
+	}
+	
+	public void render(Graphics g)
+	{
+		super.render(g);
+	}
+
+	/*
 		float amt = (float)Resource(Product);
 		float ttl = (float)amt;
 		for(int i = 0; i < home.generators.size(); i++)
@@ -102,7 +121,7 @@ public class Generator extends Entity
 		mlt=mlt+1.0f;
 		float fin = max/mlt;
 		price = Math.round(fin);
-		
+
 		switch(state)
 		{
 		case WAITING:
@@ -110,7 +129,7 @@ public class Generator extends Entity
 			{
 				state=State.PRODUCING;
 			}
-			
+
 			break;
 		case LOADING:
 			String needed = null;
@@ -180,19 +199,13 @@ public class Generator extends Entity
 			}
 			break;
 		}
-		
+
 		if(count%100==0)
 		{//every once and a while
 			if(Population<PopulationMax)
 			{//hire a new guy
 				Immigrate(home.mostPopulatedHouse(), 1);
 			}
-			
-		}
-	}
-	
-	public void render(Graphics g)
-	{
-		super.render(g);
-	}
+
+		}*/
 }
