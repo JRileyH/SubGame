@@ -54,7 +54,9 @@ public class Entity
 			System.out.println("WE HAVE A PROBLEM");
 			System.out.println(this.getClass().getName());
 		}
-		
+
+		try{for(String name : st_ref.keySet())
+		{
 		Row row = reportSheet.createRow(0);
 		Cell cell = row.createCell(0);
 		cell.setCellValue("Time");
@@ -63,8 +65,7 @@ public class Entity
 		cell = row.createCell(2);
 		cell.setCellValue("Population");
 		int colNum=3;
-		try{for(String name : st_ref.keySet())
-		{
+
 			cell = row.createCell(colNum);
 			cell.setCellValue(name);
 			colNum++;
@@ -143,11 +144,8 @@ public class Entity
 		}
 	}
 
-	public void tick(int count) {}
-
 	public void render(Graphics g)
 	{
-
 		g.drawImage(img, posX+Game.mf.mapOffsetX-img.getWidth()/2, posY+Game.mf.mapOffsetY-img.getHeight()/2, null);
 		g.drawRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
 		g.drawString(ID, posX+Game.mf.mapOffsetX-30, posY+Game.mf.mapOffsetY-20);

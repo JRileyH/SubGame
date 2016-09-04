@@ -14,6 +14,8 @@ import engine.XMLHandler;
 
 public class Init
 {
+	public Player player;
+
 	private Map<String, City> _cityColl;
 	private Map<String, Stock> _cityResColl;
 	
@@ -26,7 +28,7 @@ public class Init
 	private Map<String, Housing> _houseColl;
 	private Map<String, Stock> _houseResColl;
 
-	private int scrollSpeed = 25;
+	private int scrollSpeed = 1;
 	
 	public BufferedImage mapImg;
 	public int mapWidth;
@@ -43,6 +45,8 @@ public class Init
 
 	public Init(Game i, XMLHandler xmlh)
 	{
+		player = new Player("Playername", "Riley is sexy", null, 0, 0);	//perfect center x, y
+
 		cityBook = new HSSFWorkbook();
 		shipBook = new HSSFWorkbook();
 		housingBook = new HSSFWorkbook();
@@ -77,6 +81,13 @@ public class Init
 
 	public void update(int count)
 	{
+		player.update(count);
+
+
+		Game.mf.scroll((int)(Game.mf.player.oldV().magnitude()*Math.cos(Game.mf.player.oldV().angle())),
+				(int)(Game.mf.player.oldV().magnitude()*Math.sin(Game.mf.player.oldV().angle())));
+
+
 		for(City c : _cityColl.values())
 		{
 			c.update(count);
@@ -94,30 +105,15 @@ public class Init
 			h.update(count);
 		}
 	}
-	public void tick(int count)
-	{
-		for(City c : _cityColl.values())
-		{
-			c.tick(count);
-		}
-		for(Ship s : _shipColl.values())
-		{
-			s.tick(count);
-		}
-		for(Generator g : _genColl.values())
-		{
-			g.tick(count);
-		}
-		for(Housing h : _houseColl.values())
-		{
-			h.tick(count);
-		}
-	}
+	
 	public void render(Graphics g)
 	{
 		g.drawImage(mapImg, mapOffsetX, mapOffsetY, null, null);
 		
 		g.drawString("MarketFlow " + mapOffsetX + ", " + mapOffsetY, 100, 10);
+
+		player.render(g);
+
 		for(City c : _cityColl.values())
 		{
 			c.render(g);
