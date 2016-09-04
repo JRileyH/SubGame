@@ -50,7 +50,7 @@ public class XMLHandler
 		return null;
 	}
 	
-	public void setKeyMap(String path, Map<Integer, String> map)
+	public void setKeyMap(String path, Map<Integer, String> map, Map<Integer, Boolean> flags)
 	{
 		Document doc = read(path);
 		map.clear();
@@ -60,6 +60,7 @@ public class XMLHandler
 			Node node = nodes.item(i);
 			Element elem = (Element) node;
 			map.put(Integer.parseInt(elem.getAttribute("id")), elem.getAttribute("action"));
+			flags.put(Integer.parseInt(elem.getAttribute("id")), false);
 		}
 	}
 	

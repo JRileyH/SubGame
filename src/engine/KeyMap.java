@@ -6,11 +6,13 @@ import java.util.Map;
 public class KeyMap
 {
 	private Map<Integer, String> _keymap;
+	private Map<Integer, Boolean> _keyFlags;
 	private XMLHandler _xmlh;
 	public KeyMap(XMLHandler xmlh)
 	{
 		_xmlh = xmlh;
 		_keymap = new HashMap<Integer, String>();
+		_keyFlags = new HashMap<Integer, Boolean>();
 		mapKeys(Game.State.UI);
 	}
 	
@@ -19,16 +21,16 @@ public class KeyMap
 		switch (state)
 		{
 		case UI:
-			_xmlh.setKeyMap("data/userinterface/KeyMap.xml", _keymap);
+			_xmlh.setKeyMap("data/userinterface/KeyMap.xml", _keymap, _keyFlags);
 			break;
 		case MARKETFLOW:
-			_xmlh.setKeyMap("data/marketflow/KeyMap.xml", _keymap);
+			_xmlh.setKeyMap("data/marketflow/KeyMap.xml", _keymap, _keyFlags);
 			break;
 		case SUBBATTLE:
-			_xmlh.setKeyMap("data/subbattle/KeyMap.xml", _keymap);
+			_xmlh.setKeyMap("data/subbattle/KeyMap.xml", _keymap, _keyFlags);
 			break;
 		case MYESTATE:
-			_xmlh.setKeyMap("data/myestate/KeyMap.xml", _keymap);
+			_xmlh.setKeyMap("data/myestate/KeyMap.xml", _keymap, _keyFlags);
 			break;
 		}
 	}
@@ -46,13 +48,15 @@ public class KeyMap
 				Game.mf.player.left(d);
 				break;
 			case "scrollUp":
-				Game.mf.player.up(d);
+				//Game.mf.player.up(d);
+				if(!_keyFlags.get(c)){Game.mf.player.incSpeed();}
 				break;
 			case "scrollRight":
 				Game.mf.player.right(d);
 				break;
 			case "scrollDown":
-				Game.mf.player.down(d);
+				//Game.mf.player.down(d);
+				if(!_keyFlags.get(c)){Game.mf.player.decSpeed();}
 				break;
 			
 			case "SwitchToUI":
@@ -72,6 +76,7 @@ public class KeyMap
 				//default:
 				//	Game.mf.player.newV().incMagnitude(-1);
 			}
+			_keyFlags.put(c, d);
 		}
 		else
 		{

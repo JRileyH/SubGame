@@ -68,12 +68,26 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
 	@Override
 	public void mouseDragged(MouseEvent me)
 	{
-		
+
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent me)
 	{
+		/*if(me.getX() == 0)
+		{
+			System.out.println("IF YOUR HURTIN LAY IT ALL ON ME");
+		}
 
-	}	
+		if(me.getX() == Game.WIDTH)
+		{
+			Game.mf.mapOffsetX++;
+			System.out.println("that not where ur friend belongs!!");
+		}
+
+		Rectangle scrollUp = new Rectangle(0, 0, Game.WIDTH, 50);
+		Rectangle scrollLeft = new Rectangle(0, 0, 50, Game.HEIGHT);
+		Rectangle scrollRight = new Rectangle(Game.WIDTH-50, 0, 50, Game.HEIGHT);
+		Rectangle scrollDown = new Rectangle(0, Game.HEIGHT-50, Game.WIDTH, 50);*/
+	}
 }

@@ -12,8 +12,9 @@ import java.util.Map;
  */
 public class Player extends Entity
 {
-    private boolean up = false;
-    private boolean down = false;
+    private boolean initUP = false;
+    private boolean initDOWN = false;
+
     private boolean left = false;
     private boolean right = false;
 
@@ -41,12 +42,7 @@ public class Player extends Entity
     {
         //Acceleration
         if(count%drag==0) {
-            if (up && newV.magnitude() < maxSpeed) {
-                newV.incMagnitude(acc);
-            }
-            if (down && newV.magnitude() > -maxSpeed) {
-                newV.incMagnitude(-acc);
-            }
+
         }
 
         //Vector Catch Up
@@ -55,19 +51,6 @@ public class Player extends Entity
         } else if ((newV.magnitude() < oldV.magnitude())) {
             oldV.incMagnitude(-acc);
         }
-
-        //Deccelartion
-        /*if(count%drag==0) {
-            if (!up && !down) {
-                if (newV.magnitude() > dec) {
-                    newV.incMagnitude(-dec);
-                } else if (newV.magnitude() < -dec) {
-                    newV.incMagnitude(dec);
-                } else {
-                    newV.magnitude(0);
-                }
-            }
-        }*/
 
         //Turn
         if(left){oldV().incAngle(-tack);}
@@ -99,10 +82,29 @@ public class Player extends Entity
         g.setColor(Color.BLACK);
     }
 
-    public void up(boolean u){up=u;}
-    public boolean up(){return up;}
-    public void down(boolean d){down=d;}
-    public boolean down(){return down;}
+
+
+
+
+
+    public void incSpeed()
+    {
+        if (newV.magnitude() < maxSpeed)
+        {
+            System.out.println(newV.magnitude());
+            newV.incMagnitude(acc);
+        }
+    }
+
+    public void decSpeed()
+    {
+
+        if (newV.magnitude() > -maxSpeed)
+        {
+            newV.incMagnitude(-acc);
+        }
+    }
+
     public void left(boolean l){left=l;}
     public boolean left(){return left;}
     public void right(boolean r){right=r;}
