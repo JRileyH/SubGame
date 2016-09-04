@@ -76,6 +76,8 @@ public class Init
 
 	public void update(int count)
 	{
+		map.update(count);
+
 		player.update(count);
 
 		//System.out.println("A: "+Math.round(Game.mf.player.oldV().magnitude()*Math.cos(Game.mf.player.oldV().angle()))+"\nB: "+((int)(Game.mf.player.oldV().magnitude()*Math.cos(Game.mf.player.oldV().angle()))));

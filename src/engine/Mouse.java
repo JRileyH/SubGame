@@ -9,9 +9,11 @@ import java.util.Map;
 
 public class Mouse implements MouseListener, MouseMotionListener, MouseWheelListener
 {
-	
 	Game instance;
-	
+
+	int x;
+	int y;
+
 	public Mouse(Game instance)
 	{
 		this.instance = instance;
@@ -23,12 +25,12 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
 	@Override
 	public void mouseClicked(MouseEvent me)
 	{
-		int x = me.getX()-instance.mf.map.OffsetX();
-		int y = me.getY()-instance.mf.map.OffsetY();
+		int xWorld = me.getX()-instance.mf.map.OffsetX();
+		int yWorld = me.getY()-instance.mf.map.OffsetY();
 		//TODO: Remove this.. temporary
 		for(Map.Entry<marketflow.Entity, Rectangle> e : Game.clickables.entrySet())
 		{
-			if(e.getValue().contains(x, y))
+			if(e.getValue().contains(xWorld, yWorld))
 			{
 				e.getKey().print();
 			}
@@ -74,20 +76,13 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
 	@Override
 	public void mouseMoved(MouseEvent me)
 	{
-		/*if(me.getX() == 0)
-		{
-			System.out.println("IF YOUR HURTIN LAY IT ALL ON ME");
-		}
-
-		if(me.getX() == Game.WIDTH)
-		{
-			Game.mf.mapOffsetX++;
-			System.out.println("that not where ur friend belongs!!");
-		}
-
-		Rectangle scrollUp = new Rectangle(0, 0, Game.WIDTH, 50);
-		Rectangle scrollLeft = new Rectangle(0, 0, 50, Game.HEIGHT);
-		Rectangle scrollRight = new Rectangle(Game.WIDTH-50, 0, 50, Game.HEIGHT);
-		Rectangle scrollDown = new Rectangle(0, Game.HEIGHT-50, Game.WIDTH, 50);*/
+		x = me.getX();
+		y = me.getY();
 	}
+
+
+	public void x(int setX){x=setX;}
+	public int x(){return x;}
+	public void y(int setY){y=setY;}
+	public int y(){return y;}
 }

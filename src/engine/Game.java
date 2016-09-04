@@ -36,7 +36,7 @@ public class Game extends Canvas implements Runnable
 	public static Graphix gfx;			// reads an image in res folder
 	XMLHandler xmlh;
 	SpriteSheet ss;				// cuts an image out of sprite sheet
-	Mouse mouse;				// Everything that you could possibly do with a mouse
+	public static Mouse mouse;				// Everything that you could possibly do with a mouse
 	Keyboard keyboard;			// Keyboard stuff.
 	static KeyMap keymap;		//Keyboard Bindings
 	

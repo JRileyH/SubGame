@@ -2,6 +2,7 @@ package marketflow;
 
 import engine.Game;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 /**
@@ -16,6 +17,22 @@ public class WorldMap
     public int _offsetY;
     public int _edgeX;
     public int _edgeY;
+    Rectangle scrollUp = new Rectangle(0, 0, Game.WIDTH, 50);
+    Rectangle scrollLeft = new Rectangle(0, 0, 50, Game.HEIGHT);
+    Rectangle scrollRight = new Rectangle(Game.WIDTH-50, 0, 50, Game.HEIGHT);
+    Rectangle scrollDown = new Rectangle(0, Game.HEIGHT-50, Game.WIDTH, 50);
+    		/*if(me.getX() == 0)
+		{
+			System.out.println("IF YOUR HURTIN LAY IT ALL ON ME");
+		}
+
+		if(me.getX() == Game.WIDTH)
+		{
+			Game.mf.mapOffsetX++;
+			System.out.println("that not where ur friend belongs!!");
+		}*/
+
+
 
     public WorldMap(String path, int initX, int initY)
     {
@@ -26,6 +43,16 @@ public class WorldMap
         _offsetY=-initY;
         _edgeX = Game.WIDTH-_width;
         _edgeY = Game.HEIGHT-_height;
+    }
+
+    public void update(int count)
+    {
+        System.out.println("TITS!");
+        if(scrollDown.contains(Game.mouse.x(), Game.mouse.y()))
+        {
+            System.out.println("bobsocks!");
+            shift(0, -5);
+        }
     }
 
     public BufferedImage Img()
