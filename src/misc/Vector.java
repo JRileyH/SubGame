@@ -2,8 +2,6 @@ package misc;
 
 public class Vector
 {
-    int moredogfood = 0;
-
     private int magnitude = 0;
     private double angle = 0;
 
