@@ -21,6 +21,7 @@ public class Player extends Entity
     private Vector newV = new Vector(0, Math.PI/2);        // destination vector
 
     private int maxSpeed=14;
+    private int speed=0;
     private int acc=1;
     private int dec=1;
     private int drag = 20;
@@ -56,7 +57,7 @@ public class Player extends Entity
         }
 
         //Deccelartion
-        if(count%drag==0) {
+        /*if(count%drag==0) {
             if (!up && !down) {
                 if (newV.magnitude() > dec) {
                     newV.incMagnitude(-dec);
@@ -66,7 +67,7 @@ public class Player extends Entity
                     newV.magnitude(0);
                 }
             }
-        }
+        }*/
 
         //Turn
         if(left){oldV().incAngle(-tack);}
