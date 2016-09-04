@@ -82,8 +82,8 @@ public class Init
 
 		//System.out.println("A: "+Math.round(Game.mf.player.oldV().magnitude()*Math.cos(Game.mf.player.oldV().angle()))+"\nB: "+((int)(Game.mf.player.oldV().magnitude()*Math.cos(Game.mf.player.oldV().angle()))));
 
-		Game.mf.scroll((int)rileyify(Game.mf.player.oldV().magnitude()*Math.cos(Game.mf.player.oldV().angle())),
-				(int)rileyify(Game.mf.player.oldV().magnitude()*Math.sin(Game.mf.player.oldV().angle())));
+		Game.mf.scroll((int)Math.round(Game.mf.player.oldV().magnitude()*Math.cos(Game.mf.player.oldV().angle())),
+				(int)Math.round(Game.mf.player.oldV().magnitude()*Math.sin(Game.mf.player.oldV().angle())));
 
 
 		for(City c : _cityColl.values())
@@ -128,9 +128,7 @@ public class Init
 
 	public void render(Graphics g)
 	{
-		g.drawImage(map.Img(), map.OffsetX(), map.OffsetY(), null, null);
-		
-		g.drawString("MarketFlow " + map.OffsetX() + ", " + map.OffsetY(), 100, 10);
+		map.render(g);
 
 		player.render(g);
 

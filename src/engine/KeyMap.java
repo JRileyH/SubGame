@@ -67,7 +67,7 @@ public class KeyMap
 				break;
 			case "SwitchToSB":
 				Game.state(Game.State.SUBBATTLE);
-				Game.mf.Report();
+				if(d){Game.mf.Report();}
 				break;
 			case "SwitchToME":
 				Game.state(Game.State.MYESTATE);

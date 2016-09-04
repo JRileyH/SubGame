@@ -42,7 +42,7 @@ public class Generator extends Entity
 
 	private void log(String msg)
 	{
-		if(ID.equals("Vole Pits")) {
+		if(ID.equals("Scoop Netter")) {
 			System.out.println(msg);
 		}
 	}
