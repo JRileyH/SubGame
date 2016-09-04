@@ -4,6 +4,7 @@ import engine.Game;
 import misc.*;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.Map;
 
 /**
@@ -16,10 +17,17 @@ public class Player extends Entity
     private boolean left = false;
     private boolean right = false;
 
-    private Vector oldV = new Vector();        // current vector
-    private Vector newV = new Vector();        // destination vector
+    private Vector oldV = new Vector(0, Math.PI/2);        // current vector
+    private Vector newV = new Vector(0, Math.PI/2);        // destination vector
 
-    private Timer timer = new Timer();
+    private int maxSpeed=14;
+    private int acc=1;
+    private int dec=1;
+    private int drag = 20;
+    private double tack=0.01;
+
+    private int destX=0,maxX=0;
+    private int destY=0,maxY=0;
 
     public Player(String id, String desc, Map<String, Stock> st_ref, int x, int y)
     {
@@ -30,30 +38,49 @@ public class Player extends Entity
 
     public void update(int count)
     {
-        timer.incTime();
-
-        //temp max speed added
-        if(up && newV().magnitude()<15 && (timer.time() % 40 == 0)){newV().incMagnitude(1);}//else{newV().magDrop();}
-        if(down && newV().magnitude()>-15 && (timer.time() % 40 == 0)){newV().incMagnitude(-1);}//else{newV().magDrop();}
-        if((newV().magnitude() > oldV().magnitude()))
-        {
-            oldV().incMagnitude(1);
-        }else if((newV().magnitude() < oldV().magnitude()))
-        {
-            oldV().incMagnitude(-1);
+        //Acceleration
+        if(count%drag==0) {
+            if (up && newV.magnitude() < maxSpeed) {
+                newV.incMagnitude(acc);
+            }
+            if (down && newV.magnitude() > -maxSpeed) {
+                newV.incMagnitude(-acc);
+            }
         }
 
-
-        if(!up && !down && (timer.time() % 40 == 0))
-        {
-            newV().magDrop();
+        //Vector Catch Up
+        if ((newV.magnitude() > oldV.magnitude())) {
+            oldV.incMagnitude(acc);
+        } else if ((newV.magnitude() < oldV.magnitude())) {
+            oldV.incMagnitude(-acc);
         }
 
-        if(left){oldV().incAngle(-0.01);}
-        if(right){oldV().incAngle(0.01);}
+        //Deccelartion
+        if(count%drag==0) {
+            if (!up && !down) {
+                if (newV.magnitude() > dec) {
+                    newV.incMagnitude(-dec);
+                } else if (newV.magnitude() < -dec) {
+                    newV.incMagnitude(dec);
+                } else {
+                    newV.magnitude(0);
+                }
+            }
+        }
 
+        //Turn
+        if(left){oldV().incAngle(-tack);}
+        if(right){oldV().incAngle(tack);}
+
+        //Keep ship centered
         posX = (Game.WIDTH/2)-Game.mf.mapOffsetX;
         posY = (Game.HEIGHT/2)-Game.mf.mapOffsetY;
+
+        destX=(int)((Game.WIDTH/2)-10*oldV.magnitude()*Math.cos(oldV.angle()));
+        destY=(int)((Game.HEIGHT/2)-10*oldV.magnitude()*Math.sin(oldV.angle()));
+
+        maxX=(int)((Game.WIDTH/2)-10*maxSpeed*Math.cos(oldV.angle()));
+        maxY=(int)((Game.HEIGHT/2)-10*maxSpeed*Math.sin(oldV.angle()));
     }
 
     public void tick(int count)
@@ -64,7 +91,11 @@ public class Player extends Entity
     public void render(Graphics g)
     {
         super.render(g);
-        g.drawLine((Game.WIDTH/2),(Game.HEIGHT/2),(int)((Game.WIDTH/2)-50*Math.cos(oldV.angle())),(int)((Game.HEIGHT/2)-50*Math.sin(oldV.angle())));
+        g.setColor(Color.RED);
+        g.drawLine((Game.WIDTH/2),(Game.HEIGHT/2),maxX,maxY);
+        g.setColor(Color.BLUE);
+        g.drawLine((Game.WIDTH/2),(Game.HEIGHT/2),destX,destY);
+        g.setColor(Color.BLACK);
     }
 
     public void up(boolean u){up=u;}

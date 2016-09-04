@@ -2,20 +2,15 @@ package misc;
 
 public class Vector
 {
-    private int magnitude = 0;
-    private double angle = Math.PI/2;
+    private int magnitude;
+    private double angle;
 
-    public void magDrop()
+    public Vector(int mag, double ang)
     {
-        if(magnitude>0)
-        {
-            magnitude-=1;
-        }
-        if(magnitude<0)
-        {
-            magnitude+=1;
-        }
+        magnitude=mag;
+        angle=ang;
     }
+
     public void incMagnitude(int m){magnitude += m;}
     public void magnitude(int m){magnitude = m;}
     public int magnitude(){return magnitude;}
