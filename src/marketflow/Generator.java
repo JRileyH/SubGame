@@ -10,11 +10,9 @@ public class Generator extends Entity
 	private String Allience;
 	private enum State
 	{
-		WAITING,
 		LOADING,//Buying up the input ingredients
 		PRODUCING,//Workers are creating the product until conditions are no longer favorable for production
 		UNLOADING,//Bringing goods to market
-		
 	}
 	private State state = State.PRODUCING;
 	private int Cost;
@@ -25,6 +23,7 @@ public class Generator extends Entity
 	private int Time;
 	private City home;
 	private int price;
+	private int cuttoff = 10;
 	
 	public Generator(String id, String desc, int x, int y, int c, int output, String[] inputs, String product, String location, Map<String, City> c_ref, Map<String, Stock> st_ref, int t, int pm)
 	{
@@ -39,9 +38,15 @@ public class Generator extends Entity
 		Cost=c;
 		Time = t;
 		PopulationMax = pm;
-		price = 0;
 	}
-	
+
+	private void log(String msg)
+	{
+		if(ID.equals("Vole Pits")) {
+			System.out.println(msg);
+		}
+	}
+
 	public String Location()
 	{
 		return Location;
@@ -58,13 +63,54 @@ public class Generator extends Entity
 	{
 		return Product;
 	}
-	
+
+	public boolean Procure()
+	{
+		//Find most needed input
+		String Cargo = null;//What cargo will you buy today?
+		int amt = Integer.MAX_VALUE;//How much are you holding?
+
+		for(int i = 0; i < Inputs.length; i++)
+		{
+			if(Resource(Inputs[i])<amt)
+			{//Buy the resource you have the least of
+				Cargo = Inputs[i];
+				amt=Resource(Inputs[i]);
+			}
+			else if(Resource(Inputs[i])==amt&&home.Price(Inputs[i])<home.Price(Cargo))
+			{//If you have a tie then buy the cheaper one.
+				Cargo = Inputs[i];
+				amt=Resource(Inputs[i]);
+			}
+		}
+
+		if(Resource(Cargo)>Population)
+		{//You've got enough already...
+			state = State.PRODUCING;
+			return false;
+		}
+		else if(Buy(home, Cargo, home.Price(Cargo), 1))
+		{
+			log("Bought " + Cargo + " for $" + home.Price(Cargo) + " (" + Resource(Cargo) + ")");
+			return true;
+		}
+		else
+		{
+			log("Can't buy " + Cargo + " for $" + home.Price(Cargo));
+			state=State.UNLOADING;
+			return false;
+		}
+	}
+
 	public boolean Produce()
 	{
 		//Check if cost of production is available
 		if(Credit<Cost*Population)
 		{
 			state=State.UNLOADING;
+			log("Non enough funds");
+			if(Population()>1){incPopulation(-1);}
+			log("Population: " + Population());
 			return false;
 		}
 		for(int i = 0; i < Inputs.length; i++)
@@ -72,6 +118,7 @@ public class Generator extends Entity
 			if(Resource(Inputs[i])<=0)
 			{//don't have enough ingredients
 				state=State.LOADING;
+				log("Not enough res");
 				return false;
 			}
 		}
@@ -83,6 +130,29 @@ public class Generator extends Entity
 		}
 		//produce output product
 		incResource(Product,Output);
+
+		if(Resource(Product)>=Population){state = State.UNLOADING;}
+		return true;
+	}
+
+	public boolean Vend(int price)
+	{
+		if(Resource(Product)<=0)
+		{//Out of Goods
+			log("Out of stock");
+			state=State.PRODUCING;
+			return false;
+		}
+		if(Sell(home,Product,price,1))
+		{
+			log("Sold "+Product+" for $"+price);
+			return true;
+		}
+		else
+		{
+			log("Couldn't sell"+Product+" for $"+price);
+		}
+
 		return true;
 	}
 	
@@ -95,12 +165,42 @@ public class Generator extends Entity
 
 	public void tick(int count)
 	{
-		/*if(ID.equals("Vole Pits"))
+		float multiplier = (float) Population / (float) PopulationMax;
+		if(count%(int)(Time/multiplier)==0)
 		{
-			float multiplier = (float) Population / (float) PopulationMax;
-			System.out.println(ID + ": " + Population + " - " + multiplier);
+			float amt = (float) Resource(Product);
+			float ttl = amt;
+			for (int i = 0; i < home.generators.size(); i++) {
+				ttl += home.Generator(home.generators.get(i)).Resource(Product);
+			}
+			float max = (float) home.BasePrices().get(Product);
+			float mlt = 0.0f;
+			if (amt > 0 && ttl > 0) {
+				mlt = amt / ttl;
+			}
+			mlt = mlt + 1.0f;
+			float fin = max / mlt;
+			price = Math.round(fin);
 
-		}*/
+			switch (state) {
+				case LOADING:
+					if(Procure()){
+
+					}
+					break;
+				case PRODUCING:
+					if(Produce()){
+						log(Product() + ": " + Resource(Product()));
+					}
+					break;
+				case UNLOADING:
+					if(Vend(price)){
+
+					}
+					break;
+			}
+
+		}
 	}
 	
 	public void render(Graphics g)
