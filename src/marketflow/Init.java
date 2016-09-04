@@ -67,12 +67,12 @@ public class Init
 		}
 	}
 
-	public double rileyify(double val) {
+	/*public double rileyify(double val) {
 		if (val > 0) {
 			return Math.ceil(val);
 		}
 		return Math.floor(val);
-	}
+	}*/
 
 	public void update(int count)
 	{
@@ -84,7 +84,6 @@ public class Init
 
 		Game.mf.scroll((int)Math.round(Game.mf.player.oldV().magnitude()*Math.cos(Game.mf.player.oldV().angle())),
 				(int)Math.round(Game.mf.player.oldV().magnitude()*Math.sin(Game.mf.player.oldV().angle())));
-
 
 		for(City c : _cityColl.values())
 		{

@@ -172,7 +172,7 @@ public class Game extends Canvas implements Runnable
 			return;
 		}
 		Graphics g = bs.getDrawGraphics();
-		
+
 		//RENDER START
 		g.fillRect(0, 0, (int)(WIDTH*SCALE), (int)(WIDTH*SCALE));
 		

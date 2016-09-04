@@ -4,6 +4,8 @@ import engine.Game;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Riggy on 9/4/2016.
@@ -19,6 +21,7 @@ public class WorldMap
     public int _panY;
     public int _edgeX;
     public int _edgeY;
+    Map<String, Rectangle> scrollBoxes;
     Rectangle scrollBoxUp = new Rectangle(0, 0, Game.WIDTH, 50);
     Rectangle scrollBoxLeft = new Rectangle(0, 0, 50, Game.HEIGHT);
     Rectangle scrollBoxRight = new Rectangle(Game.WIDTH-50, 0, 50, Game.HEIGHT);
@@ -36,46 +39,91 @@ public class WorldMap
         _panY=0;
         _edgeX = Game.WIDTH-_width;
         _edgeY = Game.HEIGHT-_height;
+
+        scrollBoxes = new HashMap<>();
+        int w = Game.WIDTH/3;
+        int h = Game.HEIGHT/3;
+        int k = 50;
+        int s = Game.WIDTH-k;
+        int b = Game.HEIGHT-k;
+        scrollBoxes.put("NWY",new Rectangle(w*0, 0, w, k));
+        scrollBoxes.put("NY" ,new Rectangle(w*1, 0, w, k));
+        scrollBoxes.put("NEY",new Rectangle(w*2, 0, w, k));
+
+        scrollBoxes.put("SWY",new Rectangle(w*0, b, w, k));
+        scrollBoxes.put("SY" ,new Rectangle(w*1, b, w, k));
+        scrollBoxes.put("SEY",new Rectangle(w*2, b, w, k));
+
+        scrollBoxes.put("NWX",new Rectangle(0, h*0, k, h));
+        scrollBoxes.put("WX" ,new Rectangle(0, h*1, k, h));
+        scrollBoxes.put("SWX",new Rectangle(0, h*2, k, h));
+
+        scrollBoxes.put("NEX",new Rectangle(s, h*0, k, h));
+        scrollBoxes.put("EX" ,new Rectangle(s, h*1, k, h));
+        scrollBoxes.put("SEX",new Rectangle(s, h*2, k, h));
+
     }
 
     public void update(int count)
     {
-        boolean centeredX = true;
-        boolean centeredY = true;
-        if(scrollBoxUp.contains(Game.mouse.x(), Game.mouse.y()))
+        boolean centered = true;
+        for(Map.Entry<String, Rectangle> r : scrollBoxes.entrySet())
         {
-            pan(0, 5);
+            if(r.getValue().contains(Game.mouse.x(), Game.mouse.y()))
+            {
+                switch(r.getKey())
+                {
+                    case "NWY":
+                        pan(2, 3);centered=false;
+                        break;
+                    case "NY":
+                        pan(0, 5);centered=false;
+                        break;
+                    case "NEY":
+                        pan(-2, 3);centered=false;
+                        break;
+
+                    case "SWY":
+                        pan(2, -3);centered=false;
+                        break;
+                    case "SY":
+                        pan(0, -5);centered=false;
+                        break;
+                    case "SEY":
+                        pan(-2, -3);centered=false;
+                        break;
+
+                    case "NWX":
+                        pan(3, 2);centered=false;
+                        break;
+                    case "WX":
+                        pan(5, 0);centered=false;
+                        break;
+                    case "SWX":
+                        pan(3, -2);centered=false;
+                        break;
+
+                    case "NEX":
+                        pan(-3, 2);centered=false;
+                        break;
+                    case "EX":
+                        pan(-5, 0);centered=false;
+                        break;
+                    case "SEX":
+                        pan(-3, -2);centered=false;
+                        break;
+                }
+            }
             if(_panY>Game.mf.player.maxViewDistance){_panY=Game.mf.player.maxViewDistance;}
-            centeredY=false;
-        }
-        if(scrollBoxDown.contains(Game.mouse.x(), Game.mouse.y()))
-        {
-            pan(0, -5);
             if(_panY<-Game.mf.player.maxViewDistance){_panY=-Game.mf.player.maxViewDistance;}
-            centeredY=false;
-        }
-        if(scrollBoxLeft.contains(Game.mouse.x(), Game.mouse.y()))
-        {
-            pan(5, 0);
             if(_panX>Game.mf.player.maxViewDistance){_panX=Game.mf.player.maxViewDistance;}
-            centeredX=false;
-        }
-        if(scrollBoxRight.contains(Game.mouse.x(), Game.mouse.y()))
-        {
-            pan(-5, 0);
             if(_panX<-Game.mf.player.maxViewDistance){_panX=-Game.mf.player.maxViewDistance;}
-            centeredX=false;
         }
         //TODO: make this elastic
-        if(centeredX)
+        if(centered)
         {
-            center(5, 0);
+            center(5, 5);
         }
-        if(centeredY)
-        {
-            center(0, 5);
-        }
-
     }
 
     public void render(Graphics g)
@@ -84,10 +132,10 @@ public class WorldMap
 
         g.drawString("MarketFlow " + _offsetX + ", " + _offsetY, 100, 10);
 
-        g.drawRect(scrollBoxUp.x, scrollBoxUp.y, scrollBoxUp.width, scrollBoxUp.height);
-        g.drawRect(scrollBoxRight.x, scrollBoxRight.y, scrollBoxRight.width, scrollBoxRight.height);
-        g.drawRect(scrollBoxLeft.x, scrollBoxLeft.y, scrollBoxLeft.width, scrollBoxLeft.height);
-        g.drawRect(scrollBoxDown.x, scrollBoxDown.y, scrollBoxDown.width, scrollBoxDown.height);
+        for(Rectangle r : scrollBoxes.values())
+        {
+            g.drawRect(r.x,r.y,r.width,r.height);
+        }
     }
 
     public BufferedImage Img()
