@@ -27,9 +27,11 @@ public class Player extends Entity
     private int dec=1;
     private int drag = 20;
     private double tack=0.01;
+    public int maxViewDistance=300;
 
     private int destX=0,maxX=0;
     private int destY=0,maxY=0;
+
 
     public Player(String id, String desc, Map<String, Stock> st_ref, int x, int y)
     {
@@ -75,17 +77,15 @@ public class Player extends Entity
     public void render(Graphics g)
     {
         super.render(g);
+        int x = (Game.WIDTH/2)+Game.mf.map.PanX();
+        int y = (Game.HEIGHT/2)+Game.mf.map.PanY();
+
         g.setColor(Color.RED);
-        g.drawLine((Game.WIDTH/2),(Game.HEIGHT/2),maxX,maxY);
+        g.drawLine(x,y,maxX+Game.mf.map.PanX(),maxY+Game.mf.map.PanY());
         g.setColor(Color.BLUE);
-        g.drawLine((Game.WIDTH/2),(Game.HEIGHT/2),destX,destY);
+        g.drawLine(x,y,destX+Game.mf.map.PanX(),destY+Game.mf.map.PanY());
         g.setColor(Color.BLACK);
     }
-
-
-
-
-
 
     public void incSpeed()
     {
