@@ -22,10 +22,6 @@ public class WorldMap
     public int _edgeX;
     public int _edgeY;
     Map<String, Rectangle> scrollBoxes;
-    Rectangle scrollBoxUp = new Rectangle(0, 0, Game.WIDTH, 50);
-    Rectangle scrollBoxLeft = new Rectangle(0, 0, 50, Game.HEIGHT);
-    Rectangle scrollBoxRight = new Rectangle(Game.WIDTH-50, 0, 50, Game.HEIGHT);
-    Rectangle scrollBoxDown = new Rectangle(0, Game.HEIGHT-50, Game.WIDTH, 50);
 
 
     public WorldMap(String path, int initX, int initY)

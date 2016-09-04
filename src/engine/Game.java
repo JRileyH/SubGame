@@ -17,8 +17,7 @@ public class Game extends Canvas implements Runnable
 	public static Map<Entity, Rectangle> clickables = new HashMap<>();
 
 	private static final long serialVersionUID = 1L;
-	public static int WIDTH = 1700, HEIGHT = 900;
-	public static double SCALE = 1.0;		//zoom value
+	public static int WIDTH, HEIGHT;
 	public static boolean running = false;	//game running
 	public Thread gameThread;
 	
@@ -174,7 +173,7 @@ public class Game extends Canvas implements Runnable
 		Graphics g = bs.getDrawGraphics();
 
 		//RENDER START
-		g.fillRect(0, 0, (int)(WIDTH*SCALE), (int)(WIDTH*SCALE));
+		g.fillRect(0, 0, (int)(WIDTH), (int)(WIDTH));
 		
 		//---TEXT ON SCREEN---
 		
@@ -206,13 +205,19 @@ public class Game extends Canvas implements Runnable
 	
 	public static void main(String[] args)
 	{
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		WIDTH=(int)screenSize.getWidth();
+		HEIGHT=(int)screenSize.getHeight();
+
 		Game game = new Game();
-		game.setPreferredSize(new Dimension((int)(WIDTH*SCALE), (int)(HEIGHT*SCALE)));
-		game.setMaximumSize(new Dimension((int)(WIDTH*SCALE), (int)(HEIGHT*SCALE)));
-		game.setMinimumSize(new Dimension((int)(WIDTH*SCALE), (int)(HEIGHT*SCALE)));
+		game.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+		game.setMaximumSize(new Dimension(WIDTH, HEIGHT));
+		game.setMinimumSize(new Dimension(WIDTH, HEIGHT));
 		
-		JFrame frame = new JFrame("Sub Salutem");
-		frame.setSize((int)(WIDTH*SCALE), (int)(HEIGHT*SCALE));
+		JFrame frame = new JFrame("Sub Game");
+		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
+		frame.setUndecorated(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 		frame.setResizable(false);
