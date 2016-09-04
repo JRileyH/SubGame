@@ -5,6 +5,7 @@ package misc;
  */
 public class Vector
 {
+    private int poopAmount = Integer.MAX_VALUE;
     private int magnitude = 0;
     private double angle = 0;
 
