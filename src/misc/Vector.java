@@ -1,11 +1,7 @@
 package misc;
 
-/**
- * Created by James on 9/3/2016.
- */
 public class Vector
 {
-    private int poopAmount = Integer.MAX_VALUE;
     private int magnitude = 0;
     private double angle = 0;
 
