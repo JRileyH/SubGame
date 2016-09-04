@@ -75,7 +75,7 @@ public class Init
 		xmlh.processMarketFlow(_cityColl,_shipColl,_genColl,_cityResColl,_shipResColl,_genResColl,_houseColl,_houseResColl);
 		for(City c : _cityColl.values())
 		{
-			c.update(0, 0);
+			c.update(0);
 		}
 	}
 
@@ -105,7 +105,27 @@ public class Init
 			h.update(count);
 		}
 	}
-	
+
+	public void tick(int count)
+	{
+		for(City c : _cityColl.values())
+		{
+			c.tick(count);
+		}
+		for(Ship s : _shipColl.values())
+		{
+			s.tick(count);
+		}
+		for(Generator g : _genColl.values())
+		{
+			g.tick(count);
+		}
+		for(Housing h : _houseColl.values())
+		{
+			h.tick(count);
+		}
+	}
+
 	public void render(Graphics g)
 	{
 		g.drawImage(mapImg, mapOffsetX, mapOffsetY, null, null);
@@ -185,4 +205,6 @@ public class Init
 			e.printStackTrace();
 		}
 	}
+
+
 }

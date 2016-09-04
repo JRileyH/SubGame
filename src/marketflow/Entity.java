@@ -116,32 +116,32 @@ public class Entity
 		System.out.println(line);
 	}
 
+	public void update(int count)
+	{
+
+	}
 
 	protected int rowNum = 1;
 	protected Row row;
-	public void update(int count, int tickCount)
+	public void tick(int count)
 	{
-		time=tickCount;
-		if(tickCount%10==0)
-		{
-			row = reportSheet.createRow(rowNum);
-			Cell cell = row.createCell(0);
-			cell.setCellValue(tickCount);
-			cell = row.createCell(1);
-			cell.setCellValue(Credit());
-			cell = row.createCell(2);
-			cell.setCellValue(Population());
-			int colNum=3;
-			try{
+		row = reportSheet.createRow(rowNum);
+		Cell cell = row.createCell(0);
+		cell.setCellValue(count);
+		cell = row.createCell(1);
+		cell.setCellValue(Credit());
+		cell = row.createCell(2);
+		cell.setCellValue(Population());
+		int colNum=3;
+		try{
 			for(Stock val : stockRef.values())
 			{
 				cell = row.createCell(colNum);
 				cell.setCellValue(val.Resource(ID));
 				colNum++;
 			}
-			}catch(Exception e){}
-			rowNum++;
-		}
+		}catch(Exception e){}
+		rowNum++;
 	}
 
 	public void render(Graphics g)
