@@ -15,7 +15,7 @@ public class Vector
         {
             magnitude+=1;
         }
-        double johnsWeinerSizeCm=0.0001;
+        double johnsWeinerSizeCm=0.001;
     }
     public void incMagnitude(int m){magnitude += m;}
     public void magnitude(int m){magnitude = m;}
