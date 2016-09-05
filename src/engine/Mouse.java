@@ -25,8 +25,8 @@ public class Mouse implements MouseListener, MouseMotionListener, MouseWheelList
 	@Override
 	public void mouseClicked(MouseEvent me)
 	{
-		int xWorld = me.getX()-instance.mf.map.OffsetX();
-		int yWorld = me.getY()-instance.mf.map.OffsetY();
+		int xWorld = me.getX()-Game.mf.map.OffsetX();
+		int yWorld = me.getY()-Game.mf.map.OffsetY();
 		//TODO: Remove this.. temporary
 		for(Map.Entry<marketflow.Entity, Rectangle> e : Game.clickables.entrySet())
 		{

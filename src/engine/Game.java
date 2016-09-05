@@ -108,11 +108,12 @@ public class Game extends Canvas implements Runnable
 			if(delta >= 1)
 			{
 				update();
+				tick();
 				delta--;
 			}
 			if(second >= amountOfTicks)
 			{
-				tick();
+				//tick();
 				second-=amountOfTicks;
 			}
 			render();

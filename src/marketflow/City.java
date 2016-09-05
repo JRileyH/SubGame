@@ -20,7 +20,7 @@ public class City extends Entity
 	private Map<String, Generator> genRef;
 	//private float genTax = 0.05f;
 	private Map<String, Housing> houseRef;
-	private float houseTax = 0.1f;
+	private float houseTax = 0.05f;
 	private Map<String, Integer> prices;
 	private Map<String, Integer> basePrices;
 	
@@ -52,6 +52,19 @@ public class City extends Entity
 	public void update(int count)
 	{
 
+	}
+
+	public void tick(int count)
+	{
+		if(count%100==0)
+		{
+			for(Housing h : houseRef.values())
+			{
+				int tax = (int)(h.Credit()*houseTax);
+				h.incCredit(-tax);
+				incCredit(tax);
+			}
+		}
 		for(Stock s : stockRef.values())
 		{//Find appropriate prices.
 			float amt = (float)s.Resource(ID);
@@ -66,7 +79,7 @@ public class City extends Entity
 		}
 
 	}
-	
+
 	public void render(Graphics g)
 	{
 		super.render(g);

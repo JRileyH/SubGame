@@ -43,7 +43,7 @@ public class Generator extends Entity
 	private void log(String msg)
 	{
 		if(ID.equals("Scoop Netter")) {
-			System.out.println(msg);
+			//System.out.println(ID+": "+msg);
 		}
 	}
 

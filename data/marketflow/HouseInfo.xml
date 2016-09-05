@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<class>
+    <House id="Slum" tax="1" max="100">
+        <Description>A place to stick your poorest of the poor so they won't stink up the rest of your city.</Description>
+        <!--The order in which house consumes goods-->
+        <Consumable>Soylent</Consumable>
+        <Consumable>Jellies</Consumable>
+        <Consumable>Seaweed</Consumable>
+        <Consumable>Fish</Consumable>
+        <!--<Consumable>Decapoda</Consumable>-->
+        <!--<Consumable>Voles</Consumable>-->
+        <!--<Consumable>Veggies</Consumable>-->
+
+        <!--Order in which they consume luxury-->
+        <Luxury>Shells</Luxury>
+        <!--<Luxury>Coral</Luxury>-->
+        <!--<Luxury>Pearls</Luxury>-->
+        <!--<Luxury>Spirits</Luxury>-->
+        <!--<Luxury>Salvage</Luxury>-->
+    </House>
+
+    <House id="Suburb" tax="5" max="60">
+        <Description>Here is place you can raise a family.</Description>
+        <!--The order in which house consumes goods-->
+        <!--<Consumable>Soylent</Consumable>-->
+        <!--<Consumable>Jellies</Consumable>-->
+        <Consumable>Seaweed</Consumable>
+        <Consumable>Fish</Consumable>
+        <Consumable>Decapoda</Consumable>
+        <!--Consumable>Voles</Consumable>-->
+        <!--<Consumable>Veggies</Consumable>-->
+
+        <!--Order in which they consume luxury-->
+        <!--<Luxury>Shells</Luxury>-->
+        <Luxury>Coral</Luxury>
+        <Luxury>Pearls</Luxury>
+        <Luxury>Spirits</Luxury>
+        <!--<Luxury>Salvage</Luxury>-->
+    </House>
+
+    <House id="Villas" tax="25" max="20">
+        <Description>Only for the most elite.</Description>
+        <!--The order in which house consumes goods-->
+        <!--<Consumable>Soylent</Consumable>-->
+        <!--<Consumable>Jellies</Consumable>-->
+        <!--<Consumable>Seaweed</Consumable>-->
+        <Consumable>Veggies</Consumable>
+        <Consumable>Voles</Consumable>
+        <Consumable>Decapoda</Consumable>
+        <Consumable>Fish</Consumable>
+
+        <!--Order in which they consume luxury-->
+        <!--<Luxury>Shells</Luxury>-->
+        <Luxury>Salvage</Luxury>
+        <Luxury>Spirits</Luxury>
+        <Luxury>Pearls</Luxury>
+        <Luxury>Coral</Luxury>
+    </House>
+</class>

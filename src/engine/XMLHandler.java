@@ -232,22 +232,23 @@ public class XMLHandler
 				//sets housing unit name
 				house = h_elem.getAttribute("id");
 
-				//initializes housing unit
-				hc.put(house, new Housing(house,                        //Name of House
-						"",
-						Integer.parseInt(c_elem.getAttribute("x")),        //X Coordinate
-						Integer.parseInt(c_elem.getAttribute("y")),        //Y Coordinate
-						city,                                            //Name of Home City
-						cc,                                             //reference to City Collection
-						hrc,                                            //reference to Housing Resource Stock
-						Integer.parseInt(h_elem.getAttribute("max"))    //Max Population of Dwellers
+				//sets housing type
+				String housetype = h_elem.getAttribute("type");
+
+				//initialized housing unit
+				hc.put(house, makeHouse(housetype,
+						house,
+						Integer.parseInt(c_elem.getAttribute("x")),		//X Coordinate
+						Integer.parseInt(c_elem.getAttribute("y")),		//Y Coordinate
+						city,											//Name of Home City
+						cc,												//reference to City Collection
+						hrc												//reference to Generator Resource Stock
 				));
+
 				//initializes housing unit's credit amount
 				hc.get(house).Credit(Integer.parseInt(h_elem.getAttribute("cred")));
 				//initializes housing resident population
 				hc.get(house).Population(Integer.parseInt(h_elem.getAttribute("pop")));
-				//initializes housing resident population
-				cc.get(city).incPopulationMax(Integer.parseInt(h_elem.getAttribute("max")));
 				//adds using unit to respective city's housing list
 				cc.get(city).housing.add(house);
 
@@ -318,6 +319,58 @@ public class XMLHandler
 				Integer.parseInt(elem.getAttribute("max"))
 		);
 	}
+
+	private Housing makeHouse(
+			String type,
+			String id,
+			int x,
+			int y,
+			String city,
+			Map<String, City> cc,
+			Map<String, Stock> hrc
+	)
+	{
+		Document doc = read("data/marketflow/HouseInfo.xml");
+		NodeList nodes = doc.getElementsByTagName("House");
+		Element elem = null;
+		for(int i = 0; i < nodes.getLength(); i++)
+		{
+			Node node = nodes.item(i);
+			elem = (Element) node;
+			if(elem.getAttribute("id").equals(type)){break;}
+		}
+
+		NodeList consumables = elem.getElementsByTagName("Consumable");
+		String[] consumeOrder = new String[consumables.getLength()];
+		for(int i = 0; i < consumables.getLength(); i++)
+		{
+			consumeOrder[i]=consumables.item(i).getTextContent();
+		}
+
+		NodeList luxury = elem.getElementsByTagName("Luxury");
+		String[] luxOrder = new String[luxury.getLength()];
+		for(int i = 0; i < luxury.getLength(); i++)
+		{
+			luxury.item(i).getTextContent();
+			luxOrder[i]=luxury.item(i).getTextContent();
+		}
+
+//public Housing(String id, String desc, int x, int y, String location, Map<String, City> c_ref, Map<String, Stock> st_ref, int pm)
+		return new Housing(id,
+				elem.getElementsByTagName("Description").item(0).getTextContent(),
+				x,
+				y,
+				consumeOrder,
+				luxOrder,
+				city,
+				cc,
+				hrc,
+				Integer.parseInt(elem.getAttribute("tax")),
+				Integer.parseInt(elem.getAttribute("max"))
+		);
+	}
+
+
 	public void processSubBattle()
 	{
 		// TODO Auto-generated method stub

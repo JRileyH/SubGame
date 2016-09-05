@@ -174,15 +174,47 @@
 			<gRes id="Salvage" type="luxury">0</gRes>
 		</Generator>
 
-		<Housing id="Sweat Bunks" pop="50" max="100" cred="100">
-			<hRes id="Water" type="consumable">0</hRes>
-			<hRes id="Fish" type="consumable">0</hRes>
-			<hRes id="Seaweed" type="consumable">0</hRes>
-			<hRes id="Soylent" type="consumable">0</hRes>
+		<Housing id="Sweat Bunks" type="Slum" pop="50" cred="100">
+			<hRes id="Water" type="consumable">50</hRes>
+			<hRes id="Fish" type="consumable">50</hRes>
+			<hRes id="Seaweed" type="consumable">50</hRes>
+			<hRes id="Soylent" type="consumable">50</hRes>
 			<hRes id="Decapoda" type="consumable">0</hRes>
+			<hRes id="Jellies" type="consumable">50</hRes>
+			<hRes id="Voles" type="consumable">0</hRes>
+			<hRes id="Veggies" type="consumable">0</hRes>
+			<hRes id="Shells" type="luxury">0</hRes>
+			<hRes id="Coral" type="luxury">0</hRes>
+			<hRes id="Pearls" type="luxury">0</hRes>
+			<hRes id="Spirits" type="luxury">0</hRes>
+			<hRes id="Salvage" type="luxury">0</hRes>
+		</Housing>
+
+		<Housing id="Bolt Pods" type="Suburb" pop="30" cred="100">
+			<hRes id="Water" type="consumable">30</hRes>
+			<hRes id="Fish" type="consumable">30</hRes>
+			<hRes id="Seaweed" type="consumable">30</hRes>
+			<hRes id="Soylent" type="consumable">0</hRes>
+			<hRes id="Decapoda" type="consumable">30</hRes>
 			<hRes id="Jellies" type="consumable">0</hRes>
 			<hRes id="Voles" type="consumable">0</hRes>
 			<hRes id="Veggies" type="consumable">0</hRes>
+			<hRes id="Shells" type="luxury">0</hRes>
+			<hRes id="Coral" type="luxury">0</hRes>
+			<hRes id="Pearls" type="luxury">0</hRes>
+			<hRes id="Spirits" type="luxury">0</hRes>
+			<hRes id="Salvage" type="luxury">0</hRes>
+		</Housing>
+
+		<Housing id="Overseers Keep" type="Villas" pop="10" cred="100">
+			<hRes id="Water" type="consumable">10</hRes>
+			<hRes id="Fish" type="consumable">10</hRes>
+			<hRes id="Seaweed" type="consumable">0</hRes>
+			<hRes id="Soylent" type="consumable">0</hRes>
+			<hRes id="Decapoda" type="consumable">10</hRes>
+			<hRes id="Jellies" type="consumable">0</hRes>
+			<hRes id="Voles" type="consumable">10</hRes>
+			<hRes id="Veggies" type="consumable">10</hRes>
 			<hRes id="Shells" type="luxury">0</hRes>
 			<hRes id="Coral" type="luxury">0</hRes>
 			<hRes id="Pearls" type="luxury">0</hRes>
@@ -364,15 +396,16 @@
 			<gRes id="Spirits" type="luxury">0</gRes>
 			<gRes id="Salvage" type="luxury">0</gRes>
 		</Generator>
-		<Housing id="Shell Cove" pop="50" max="100" cred="100">
-			<hRes id="Water" type="consumable">0</hRes>
-			<hRes id="Fish" type="consumable">0</hRes>
+
+		<Housing id="Coral Palace" type="Villas" pop="10" cred="100">
+			<hRes id="Water" type="consumable">10</hRes>
+			<hRes id="Fish" type="consumable">10</hRes>
 			<hRes id="Seaweed" type="consumable">0</hRes>
 			<hRes id="Soylent" type="consumable">0</hRes>
-			<hRes id="Decapoda" type="consumable">0</hRes>
+			<hRes id="Decapoda" type="consumable">10</hRes>
 			<hRes id="Jellies" type="consumable">0</hRes>
-			<hRes id="Voles" type="consumable">0</hRes>
-			<hRes id="Veggies" type="consumable">0</hRes>
+			<hRes id="Voles" type="consumable">10</hRes>
+			<hRes id="Veggies" type="consumable">10</hRes>
 			<hRes id="Shells" type="luxury">0</hRes>
 			<hRes id="Coral" type="luxury">0</hRes>
 			<hRes id="Pearls" type="luxury">0</hRes>
@@ -380,6 +413,21 @@
 			<hRes id="Salvage" type="luxury">0</hRes>
 		</Housing>
 
+		<Housing id="Reef Overlook" type="Villas" pop="10" cred="100">
+			<hRes id="Water" type="consumable">10</hRes>
+			<hRes id="Fish" type="consumable">10</hRes>
+			<hRes id="Seaweed" type="consumable">0</hRes>
+			<hRes id="Soylent" type="consumable">0</hRes>
+			<hRes id="Decapoda" type="consumable">10</hRes>
+			<hRes id="Jellies" type="consumable">0</hRes>
+			<hRes id="Voles" type="consumable">10</hRes>
+			<hRes id="Veggies" type="consumable">10</hRes>
+			<hRes id="Shells" type="luxury">0</hRes>
+			<hRes id="Coral" type="luxury">0</hRes>
+			<hRes id="Pearls" type="luxury">0</hRes>
+			<hRes id="Spirits" type="luxury">0</hRes>
+			<hRes id="Salvage" type="luxury">0</hRes>
+		</Housing>
 	</City>
 
 	<City id="Flat Sands Farm" x="1200" y="300" cred="10000">
@@ -555,15 +603,31 @@
 			<gRes id="Salvage" type="luxury">0</gRes>
 		</Generator>
 
-		<Housing id="Farm House" pop="50" max="100" cred="100">
-			<hRes id="Water" type="consumable">0</hRes>
-			<hRes id="Fish" type="consumable">0</hRes>
-			<hRes id="Seaweed" type="consumable">0</hRes>
-			<hRes id="Soylent" type="consumable">0</hRes>
+		<Housing id="Farm Houses" type="Slum" pop="50" cred="100">
+			<hRes id="Water" type="consumable">50</hRes>
+			<hRes id="Fish" type="consumable">50</hRes>
+			<hRes id="Seaweed" type="consumable">50</hRes>
+			<hRes id="Soylent" type="consumable">50</hRes>
 			<hRes id="Decapoda" type="consumable">0</hRes>
-			<hRes id="Jellies" type="consumable">0</hRes>
+			<hRes id="Jellies" type="consumable">50</hRes>
 			<hRes id="Voles" type="consumable">0</hRes>
 			<hRes id="Veggies" type="consumable">0</hRes>
+			<hRes id="Shells" type="luxury">0</hRes>
+			<hRes id="Coral" type="luxury">0</hRes>
+			<hRes id="Pearls" type="luxury">0</hRes>
+			<hRes id="Spirits" type="luxury">0</hRes>
+			<hRes id="Salvage" type="luxury">0</hRes>
+		</Housing>
+
+		<Housing id="Plantation Homes" type="Villas" pop="10" cred="100">
+			<hRes id="Water" type="consumable">10</hRes>
+			<hRes id="Fish" type="consumable">10</hRes>
+			<hRes id="Seaweed" type="consumable">0</hRes>
+			<hRes id="Soylent" type="consumable">0</hRes>
+			<hRes id="Decapoda" type="consumable">10</hRes>
+			<hRes id="Jellies" type="consumable">0</hRes>
+			<hRes id="Voles" type="consumable">10</hRes>
+			<hRes id="Veggies" type="consumable">10</hRes>
 			<hRes id="Shells" type="luxury">0</hRes>
 			<hRes id="Coral" type="luxury">0</hRes>
 			<hRes id="Pearls" type="luxury">0</hRes>
@@ -774,12 +838,28 @@
 			<gRes id="Salvage" type="luxury">0</gRes>
 		</Generator>
 
-		<Housing id="Slum Town" pop="50" max="100" cred="100">
-			<hRes id="Water" type="consumable">0</hRes>
-			<hRes id="Fish" type="consumable">0</hRes>
-			<hRes id="Seaweed" type="consumable">0</hRes>
-			<hRes id="Soylent" type="consumable">0</hRes>
+		<Housing id="Slum Town" type="Slum" pop="50" cred="100">
+			<hRes id="Water" type="consumable">50</hRes>
+			<hRes id="Fish" type="consumable">50</hRes>
+			<hRes id="Seaweed" type="consumable">50</hRes>
+			<hRes id="Soylent" type="consumable">50</hRes>
 			<hRes id="Decapoda" type="consumable">0</hRes>
+			<hRes id="Jellies" type="consumable">50</hRes>
+			<hRes id="Voles" type="consumable">0</hRes>
+			<hRes id="Veggies" type="consumable">0</hRes>
+			<hRes id="Shells" type="luxury">0</hRes>
+			<hRes id="Coral" type="luxury">0</hRes>
+			<hRes id="Pearls" type="luxury">0</hRes>
+			<hRes id="Spirits" type="luxury">0</hRes>
+			<hRes id="Salvage" type="luxury">0</hRes>
+		</Housing>
+
+		<Housing id="Bangerton" type="Suburb" pop="30" cred="100">
+			<hRes id="Water" type="consumable">30</hRes>
+			<hRes id="Fish" type="consumable">30</hRes>
+			<hRes id="Seaweed" type="consumable">30</hRes>
+			<hRes id="Soylent" type="consumable">0</hRes>
+			<hRes id="Decapoda" type="consumable">30</hRes>
 			<hRes id="Jellies" type="consumable">0</hRes>
 			<hRes id="Voles" type="consumable">0</hRes>
 			<hRes id="Veggies" type="consumable">0</hRes>
@@ -789,5 +869,6 @@
 			<hRes id="Spirits" type="luxury">0</hRes>
 			<hRes id="Salvage" type="luxury">0</hRes>
 		</Housing>
+
 	</City>
 </class>
