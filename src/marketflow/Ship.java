@@ -95,6 +95,8 @@ public class Ship extends Entity
 
 	public void tick(int count)
 	{
+		super.tick(count);
+
 		int mostProfit = 0;
 		switch(state)
 		{
@@ -143,6 +145,7 @@ public class Ship extends Entity
 					{//if you've found a better city to go to..
 						mostProfit=profit;
 						dest=city;
+						log("Decided to go to "+city.ID+" for $"+mostProfit);
 					}
 				}
 				if(dest==null)
@@ -150,11 +153,13 @@ public class Ship extends Entity
 					if(dock.ID.equals(home.ID))
 					{//if you're already home.. just chill.
 						state = State.WAITING;
+						log("Could not find profit. Waiting in"+home.ID);
 						break;
 					}
 					//other wise.. head home to kill time for a bit
 					dest = home;
 					state = State.ENROUTE;
+					log("Could not find profit. Heading home to "+home.ID);
 				}
 				else
 				{//start loading up for the trip!
@@ -188,20 +193,22 @@ public class Ship extends Entity
 				if(Cargo==null)
 				{
 					state = State.ENROUTE;
+					log("Setting sail for "+dest.ID+"!");
 					break;
 				}
 
 				if(Buy(dock, Cargo, dock.Price(Cargo), 1))
 				{
 					transactions.add(new Transaction(count, Cargo, dock.Price(Cargo)));
+					log("Bought "+Cargo+" for $"+dock.Price(Cargo)+" (+$"+(dest.Price(Cargo)-dock.Price(Cargo))+")");
 				}
 				else
 				{
-					System.out.println(ID+": Failed to buy "+Cargo);
+					log("Failed to buy "+Cargo);
 				}
 				break;
 			case ENROUTE:
-
+				log("Enroute to "+dest.ID);
 				break;
 			case UNLOADING:
 				Transaction sale = null;//the good you will be selling!
@@ -221,6 +228,7 @@ public class Ship extends Entity
 				{//if you're all out of profitable transactions to be had..
 					dock=dest;
 					dest=null;
+					log("Time to assess profits for my next trip...");
 					state=State.ASSESSING;
 					break;
 				}
@@ -228,10 +236,11 @@ public class Ship extends Entity
 				if(Sell(dest, sale.Resource(),dest.Price(sale.Resource()),1))
 				{//try to tell the stupid stuff
 					transactions.remove(sale);
+					log("Sold "+sale.Resource()+" for $"+dest.Price(sale.Resource()));
 				}
 				else
 				{//What? for some reason you couldn't sell that resource.. so don't keep trying.
-					System.out.println(ID+": Failed to sell "+sale.Resource());
+					log("Failed to sell "+sale.Resource());
 				}
 				break;
 			case REASSESSING:
@@ -239,6 +248,7 @@ public class Ship extends Entity
 			default:
 				break;
 		}
+		logCol=oldLogCol;
 	}
 
 	public void render(Graphics g)

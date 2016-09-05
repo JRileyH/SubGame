@@ -21,7 +21,7 @@ public class Entity
 	protected String Description;
 	protected BufferedImage img;
 	protected Rectangle hitbox;
-	HSSFSheet reportSheet;
+	protected HSSFSheet reportSheet;
 	
 	public Entity(String id, String desc, Map<String, Stock> st_ref, int x, int y)
 	{
@@ -49,50 +49,56 @@ public class Entity
 		{
 			reportSheet = Init.generatorBook.createSheet(ID+" Report");
 		}
-		else
-		{
-			System.out.println("WE HAVE A PROBLEM");
-			System.out.println(this.getClass().getName());
-		}
 
-		try{for(String name : st_ref.keySet())
-		{
-		Row row = reportSheet.createRow(0);
-		Cell cell = row.createCell(0);
-		cell.setCellValue("Time");
-		cell = row.createCell(1);
-		cell.setCellValue("Credit");
-		cell = row.createCell(2);
-		cell.setCellValue("Population");
-		int colNum=3;
-
+		if(reportSheet!=null)
+		{//create excel sheet for outputting actions
+			Row row = reportSheet.createRow(0);
+			Cell cell = row.createCell(0);
+			cell.setCellValue("Time");
+			cell = row.createCell(1);
+			cell.setCellValue("Credit");
+			cell = row.createCell(2);
+			cell.setCellValue("Population");
+			int colNum=3;
+			for(String name : st_ref.keySet())
+			{
+				cell = row.createCell(colNum);
+				cell.setCellValue(name);
+				colNum++;
+			}
+			logCol=colNum;
+			oldLogCol=colNum;
 			cell = row.createCell(colNum);
-			cell.setCellValue(name);
-			colNum++;
-		}}catch(Exception e){}
+			cell.setCellValue("Action");
+		}
 	}
+
+//===Reporting================================//
+	protected boolean console = false;
 	private int time = 0;
+	protected int logCol = 0;
+	protected int oldLogCol = 0;
 	public void print(){
 		String toPrint = "";
-		System.out.println("/=================================\\");
-		makeLine(ID, ""+time);
-		makeLine("Cred: "+Credit(), "Pop: "+Population());
-		System.out.println("|--Consumables--------------------|");
-		makeLine("Water:    "+Resource("Water"), 		"Fish:     "+Resource("Fish"));
-		makeLine("Seaweed:  "+Resource("Seaweed"), 		"Soylent:  "+Resource("Soylent"));
-		makeLine("Decapoda: "+Resource("Decapoda"), 	"Jellies:  "+Resource("Jellies"));
-		makeLine("Voles:    "+Resource("Water"), ".");
-		System.out.println("|--Goods--------------------------|");
-		makeLine("Oil:      "+Resource("Oil"), 			"Fuel:     "+Resource("Fuel"));
-		makeLine("Metal:    "+Resource("Hard Metals"), 	"Parts:    "+Resource("Parts"));
-		makeLine("Energy:   "+Resource("Energy"), ".");
-		System.out.println("|--Luxuries-----------------------|");
-		makeLine("Shells:   "+Resource("Shells"), 		"Coral:    "+Resource("Coral"));
-		makeLine("Pearls:   "+Resource("Pearls"), 		"Spirits:  "+Resource("Spirits"));
-		System.out.println("\\=================================/");
+		toPrint+="/=================================\\\n";
+		toPrint+=makeLine(ID, ""+time);
+		toPrint+=makeLine("Cred: "+Credit(), "Pop: "+Population());
+		toPrint+="|--Consumables--------------------|\n";
+		toPrint+=makeLine("Water:    "+Resource("Water"), 		"Fish:     "+Resource("Fish"));
+		toPrint+=makeLine("Seaweed:  "+Resource("Seaweed"), 	"Soylent:  "+Resource("Soylent"));
+		toPrint+=makeLine("Decapoda: "+Resource("Decapoda"),	"Jellies:  "+Resource("Jellies"));
+		toPrint+=makeLine("Voles:    "+Resource("Water"), 	".");
+		toPrint+="|--Goods--------------------------|\n";
+		toPrint+=makeLine("Oil:      "+Resource("Oil"), 		"Fuel:     "+Resource("Fuel"));
+		toPrint+=makeLine("Metal:    "+Resource("Hard Metals"),	"Parts:    "+Resource("Parts"));
+		toPrint+=makeLine("Energy:   "+Resource("Energy"), ".");
+		toPrint+="|--Luxuries-----------------------|\n";
+		toPrint+=makeLine("Shells:   "+Resource("Shells"), 		"Coral:    "+Resource("Coral"));
+		toPrint+=makeLine("Pearls:   "+Resource("Pearls"), 		"Spirits:  "+Resource("Spirits"));
+		toPrint+="\\=================================/\n";
+		System.out.print(toPrint);
 	}
-
-	private void makeLine(String first, String second)
+	private String makeLine(String first, String second)
 	{
 		String line = "| "+first;
 		int blanks = 17-line.length();
@@ -113,8 +119,18 @@ public class Entity
 			}
 		}
 		line+="|";
-		System.out.println(line);
+		return line+"\n";
 	}
+	protected void log(String msg)
+	{
+		if(console){System.out.println(ID+": "+msg);}
+		if(reportSheet != null && row != null) {
+			Cell cell = row.createCell(logCol);
+			cell.setCellValue(msg);
+		}
+		logCol++;
+	}
+//===================================================================//
 
 	public void update(int count)
 	{
@@ -125,23 +141,22 @@ public class Entity
 	protected Row row;
 	public void tick(int count)
 	{
-		row = reportSheet.createRow(rowNum);
-		Cell cell = row.createCell(0);
-		cell.setCellValue(count);
-		cell = row.createCell(1);
-		cell.setCellValue(Credit());
-		cell = row.createCell(2);
-		cell.setCellValue(Population());
-		int colNum=3;
-		try{
-			for(Stock val : stockRef.values())
-			{
+		if(reportSheet!=null) {
+			row = reportSheet.createRow(rowNum);
+			Cell cell = row.createCell(0);
+			cell.setCellValue(count);
+			cell = row.createCell(1);
+			cell.setCellValue(Credit());
+			cell = row.createCell(2);
+			cell.setCellValue(Population());
+			int colNum = 3;
+			for (Stock val : stockRef.values()) {
 				cell = row.createCell(colNum);
 				cell.setCellValue(val.Resource(ID));
 				colNum++;
 			}
-		}catch(Exception e){}
-		rowNum++;
+			rowNum++;
+		}
 	}
 
 	public void render(Graphics g)

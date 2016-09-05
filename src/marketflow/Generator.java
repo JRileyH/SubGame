@@ -40,13 +40,6 @@ public class Generator extends Entity
 		PopulationMax = pm;
 	}
 
-	private void log(String msg)
-	{
-		if(ID.equals("Scoop Netter")) {
-			//System.out.println(ID+": "+msg);
-		}
-	}
-
 	public String Location()
 	{
 		return Location;
@@ -108,9 +101,8 @@ public class Generator extends Entity
 		if(Credit<Cost*Population)
 		{
 			state=State.UNLOADING;
-			log("Non enough funds");
 			if(Population()>1){incPopulation(-1);}
-			log("Population: " + Population());
+			log("Not enough funds, firing employee, Population: " + Population());
 			return false;
 		}
 		for(int i = 0; i < Inputs.length; i++)
@@ -118,7 +110,7 @@ public class Generator extends Entity
 			if(Resource(Inputs[i])<=0)
 			{//don't have enough ingredients
 				state=State.LOADING;
-				log("Not enough res");
+				log("Not enough Resources to produce");
 				return false;
 			}
 		}
@@ -165,6 +157,8 @@ public class Generator extends Entity
 
 	public void tick(int count)
 	{
+		super.tick(count);
+
 		float multiplier = (float) Population / (float) PopulationMax;
 		if(count%(int)(Time/multiplier)==0)
 		{
@@ -201,6 +195,7 @@ public class Generator extends Entity
 			}
 
 		}
+		logCol=oldLogCol;
 	}
 	
 	public void render(Graphics g)

@@ -56,14 +56,19 @@ public class City extends Entity
 
 	public void tick(int count)
 	{
+		super.tick(count);
+
 		if(count%100==0)
 		{
+			int total = 0;
 			for(Housing h : houseRef.values())
 			{
 				int tax = (int)(h.Credit()*houseTax);
 				h.incCredit(-tax);
-				incCredit(tax);
+				total+=tax;
 			}
+			incCredit(total);
+			log("Collected Taxes: $"+Credit()+" (+$"+total+")");
 		}
 		for(Stock s : stockRef.values())
 		{//Find appropriate prices.
@@ -77,7 +82,7 @@ public class City extends Entity
 			int price = Math.round(fin);
 			prices.put(s.Name, price);
 		}
-
+		logCol=oldLogCol;
 	}
 
 	public void render(Graphics g)

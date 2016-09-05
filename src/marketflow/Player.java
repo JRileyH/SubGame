@@ -23,7 +23,7 @@ public class Player extends Entity
 
     private int maxSpeed=14;
     private int acc=1;
-    private int gearSize=10;
+    private int gearSize=1;
     private int drag = 20;
     private double tack=0.01;
     public int maxViewDistance=300;

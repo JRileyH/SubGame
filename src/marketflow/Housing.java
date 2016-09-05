@@ -30,25 +30,22 @@ public class Housing extends Entity
 		return home;
 	}
 
-	private void log(String msg)
-	{
-		if(ID.equals("Sweat Bunks"))
-		{
-			System.out.println(ID+": "+msg);
-		}
-	}
-
 	public void update(int count)
 	{
 
 	}
 
+
 	public void tick(int count)
 	{
+		super.tick(count);
+
 		float multiplier = (float)Population/(float)PopulationMax;
 
 		if(Resource("Water")<Population()) {
-			Buy(home,"Water",home.Price("Water"),1);
+			if(Buy(home,"Water",home.Price("Water"),1)) {
+				log("Bought Water for $" + home.Price("Water"));
+			}
 		}
 
 		boolean excess = true;
@@ -59,8 +56,7 @@ public class Housing extends Entity
 				excess=false;
 				if(Buy(home,consumeOrder[i],home.Price(consumeOrder[i]),1))
 				{
-					log(consumeOrder[i]+": "+Resource(consumeOrder[i])+" for $"+home.Price(consumeOrder[i]));
-					log("Now has $"+Credit());
+					log("Bought "+consumeOrder[i]+" for $"+home.Price(consumeOrder[i]));
 					i--;
 					excess=true;
 				}
@@ -76,8 +72,7 @@ public class Housing extends Entity
 			{
 				if(Buy(home,luxuryOrder[i],home.Price(luxuryOrder[i]),1))
 				{
-					log(luxuryOrder[i]+": "+Resource(luxuryOrder[i])+" for $"+home.Price(luxuryOrder[i]));
-					log("Now has $"+Credit());
+					log("Bought "+luxuryOrder[i]+" for $"+home.Price(luxuryOrder[i]));
 					break;
 				}
 				else
@@ -94,10 +89,16 @@ public class Housing extends Entity
 				incPopulation(-1);
 				log("Dying of thirst. "+Population);
 			}
+			else
+			{
+				incResource("Water",-1);
+				log("Drank 1 Water.");
+			}
 			boolean ateSomething = false;
 			for(int i = 0; i < consumeOrder.length; i++) {
 				if (Resource(consumeOrder[i])>0) {
 					incResource(consumeOrder[i],-1);
+					log("Ate 1 "+consumeOrder[i]);
 					ateSomething=true;
 					break;
 				}
@@ -119,6 +120,7 @@ public class Housing extends Entity
 			incCredit(Population*taxRate);
 			log("Taxes Collected! $"+Credit+" (+$"+Population*taxRate+")");
 		}
+		logCol=oldLogCol;
 	}
 
 	public void render(Graphics g){}
