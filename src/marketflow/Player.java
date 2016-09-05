@@ -22,9 +22,8 @@ public class Player extends Entity
     private Vector newV = new Vector(0, Math.PI/2);        // destination vector
 
     private int maxSpeed=14;
-    private int speed=0;
     private int acc=1;
-    private int dec=1;
+    private int gearSize=10;
     private int drag = 20;
     private double tack=0.01;
     public int maxViewDistance=300;
@@ -42,11 +41,6 @@ public class Player extends Entity
 
     public void update(int count)
     {
-        //Acceleration
-        if(count%drag==0) {
-
-        }
-
         //Vector Catch Up
         if ((newV.magnitude() > oldV.magnitude())) {
             oldV.incMagnitude(acc);
@@ -58,15 +52,25 @@ public class Player extends Entity
         if(left){oldV().incAngle(-tack);}
         if(right){oldV().incAngle(tack);}
 
+        //Move
+        if(count%gearSize==0) {
+            Game.mf.map.scroll(
+                (int) Math.round(oldV.magnitude() * gearSize * Math.cos(oldV.angle())),
+                (int) Math.round(oldV.magnitude() * gearSize * Math.sin(oldV.angle()))
+            );
+        }
+
         //Keep ship centered
         posX = (Game.WIDTH/2)-Game.mf.map.OffsetX();
         posY = (Game.HEIGHT/2)-Game.mf.map.OffsetY();
 
+        //Magnitude arrow indicator
         destX=(int)((Game.WIDTH/2)-10*oldV.magnitude()*Math.cos(oldV.angle()));
         destY=(int)((Game.HEIGHT/2)-10*oldV.magnitude()*Math.sin(oldV.angle()));
 
         maxX=(int)((Game.WIDTH/2)-10*maxSpeed*Math.cos(oldV.angle()));
         maxY=(int)((Game.HEIGHT/2)-10*maxSpeed*Math.sin(oldV.angle()));
+
     }
 
     public void tick(int count)
@@ -91,7 +95,6 @@ public class Player extends Entity
     {
         if (newV.magnitude() < maxSpeed)
         {
-            System.out.println(newV.magnitude());
             newV.incMagnitude(acc);
         }
     }

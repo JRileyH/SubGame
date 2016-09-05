@@ -80,11 +80,6 @@ public class Init
 
 		player.update(count);
 
-		//System.out.println("A: "+Math.round(Game.mf.player.oldV().magnitude()*Math.cos(Game.mf.player.oldV().angle()))+"\nB: "+((int)(Game.mf.player.oldV().magnitude()*Math.cos(Game.mf.player.oldV().angle()))));
-
-		Game.mf.scroll((int)Math.round(Game.mf.player.oldV().magnitude()*Math.cos(Game.mf.player.oldV().angle())),
-				(int)Math.round(Game.mf.player.oldV().magnitude()*Math.sin(Game.mf.player.oldV().angle())));
-
 		for(City c : _cityColl.values())
 		{
 			c.update(count);
@@ -139,16 +134,6 @@ public class Init
 		{
 			s.render(g);
 		}
-	}
-
-	public void scroll(int x, int y)
-	{
-		map.shift(x*scrollSpeed,y*scrollSpeed);
-		
-		if(map.OffsetX()<map.EdgeX()){map.OffsetX(map.EdgeX());}
-		if(map.OffsetY()<map.EdgeY()){map.OffsetY(map.EdgeY());}
-		if(map.OffsetX()>0){map.OffsetX(0);}
-		if(map.OffsetY()>0){map.OffsetY(0);}
 	}
 	
 	public void Report()

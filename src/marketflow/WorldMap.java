@@ -13,14 +13,11 @@ import java.util.Map;
 public class WorldMap
 {
     public BufferedImage _img;
-    public int _width;
-    public int _height;
-    public int _offsetX;
-    public int _offsetY;
-    public int _panX;
-    public int _panY;
-    public int _edgeX;
-    public int _edgeY;
+    private int _width,_height;
+    private int _offsetX,_offsetY;
+    private int _newX,_newY;
+    private int _panX,_panY;
+    private int _edgeX,_edgeY;
     Map<String, Rectangle> scrollBoxes;
 
 
@@ -31,6 +28,8 @@ public class WorldMap
         _height=_img.getHeight();
         _offsetX=-initX;
         _offsetY=-initY;
+        _newX=-initX;
+        _newY=-initY;
         _panX=0;
         _panY=0;
         _edgeX = Game.WIDTH-_width;
@@ -120,6 +119,10 @@ public class WorldMap
         {
             center(5, 5);
         }
+
+        //TODO: tweening. do it?
+        _offsetX=_newX;
+        _offsetY=_newY;
     }
 
     public void render(Graphics g)
@@ -155,4 +158,17 @@ public class WorldMap
     public int PanY(){return _panY;}//Gets the bottom edge of the map
     public int EdgeX(){return _edgeX;}//Gets the far right edge of the map
     public int EdgeY(){return _edgeY;}//Gets the bottom edge of the map
+
+    //TODO: Testing with smooth scrolling
+
+    public void scroll(int x, int y)
+    {
+        _newX+=x;
+        _newY+=y;
+
+        if(_newX<_edgeX){_newX=_edgeX;}
+        if(_newY<_edgeY){_newY=_edgeY;}
+        if(_newX>0){_newX=0;}
+        if(_newY>0){_newY=0;}
+    }
 }
