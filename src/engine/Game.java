@@ -108,7 +108,7 @@ public class Game extends Canvas implements Runnable
 			if(delta >= 1)
 			{
 				update();
-				tick();
+				tick();//uncomment if you wanna do speed testing
 				delta--;
 			}
 			if(second >= amountOfTicks)

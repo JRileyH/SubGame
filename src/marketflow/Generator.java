@@ -38,6 +38,7 @@ public class Generator extends Entity
 		Cost=c;
 		Time = t;
 		PopulationMax = pm;
+		//console=true;
 	}
 
 	public String Location()
@@ -184,7 +185,7 @@ public class Generator extends Entity
 					break;
 				case PRODUCING:
 					if(Produce()){
-						log(Product() + ": " + Resource(Product()));
+						log("Produced 1 "+Product() + ".");
 					}
 					break;
 				case UNLOADING:

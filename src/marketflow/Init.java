@@ -106,10 +106,6 @@ public class Init
 		{
 			c.tick(count);
 		}
-		for(Ship s : _shipColl.values())
-		{
-			s.tick(count);
-		}
 		for(Generator g : _genColl.values())
 		{
 			g.tick(count);
@@ -117,6 +113,10 @@ public class Init
 		for(Housing h : _houseColl.values())
 		{
 			h.tick(count);
+		}
+		for(Ship s : _shipColl.values())
+		{
+			s.tick(count);
 		}
 	}
 

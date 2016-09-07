@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <class>
 <!--Consumables-->
-    <Gen id="IcePick" product="Water" cost="1" max="10" out="1" time="10">
+    <Gen id="IcePick" product="Water" cost="1" max="10" out="3" time="10">
         <Description>A ship with a saw like graspers for removing pieces from the bottom of icebergs to be thawed into fresh water.</Description>
     </Gen>
     <Gen id="Boiler" product="Water" cost="1" max="10" out="1" time="10">
@@ -21,7 +21,7 @@
     <Gen id="Harvester" product="Seaweed" cost="1" max="10" out="1" time="10">
         <Description>A ship with long reapers used for mowing massive fields of kelp and seaweed.</Description>
     </Gen>
-    <Gen id="SoylentPress" product="Soylent" cost="1" max="10" out="1" time="10">
+    <Gen id="SoylentPress" product="Soylent" cost="1" max="10" out="4" time="10">
         <Description>Mixing chemical geletine byproducts with seaweed "nutrient" extract and squishing them into "edible" cubes. Hey its better than starving!</Description>
         <Input>Seaweed</Input>
     </Gen>
@@ -57,7 +57,7 @@
     <Gen id="Turbine" product="Energy" cost="1" max="10" out="1" time="10">
         <Description>Huge fans that sit in jet stream currents and crank massive generators.</Description>
     </Gen>
-    <Gen id="PowerPlant" product="Energy" cost="1" max="10" out="1" time="10">
+    <Gen id="PowerPlant" product="Energy" cost="1" max="10" out="2" time="10">
         <Description>Fuel goes in, power comes out.</Description>
         <Input>Fuel</Input>
     </Gen>
@@ -65,7 +65,7 @@
         <Description>A ship with large forward facing grinders used to smash and collect minerals</Description>
     </Gen>
     <!--Fabs-->
-    <Gen id="Refinery" product="Fuel" cost="1" max="10" out="1" time="10">
+    <Gen id="Refinery" product="Fuel" cost="1" max="10" out="4" time="10">
         <Description>Oil goes in, fuel comes out.</Description>
         <Input>Oil</Input>
     </Gen>
@@ -104,7 +104,7 @@
         <Input>Seaweed</Input>
         <Input>Water</Input>
     </Gen>
-    <Gen id="Salvager" product="Salvage" cost="1" max="10" out="1" time="10">
+    <Gen id="Salvager" product="Salvage" cost="1" max="10" out="1" time="50">
         <Description>A ship specifically designed to find old world wreckage and pull of anything of value. You'd be amazing what people pay for this junk!</Description>
     </Gen>
 </class>

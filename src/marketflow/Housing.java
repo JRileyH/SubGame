@@ -24,6 +24,7 @@ public class Housing extends Entity
 		taxRate=tax;
 		consumeOrder = consums;
 		luxuryOrder = lux;
+		//console=true;
 	}
 	public City Home()
 	{
@@ -109,7 +110,7 @@ public class Housing extends Entity
 			}
 		}
 
-		if(count%(int)(100/multiplier)==0)
+		if(count%(int)(100/multiplier)==0&&Population<PopulationMax)
 		{
 			incPopulation(1);
 			log("Baby was born! "+Population);

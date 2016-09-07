@@ -47,6 +47,8 @@ public class City extends Entity
 	{
 		return basePrices;
 	}
+	public void BasePrice(String rid, int amt){ basePrices.put(rid,amt);}
+	public void incBasePrice(String rid, int amt){ int inc = basePrices.get(rid)+amt; basePrices.put(rid,inc);}
 
 	boolean slide=true;
 	public void update(int count)
@@ -83,6 +85,7 @@ public class City extends Entity
 			prices.put(s.Name, price);
 		}
 		logCol=oldLogCol;
+		//console=true;
 	}
 
 	public void render(Graphics g)

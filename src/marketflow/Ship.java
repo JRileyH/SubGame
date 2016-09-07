@@ -41,6 +41,7 @@ public class Ship extends Entity
 		img = Game.gfx.load("res/ship.png");
 		//hitbox=new Rectangle(posX-img.getWidth()/2, posY-img.getHeight()/2, img.getWidth(), img.getHeight());
 		//Game.clickables.put(this,hitbox);
+		console=true;
 	}
 
 	public City Location()
@@ -68,7 +69,7 @@ public class Ship extends Entity
 
 	public void update(int count)
 	{
-		if(state==State.ENROUTE)
+		/*if(state==State.ENROUTE)
 		{
 			//Go go go!
 			double angle = Math.atan2(dest.Y() - posY, dest.X() - posX);
@@ -90,7 +91,7 @@ public class Ship extends Entity
 				speed++;
 				if(speed>=maxspeed){speed=maxspeed;}
 			}
-		}
+		}*/
 	}
 
 	public void tick(int count)
@@ -153,7 +154,7 @@ public class Ship extends Entity
 					if(dock.ID.equals(home.ID))
 					{//if you're already home.. just chill.
 						state = State.WAITING;
-						log("Could not find profit. Waiting in"+home.ID);
+						log("Could not find profit. Waiting in "+home.ID);
 						break;
 					}
 					//other wise.. head home to kill time for a bit
@@ -209,6 +210,7 @@ public class Ship extends Entity
 				break;
 			case ENROUTE:
 				log("Enroute to "+dest.ID);
+				state=State.UNLOADING;
 				break;
 			case UNLOADING:
 				Transaction sale = null;//the good you will be selling!
@@ -255,13 +257,7 @@ public class Ship extends Entity
 	{
 		super.render(g);
 	}
-	
-	private void logAction(String msg)
-	{
-		Cell cell = row.createCell(14);
-		cell.setCellValue(row.getCell(14).getStringCellValue()+" "+msg);
-	}
-	
+
 	private double findDistance(City c1, City c2)
 	{
 		double a = c1.X()-c2.X();

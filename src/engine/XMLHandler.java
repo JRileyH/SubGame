@@ -223,6 +223,9 @@ public class XMLHandler
 					grc.get(res).initStock(gen, Integer.parseInt(gr_elem.getTextContent()));
 				}
 			}
+
+			System.out.println(cc.get(city).BasePrices());
+
 		//Housing
 			NodeList h_nodes = c_elem.getElementsByTagName("Housing");
 			for(int j = 0; j < h_nodes.getLength(); j++) {
@@ -301,8 +304,16 @@ public class XMLHandler
 			Node input_node = input_nodes.item(k);
 			Element input_elem = (Element) input_node;
 
-			inputs[k]=input_elem.getTextContent();
+			//adjust city base price and set inputs ^^^
+			String inputRes = input_elem.getTextContent();
+			cc.get(city).incBasePrice(inputRes,1);
+			inputs[k]=inputRes;
+
 		}}catch(Exception e){}
+
+		//adjust city base price for product vvv
+		String product = elem.getAttribute("product");
+		cc.get(city).incBasePrice(product, -1);
 
 		return new Generator(id,
 				elem.getElementsByTagName("Description").item(0).getTextContent(),
@@ -311,7 +322,7 @@ public class XMLHandler
 				Integer.parseInt(elem.getAttribute("cost")),
 				Integer.parseInt(elem.getAttribute("out")),
 				inputs,
-				elem.getAttribute("product"),
+				product,
 				city,
 				cc,
 				grc,
