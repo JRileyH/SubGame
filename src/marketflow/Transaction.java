@@ -2,19 +2,19 @@ package marketflow;
 
 public class Transaction
 {
-    int ID;
-    private String Resource;
-    private int Price;
+    private int _id;
+    private String _resource;
+    private int _price;
     public Transaction(int id, String rid, int price)
     {
-        ID=id;
-        Resource=rid;
-        Price=price;
+        _id=id;
+        _resource=rid;
+        _price=price;
     }
-    public int ID() { return ID; }
+    public int ID() { return _id; }
     public String Resource()
     {
-        return Resource;
+        return _resource;
     }
-    public int Price() { return Price;}
+    public int Price() { return _price;}
 }

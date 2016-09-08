@@ -1,13 +1,12 @@
 package subbattle;
 
-import java.awt.Graphics;
-
-import engine.Game;
 import engine.XMLHandler;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
 
 public class Init
 {
-	public Init(Game i, XMLHandler xmlh)
+	public Init(XMLHandler xmlh)
 	{
 		xmlh.processSubBattle();
 	}
@@ -17,7 +16,7 @@ public class Init
 
 	}
 	
-	public void render(Graphics g)
+	public void render(GameContainer game, Graphics g)
 	{
 		g.drawString("SubBattle", 100, 10);
 	}

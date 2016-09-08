@@ -11,13 +11,13 @@ public class KeyMap
 	public KeyMap(XMLHandler xmlh)
 	{
 		_xmlh = xmlh;
-		_keymap = new HashMap<Integer, String>();
-		_keyFlags = new HashMap<Integer, Boolean>();
-		mapKeys(Game.State.UI);
+		_keymap = new HashMap<>();
+		_keyFlags = new HashMap<>();
+		mapKeys(Game.state);
 	}
 	
 	public void mapKeys(Game.State state)
-	{
+	{//Initialized each module with its stored key bindings from XML
 		switch (state)
 		{
 		case UI:
@@ -34,47 +34,40 @@ public class KeyMap
 			break;
 		}
 	}
-
-
-	//TODO: Add interface for changing keybindings
 	
 	public void press(int c, boolean d)
-	{
+	{//registers a key action d: true=pressed, false=released
 		if(_keymap.containsKey(c))
 		{
 			switch(_keymap.get(c))
 			{
-			case "scrollLeft":
-				Game.mf.player.left(d);
+			case "tackLeft":
+				if(!_keyFlags.get(c)){Game.mf.Player().tackLeft();}
 				break;
-			case "scrollUp":
-				//Game.mf.player.up(d);
-				if(!_keyFlags.get(c)){Game.mf.player.incSpeed();}
+
+			case "tackRight":
+				if(!_keyFlags.get(c)){Game.mf.Player().tackRight();}
 				break;
-			case "scrollRight":
-				Game.mf.player.right(d);
+			case "Forward":
+				if(!_keyFlags.get(c)){Game.mf.Player().shiftUp();}
 				break;
-			case "scrollDown":
-				//Game.mf.player.down(d);
-				if(!_keyFlags.get(c)){Game.mf.player.decSpeed();}
+			case "Reverse":
+				if(!_keyFlags.get(c)){Game.mf.Player().shiftDown();}
 				break;
 			
 			case "SwitchToUI":
-				Game.state(Game.State.UI);
+				Game.setState(Game.State.UI);
 				break;
 			case "SwitchToMF":
-				Game.state(Game.State.MARKETFLOW);
+				Game.setState(Game.State.MARKETFLOW);
 				break;
 			case "SwitchToSB":
-				Game.state(Game.State.SUBBATTLE);
+				Game.setState(Game.State.SUBBATTLE);
 				if(d){Game.mf.Report();}
 				break;
 			case "SwitchToME":
-				Game.state(Game.State.MYESTATE);
+				Game.setState(Game.State.MYESTATE);
 				break;
-
-				//default:
-				//	Game.mf.player.newV().incMagnitude(-1);
 			}
 			_keyFlags.put(c, d);
 		}

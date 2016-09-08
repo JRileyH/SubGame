@@ -1,13 +1,12 @@
 package ui;
 
-import java.awt.Graphics;
-
-import engine.Game;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
 
 public class Init
 {
 	
-	public Init(Game i)
+	public Init()
 	{
 		
 	}
@@ -17,7 +16,7 @@ public class Init
 
 	}
 	
-	public void render(Graphics g)
+	public void render(GameContainer game, Graphics g)
 	{
 		g.drawString("UserInterface", 100, 10);
 	}

@@ -9,22 +9,21 @@ import org.w3c.dom.*;
 import marketflow.City;
 import marketflow.Generator;
 import marketflow.Housing;
-import marketflow.Init;
 import marketflow.Ship;
 import marketflow.Stock;
 
 public class XMLHandler
 {
-	private DocumentBuilderFactory factory;
-	private static DocumentBuilder builder;
-	private static StringBuilder xmlSB;
+	private DocumentBuilderFactory _factory;
+	private static DocumentBuilder _builder;
+	private static StringBuilder _xmlSB;
 	
 	public XMLHandler()
 	{
-		factory = DocumentBuilderFactory.newInstance();
+		_factory = DocumentBuilderFactory.newInstance();
 		try
 		{
-			builder  = factory.newDocumentBuilder();
+			_builder = _factory.newDocumentBuilder();
 		}
 		catch (ParserConfigurationException e)
 		{
@@ -34,12 +33,12 @@ public class XMLHandler
 	
 	private static Document read(String path)
 	{
-		xmlSB = new StringBuilder();
-		xmlSB.append("<?xml version=\"1.0\"?> <class> </class>");
+		_xmlSB = new StringBuilder();
+		_xmlSB.append("<?xml version=\"1.0\"?> <class> </class>");
 		try
 		{
 			File input = new File(path);
-			Document doc = builder.parse(input);
+			Document doc = _builder.parse(input);
 			doc.getDocumentElement().normalize();
 			return doc;
 		}
@@ -91,7 +90,7 @@ public class XMLHandler
 
 			//initializes city
 			cc.put(city, new City(city,							//City Name
-					desc,										//Description of City
+					desc,										//_description of City
 					Integer.parseInt(c_elem.getAttribute("x")),	//X Coordinate
 					Integer.parseInt(c_elem.getAttribute("y")),	//Y Coordinate
 					sc,											//Ship Collection
@@ -148,9 +147,9 @@ public class XMLHandler
 						Integer.parseInt(s_elem.getAttribute("x")),		//X Coordinate
 						Integer.parseInt(s_elem.getAttribute("y")),		//Y Coordinate
 						Integer.parseInt(s_elem.getAttribute("speed")),	//Max Speed
-						docked,											//Starting Location
-						city,											//Home City
-						cc,												//reference to City Collection
+						cc.get(docked),									//Starting Location
+						cc.get(city),									//Home City
+						cc,												//City Collection Reference
 						src,											//Ship Resource Collection
 						Integer.parseInt(s_elem.getAttribute("max"))	//Max Population
 				));
@@ -194,8 +193,7 @@ public class XMLHandler
 						gen,
 						Integer.parseInt(c_elem.getAttribute("x")),		//X Coordinate
 						Integer.parseInt(c_elem.getAttribute("y")),		//Y Coordinate
-						city,											//Name of Home City
-						cc,												//reference to City Collection
+						cc.get(city),											//Home City
 						grc												//reference to Generator Resource Stock
 				));
 
@@ -224,8 +222,6 @@ public class XMLHandler
 				}
 			}
 
-			System.out.println(cc.get(city).BasePrices());
-
 		//Housing
 			NodeList h_nodes = c_elem.getElementsByTagName("Housing");
 			for(int j = 0; j < h_nodes.getLength(); j++) {
@@ -243,8 +239,7 @@ public class XMLHandler
 						house,
 						Integer.parseInt(c_elem.getAttribute("x")),		//X Coordinate
 						Integer.parseInt(c_elem.getAttribute("y")),		//Y Coordinate
-						city,											//Name of Home City
-						cc,												//reference to City Collection
+						cc.get(city),											//Home City
 						hrc												//reference to Generator Resource Stock
 				));
 
@@ -281,11 +276,10 @@ public class XMLHandler
 		String id,
 		int x,
 		int y,
-		String city,
-		Map<String, City> cc,
+		City city,
 		Map<String, Stock> grc
 	)
-	{
+	{//This function received data from ResInfo.xml and pulls data from GenInfo.xml to initialize Generator Objects
 		Document doc = read("data/marketflow/GenInfo.xml");
 		NodeList nodes = doc.getElementsByTagName("Gen");
 		Element elem = null;
@@ -306,14 +300,14 @@ public class XMLHandler
 
 			//adjust city base price and set inputs ^^^
 			String inputRes = input_elem.getTextContent();
-			cc.get(city).incBasePrice(inputRes,1);
+			city.incBasePrice(inputRes,1);
 			inputs[k]=inputRes;
 
 		}}catch(Exception e){}
 
 		//adjust city base price for product vvv
 		String product = elem.getAttribute("product");
-		cc.get(city).incBasePrice(product, -1);
+		city.incBasePrice(product, -1);
 
 		return new Generator(id,
 				elem.getElementsByTagName("Description").item(0).getTextContent(),
@@ -324,7 +318,6 @@ public class XMLHandler
 				inputs,
 				product,
 				city,
-				cc,
 				grc,
 				Integer.parseInt(elem.getAttribute("time")),
 				Integer.parseInt(elem.getAttribute("max"))
@@ -336,11 +329,10 @@ public class XMLHandler
 			String id,
 			int x,
 			int y,
-			String city,
-			Map<String, City> cc,
+			City city,
 			Map<String, Stock> hrc
 	)
-	{
+	{//This function received data from ResInfo.xml and pulls data from HouseInfo.xml to initialize Housing Objects
 		Document doc = read("data/marketflow/HouseInfo.xml");
 		NodeList nodes = doc.getElementsByTagName("House");
 		Element elem = null;
@@ -374,7 +366,6 @@ public class XMLHandler
 				consumeOrder,
 				luxOrder,
 				city,
-				cc,
 				hrc,
 				Integer.parseInt(elem.getAttribute("tax")),
 				Integer.parseInt(elem.getAttribute("max"))

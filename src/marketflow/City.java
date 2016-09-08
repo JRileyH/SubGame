@@ -1,9 +1,6 @@
 package marketflow;
 
-import java.awt.*;
 import java.util.Map;
-
-import engine.Game;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -15,45 +12,22 @@ public class City extends Entity
 	public List<String> generators = new ArrayList<>();
 	public List<String> housing = new ArrayList<>();
 	
-	private Map<String, Ship> shipRef;
+	private Map<String, Ship> _shipRef;
 	//private float shipTax = 0.1f;
-	private Map<String, Generator> genRef;
+	private Map<String, Generator> _genRef;
 	//private float genTax = 0.05f;
-	private Map<String, Housing> houseRef;
+	private Map<String, Housing> _houseRef;
 	private float houseTax = 0.05f;
-	private Map<String, Integer> prices;
-	private Map<String, Integer> basePrices;
+	private Map<String, Integer> _prices;
+	private Map<String, Integer> _basePrices;
 	
 	public City(String id, String desc, int x, int y, Map<String, Ship> sh_ref, Map<String, Generator> g_ref, Map<String, Housing> h_ref, Map<String, Stock> st_ref)
 	{
-		super(id, desc, st_ref, x, y);
-		shipRef=sh_ref;
-		genRef=g_ref;
-		houseRef=h_ref;
-		prices = new HashMap<String, Integer>();
-		img = Game.gfx.load("res/city.png");
-		hitbox=new Rectangle(posX-img.getWidth()/2, posY-img.getHeight()/2, img.getWidth(), img.getHeight());
-		//TODO: remove this. temporary
-		Game.clickables.put(this,hitbox);
-	}
-
-	public void BasePrices(Map<String, Integer> in)
-	{
-		basePrices=in;
-
-	}
-
-	public Map<String, Integer> BasePrices()
-	{
-		return basePrices;
-	}
-	public void BasePrice(String rid, int amt){ basePrices.put(rid,amt);}
-	public void incBasePrice(String rid, int amt){ int inc = basePrices.get(rid)+amt; basePrices.put(rid,inc);}
-
-	boolean slide=true;
-	public void update(int count)
-	{
-
+		super(id, desc, st_ref, x, y,"res/city.png");
+		_shipRef =sh_ref;
+		_genRef =g_ref;
+		_houseRef =h_ref;
+		_prices = new HashMap<>();
 	}
 
 	public void tick(int count)
@@ -63,7 +37,7 @@ public class City extends Entity
 		if(count%100==0)
 		{
 			int total = 0;
-			for(Housing h : houseRef.values())
+			for(Housing h : _houseRef.values())
 			{
 				int tax = (int)(h.Credit()*houseTax);
 				h.incCredit(-tax);
@@ -72,79 +46,60 @@ public class City extends Entity
 			incCredit(total);
 			log("Collected Taxes: $"+Credit()+" (+$"+total+")");
 		}
-		for(Stock s : stockRef.values())
+		for(Stock s : _stockRef.values())
 		{//Find appropriate prices.
-			float amt = (float)s.Resource(ID);
+			float amt = (float)s.Resource(_id);
 			float ttl = (float)s.Total();
-			float max = (float)basePrices.get(s.Name);
+			float max = (float) _basePrices.get(s.Name());
 			float mlt = 0.0f;
 			if(amt>0){mlt = amt/ttl;}
 			mlt=mlt+1.0f;
 			float fin = max/mlt;
 			int price = Math.round(fin);
-			prices.put(s.Name, price);
+			_prices.put(s.Name(), price);
 		}
 		logCol=oldLogCol;
-		//console=true;
 	}
+	
+	public int X(){return _posX;}
+	public int Y(){return _posY;}
 
-	public void render(Graphics g)
+	public void BasePrices(Map<String, Integer> in){_basePrices =in;}
+	public Map<String, Integer> BasePrices()
 	{
-		super.render(g);
+		return _basePrices;
 	}
-	
-	public Housing leastPopulatedHouse()
-	{//Find the Least Populated Housing unit
-		Housing house = null;
-		int pop=Integer.MAX_VALUE;
-		for(int i = 0; i < housing.size(); i++)
-		{
-			if(houseRef.get(housing.get(i)).Population()<pop)
-			{
-				house = houseRef.get(housing.get(i));
-				pop = house.Population();
-			}
-		}
-		return house;
-	}
-	
-	public Housing mostPopulatedHouse()
-	{//Find the Least Populated Housing unit
-		Housing house = null;
-		int pop=-1;
-		for(int i = 0; i < housing.size(); i++)
-		{
-			if(houseRef.get(housing.get(i)).Population()>pop)
-			{
-				house = houseRef.get(housing.get(i));
-				pop = house.Population();
-			}
-		}
-		return house;
-	}
-	
-	public int X(){return posX;}
-	public int Y(){return posY;}
-	
-	public int Price(String rid){return prices.get(rid);}
-	public Ship Ship(String sid){return shipRef.get(sid);}
-	public Generator Generator(String gid){return genRef.get(gid);}
-	public Housing House(String hid){return houseRef.get(hid);}
-	
-	
-	public void Population(int amt){System.out.println("Cannot Change Population Via City Method.");}
+	public void BasePrice(String rid, int amt){ _basePrices.put(rid,amt);}
+	public void incBasePrice(String rid, int amt){ int inc = _basePrices.get(rid)+amt; _basePrices.put(rid,inc);}
+
+	public int Price(String rid){return _prices.get(rid);}
+
+	public Ship Ship(String sid){return _shipRef.get(sid);}
+	public Generator Generator(String gid){return _genRef.get(gid);}
+	public Housing House(String hid){return _houseRef.get(hid);}
+
+	public void Population(int amt){System.out.println("Cannot Change _population Via City Method.");}
 	public int Population()
 	{
 		int pop = 0;
-		for(Housing h : houseRef.values())
+		for(Housing h : _houseRef.values())
 		{
-			if(h.Home().ID.equals(ID))
+			if(h.Home().ID().equals(ID()))
 			{
-				pop=pop+h.Population;
+				pop=pop+h._population;
 			}
 		}
 		return pop;
 	}
-	public void incPopulation(int amt){System.out.println("Cannot Change Population Via City Method.");}
-	public void incPopulationMax(int amt){PopulationMax+=amt;}
+	public void incPopulation(int amt){System.out.println("Cannot Change _population Via City Method.");}
+	public int PopulationMax(){
+		int pop = 0;
+		for(Housing h : _houseRef.values())
+		{
+			if(h.Home().ID().equals(ID()))
+			{
+				pop=pop+h.PopulationMax();
+			}
+		}
+		return pop;}
 }

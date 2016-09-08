@@ -7,11 +7,11 @@ public class Stock
 {
 	private Map<String, Integer> _stock;
 	private String _type;
+	private String _name;
 
-	public String Name;
 	public Stock(String name, String type)
 	{
-		Name = name;
+		_name = name;
 		_stock = new HashMap<String, Integer>();
 		_type=type;
 	}
@@ -33,9 +33,10 @@ public class Stock
 	}
 
 	public String Type(){return _type;}
+	public String Name(){return _name;}
 
 	public int Resource(String id)
-	{//returns given stock count given a container ID
+	{//returns given stock count given a container _id
 		return _stock.get(id);
 	}
 	

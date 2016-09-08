@@ -1,64 +1,65 @@
 package marketflow;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
+
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
-import engine.Game;
 import engine.XMLHandler;
+import org.newdawn.slick.*;
 
 public class Init
 {
-	public WorldMap map;
-
-	public Player player;
-
+	private WorldMap _map;
+	private Player _player;
 	private Map<String, City> _cityColl;
 	private Map<String, Stock> _cityResColl;
-	
 	private Map<String, Ship> _shipColl;
 	private Map<String, Stock> _shipResColl;
-	
 	private Map<String, Generator> _genColl;
 	private Map<String, Stock> _genResColl;
-	
 	private Map<String, Housing> _houseColl;
 	private Map<String, Stock> _houseResColl;
-
-	private int scrollSpeed = 1;
 
 	public static HSSFWorkbook cityBook;
 	public static HSSFWorkbook shipBook;
 	public static HSSFWorkbook housingBook;
 	public static HSSFWorkbook generatorBook;
 
-	public Init(Game i, XMLHandler xmlh)
+	public Init(XMLHandler xmlh)
 	{
-		map = new WorldMap("res/map.jpg", 6000, 1000);
+		_player = new Player("Player Name",										//Player Name
+				"Your Ship. There are many like it but this one is yours.",		//Description
+				null,															//Stock Reference
+				0,																//X
+				0,																//Y
+				3,																//Gear Size
+				7,																//Max Forward Gears
+				-3,																//Max Reverse Gears
+				0.01f															//Turning Speed
+		);
 
-		player = new Player("Playername", "Riley is sexy", null, 0, 0);	//perfect center x, y
+		_map = new WorldMap("res/map.jpg", _player, 100, 100);
 
 		cityBook = new HSSFWorkbook();
 		shipBook = new HSSFWorkbook();
 		housingBook = new HSSFWorkbook();
 		generatorBook = new HSSFWorkbook();
 
-		_cityColl = new HashMap<String, City>();
-		_cityResColl = new HashMap<String, Stock>();
+		_cityColl = new HashMap<>();
+		_cityResColl = new HashMap<>();
 		
-		_shipColl = new HashMap<String, Ship>();
-		_shipResColl = new HashMap<String, Stock>();
+		_shipColl = new HashMap<>();
+		_shipResColl = new HashMap<>();
 		
-		_genColl = new HashMap<String, Generator>();
-		_genResColl = new HashMap<String, Stock>();
+		_genColl = new HashMap<>();
+		_genResColl = new HashMap<>();
 		
-		_houseColl = new HashMap<String, Housing>();
-		_houseResColl = new HashMap<String, Stock>();
+		_houseColl = new HashMap<>();
+		_houseResColl = new HashMap<>();
 		
 		xmlh.processMarketFlow(_cityColl,_shipColl,_genColl,_cityResColl,_shipResColl,_genResColl,_houseColl,_houseResColl);
 		for(City c : _cityColl.values())
@@ -67,18 +68,11 @@ public class Init
 		}
 	}
 
-	/*public double rileyify(double val) {
-		if (val > 0) {
-			return Math.ceil(val);
-		}
-		return Math.floor(val);
-	}*/
-
 	public void update(int count)
-	{
-		map.update(count);
+	{//Fast Update Loop
+		_map.update(count);
 
-		player.update(count);
+		_player.update(count);
 
 		for(City c : _cityColl.values())
 		{
@@ -99,8 +93,10 @@ public class Init
 	}
 
 	public void tick(int count)
-	{
-		player.tick(count);
+	{//One Second Update Loop
+		_map.tick(count);
+
+		_player.tick(count);
 
 		for(City c : _cityColl.values())
 		{
@@ -120,19 +116,19 @@ public class Init
 		}
 	}
 
-	public void render(Graphics g)
+	public void render(GameContainer game, Graphics g)
 	{
-		map.render(g);
+		_map.render(game,g);
 
-		player.render(g);
+		_player.render(game,g);
 
 		for(City c : _cityColl.values())
 		{
-			c.render(g);
+			c.render(game,g);
 		}
 		for(Ship s : _shipColl.values())
 		{
-			s.render(g);
+			s.render(game,g);
 		}
 	}
 	
@@ -187,5 +183,6 @@ public class Init
 		}
 	}
 
-
+	public WorldMap Map(){return _map;}
+	public Player Player(){return _player;}
 }

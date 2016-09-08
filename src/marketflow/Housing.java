@@ -1,84 +1,77 @@
 package marketflow;
 
-import java.awt.*;
-import java.util.Arrays;
+import org.newdawn.slick.*;
+
 import java.util.Map;
 
 public class Housing extends Entity
 {
-
-	private Map<String, City> cityRef;
-	private City home;
-	private int taxRate;
-	private String[] consumeOrder;
-	private String[] luxuryOrder;
+	private City _home;
+	private int _taxRate;
+	private String[] _consumeOrder;
+	private String[] _luxuryOrder;
 	
-	public Housing(String id, String desc, int x, int y, String[] consums, String[] lux, String location, Map<String, City> c_ref, Map<String, Stock> st_ref, int tax, int pm)
+	public Housing(String id, String desc, int x, int y, String[] consumes, String[] lux, City city, Map<String, Stock> st_ref, int tax, int maxpop)
 	{
-		super(id, desc, st_ref, x, y);
-		
-		cityRef = c_ref;
-		home=cityRef.get(location);
-		PopulationMax = pm;
+		super(id, desc, st_ref, x, y,null);
 
-		taxRate=tax;
-		consumeOrder = consums;
-		luxuryOrder = lux;
+		_home =city;
+		_populationMax = maxpop;
+		_taxRate =tax;
+		_consumeOrder = consumes;
+		_luxuryOrder = lux;
 		//console=true;
 	}
 	public City Home()
 	{
-		return home;
+		return _home;
 	}
-
-	public void update(int count)
-	{
-
+	@Override
+	public void update(int count) {
+		//super.update(count);
 	}
-
-
-	public void tick(int count)
-	{
+	@Override
+	public void tick(int count) {
 		super.tick(count);
 
-		float multiplier = (float)Population/(float)PopulationMax;
+		float multiplier = (float) _population /(float) _populationMax;
 
 		if(Resource("Water")<Population()) {
-			if(Buy(home,"Water",home.Price("Water"),1)) {
-				log("Bought Water for $" + home.Price("Water"));
+			if(Buy(_home,"Water", _home.Price("Water"),1)) {
+				log("Bought Water for $" + _home.Price("Water"));
 			}
 		}
 
 		boolean excess = true;
-		for(int i = 0; i < consumeOrder.length; i++)
+		for(int i = 0; i < _consumeOrder.length; i++)
 		{
-			if(Resource(consumeOrder[i])<Population())
+			if(Resource(_consumeOrder[i])<Population())
 			{
 				excess=false;
-				if(Buy(home,consumeOrder[i],home.Price(consumeOrder[i]),1))
+				if(Buy(_home, _consumeOrder[i], _home.Price(_consumeOrder[i]),1))
 				{
-					log("Bought "+consumeOrder[i]+" for $"+home.Price(consumeOrder[i]));
+					log("Bought "+ _consumeOrder[i]+" for $"+ _home.Price(_consumeOrder[i]));
 					i--;
 					excess=true;
 				}
 				else
 				{
-					//log("Tried but couldn't buy "+consumeOrder[i]);
+					//log("Tried but couldn't buy "+_consumeOrder[i]);
 				}
 			}
 		}
 		if(excess)
 		{//If you've got all the food you need. BUY LUXURY!
-			for (int i = 0; i < luxuryOrder.length; i++)
+			for (int i = 0; i < _luxuryOrder.length; i++)
 			{
-				if(Buy(home,luxuryOrder[i],home.Price(luxuryOrder[i]),1))
+				if(Buy(_home, _luxuryOrder[i], _home.Price(_luxuryOrder[i]),1))
 				{
-					log("Bought "+luxuryOrder[i]+" for $"+home.Price(luxuryOrder[i]));
+					log("Bought "+ _luxuryOrder[i]+" for $"+ _home.Price(_luxuryOrder[i]));
 					break;
 				}
 				else
 				{
-					//log("Tried but couldn't buy "+luxuryOrder[i]);
+					//log("Tried but couldn't buy "+_luxuryOrder[i]);
 				}
 			}
 		}
@@ -88,7 +81,7 @@ public class Housing extends Entity
 			if(Resource("Water")<=0)
 			{
 				incPopulation(-1);
-				log("Dying of thirst. "+Population);
+				log("Dying of thirst. "+ _population);
 			}
 			else
 			{
@@ -96,33 +89,35 @@ public class Housing extends Entity
 				log("Drank 1 Water.");
 			}
 			boolean ateSomething = false;
-			for(int i = 0; i < consumeOrder.length; i++) {
-				if (Resource(consumeOrder[i])>0) {
-					incResource(consumeOrder[i],-1);
-					log("Ate 1 "+consumeOrder[i]);
+			for(int i = 0; i < _consumeOrder.length; i++) {
+				if (Resource(_consumeOrder[i])>0) {
+					incResource(_consumeOrder[i],-1);
+					log("Ate 1 "+ _consumeOrder[i]);
 					ateSomething=true;
 					break;
 				}
 			}
 			if(!ateSomething){
 				incPopulation(-1);
-				log("Dying of Hunger. "+Population);
+				log("Dying of Hunger. "+ _population);
 			}
 		}
 
-		if(count%(int)(100/multiplier)==0&&Population<PopulationMax)
+		if(count%(int)(100/multiplier)==0&& _population < _populationMax)
 		{
 			incPopulation(1);
-			log("Baby was born! "+Population);
+			log("Baby was born! "+ _population);
 		}
 
 		if(count%100==0)
 		{
-			incCredit(Population*taxRate);
-			log("Taxes Collected! $"+Credit+" (+$"+Population*taxRate+")");
+			incCredit(_population * _taxRate);
+			log("Taxes Collected! $"+ _credit +" (+$"+ _population * _taxRate +")");
 		}
 		logCol=oldLogCol;
 	}
-
-	public void render(Graphics g){}
+	@Override
+	public void render(GameContainer game, Graphics g) {
+		//super.render(game, g);
+	}
 }

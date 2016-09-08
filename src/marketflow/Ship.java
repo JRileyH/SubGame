@@ -1,13 +1,7 @@
 package marketflow;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Map.Entry;
-
-import org.apache.poi.ss.usermodel.Cell;
-
-import engine.Game;
 
 public class Ship extends Entity
 {
@@ -20,78 +14,75 @@ public class Ship extends Entity
 		REASSESSING,//Determines if the profit threshold is still valid for previous transactions or if there are better deals elsewhere now
 		UNLOADING//Converts resources to credit until profit of transactions are no longer favorable
 	}
-	private State state = State.ASSESSING;
-	private Map<String, City> cityRef;
-	private City home;
-	private City dest;
-	private City dock;
+	private State _state;
+	private Map<String, City> _cityRef;
+	private City _home;
+	private City _dest;
+	private City _dock;
 	
-	private int speed = 0;
-	private int maxspeed;
+	private int _speed = 0;
+	private int _maxSpeed;
 	
-	public Ship(String id, String desc, int x, int y, int spd, String location, String alliance, Map<String, City> c_ref, Map<String, Stock> ref, int pm)
+	public Ship(String id, String desc, int x, int y, int spd, City location, City home, Map<String, City> c_ref, Map<String, Stock> ref, int maxpop)
 	{
-		super(id, desc, ref, x, y);
-		PopulationMax=pm;
-		cityRef=c_ref;
-		home=cityRef.get(alliance);
-		dock=cityRef.get(location);
-		dest=null;
-		maxspeed=spd;
-		img = Game.gfx.load("res/ship.png");
-		//hitbox=new Rectangle(posX-img.getWidth()/2, posY-img.getHeight()/2, img.getWidth(), img.getHeight());
-		//Game.clickables.put(this,hitbox);
+		super(id, desc, ref, x, y,"res/ship.png");
+		_state = State.ASSESSING;
+		_populationMax =maxpop;
+		_cityRef=c_ref;
+		_home=home;
+		_dock=location;
+		_dest=null;
+		_maxSpeed =spd;
 		console=true;
 	}
 
 	public City Location()
 	{
-		return dock;
+		return _dock;
 	}
 	public City Destination()
 	{
-		return dest;
+		return _dest;
 	}
 	public City Home()
 	{
-		return home;
+		return _home;
 	}
 
-	public int X(){return posX;}
-	public int Y(){return posX;}
+	public int X(){return _posX;}
+	public int Y(){return _posX;}
 
 	int stallCount = 0;
 	int stallAmt = 200;
-
-	ArrayList<Integer> ingoreTransaction = new ArrayList<>();
 	ArrayList<Transaction> transactions = new ArrayList<>();
 	int maxTransactions=100;
 
 	public void update(int count)
 	{
-		/*if(state==State.ENROUTE)
+		if(_state==State.ENROUTE)
 		{
 			//Go go go!
-			double angle = Math.atan2(dest.Y() - posY, dest.X() - posX);
+			double angle = Math.atan2(_dest.Y() - _posY, _dest.X() - _posX);
 
-			posX += speed * Math.cos(angle);
-			posY += speed * Math.sin(angle);
+			_posX += _speed * Math.cos(angle);
+			_posY += _speed * Math.sin(angle);
 
-			//hitbox.setLocation(posX+Game.mf.mapOffsetX-img.getWidth()/2, posY+Game.mf.mapOffsetY-img.getHeight()/2);
+			//hitbox.setLocation(_posX+Game.mf.mapOffsetX-img.getWidth()/2, _posY+Game.mf.mapOffsetY-img.getHeight()/2);
 
-			double a = dest.X()-posX;
-			double b = dest.Y()-posY;
-			if(Math.sqrt(a*a+b*b)<speed*10)
+			double a = _dest.X()-_posX;
+			double b = _dest.Y()-_posY;
+			if(Math.sqrt(a*a+b*b)< _speed *10)
 			{//you made it!
-				speed--;
-				if(speed==0){state=State.UNLOADING;}
+				_speed--;
+				if(_speed ==0){_state=State.UNLOADING;}
 			}
 			else
 			{
-				speed++;
-				if(speed>=maxspeed){speed=maxspeed;}
+				_speed++;
+				if(_speed >= _maxSpeed){
+					_speed = _maxSpeed;}
 			}
-		}*/
+		}
 	}
 
 	public void tick(int count)
@@ -99,39 +90,39 @@ public class Ship extends Entity
 		super.tick(count);
 
 		int mostProfit = 0;
-		switch(state)
+		switch(_state)
 		{
 			case WAITING:
 				if(stallCount>=stallAmt)
 				{
 					stallCount = 0;
-					state = state.ASSESSING;
+					_state = State.ASSESSING;
 					break;
 				}
 				stallCount++;
 				break;
 
 			case ASSESSING:
-				dest=null;//The city you will be travelling to
-				for (City city : cityRef.values())
+				_dest=null;//The city you will be travelling to
+				for (City city : _cityRef.values())
 				{//check each city
 					//Ignore the city you're in
-					if(dock.ID.equals(city.ID)){continue;}
+					if(_dock._id.equals(city._id)){continue;}
 
 					//TODO: prevent all traders going to the same place
 
 					int profit=0;//max amount of money you could make off this city
 					if(transactions.size()<maxTransactions)
 					{//don't bother checking purchase prices if your cargo is full
-						for(String stock : stockRef.keySet())
+						for(String stock : _stockRef.keySet())
 						{//check each resource
 							//ignore resources that your dock city doesn't have
-							if(dock.Resource(stock)<=0){continue;}
+							if(_dock.Resource(stock)<=0){continue;}
 							//ignore resources you can't afford
-							if(dock.Price(stock)>Credit){continue;}
+							if(_dock.Price(stock)> _credit){continue;}
 
 							//find the profit to be made
-							int delta = city.Price(stock) - dock.Price(stock);
+							int delta = city.Price(stock) - _dock.Price(stock);
 							//add each resource profit to your max profit
 							if (delta > 0) {profit += delta;}
 						}}
@@ -145,26 +136,26 @@ public class Ship extends Entity
 					if(profit>mostProfit)
 					{//if you've found a better city to go to..
 						mostProfit=profit;
-						dest=city;
-						log("Decided to go to "+city.ID+" for $"+mostProfit);
+						_dest=city;
+						log("Decided to go to "+city._id +" for $"+mostProfit);
 					}
 				}
-				if(dest==null)
+				if(_dest==null)
 				{//if you haven't found a city to go to...
-					if(dock.ID.equals(home.ID))
+					if(_dock._id.equals(_home._id))
 					{//if you're already home.. just chill.
-						state = State.WAITING;
-						log("Could not find profit. Waiting in "+home.ID);
+						_state = State.WAITING;
+						log("Could not find profit. Waiting in "+_home._id);
 						break;
 					}
 					//other wise.. head home to kill time for a bit
-					dest = home;
-					state = State.ENROUTE;
-					log("Could not find profit. Heading home to "+home.ID);
+					_dest = _home;
+					_state = State.ENROUTE;
+					log("Could not find profit. Heading home to "+_home._id);
 				}
 				else
 				{//start loading up for the trip!
-					state=State.LOADING;
+					_state=State.LOADING;
 				}
 				break;
 
@@ -172,19 +163,19 @@ public class Ship extends Entity
 				String Cargo = null;//The cargo you will buy this tick.
 				//if you've got too much cargo already... just go!
 				if(transactions.size()>=maxTransactions){
-					state = State.ENROUTE;
+					_state = State.ENROUTE;
 					break;
 				}
 
-				for(String stock : stockRef.keySet())
+				for(String stock : _stockRef.keySet())
 				{//for each resource
 					//ignore resources that your dock city doesn't have
-					if(dock.Resource(stock)<=0){continue;}
+					if(_dock.Resource(stock)<=0){continue;}
 					//ignore resources you can't afford
-					if(dock.Price(stock)>Credit){continue;}
+					if(_dock.Price(stock)> _credit){continue;}
 
 					//find the profit to be made
-					int delta = dest.Price(stock) - dock.Price(stock);
+					int delta = _dest.Price(stock) - _dock.Price(stock);
 					if (delta > mostProfit)
 					{//If this is the best transaction you can make...
 						mostProfit = delta;
@@ -193,15 +184,15 @@ public class Ship extends Entity
 				}
 				if(Cargo==null)
 				{
-					state = State.ENROUTE;
-					log("Setting sail for "+dest.ID+"!");
+					_state = State.ENROUTE;
+					log("Setting sail for "+_dest._id +"!");
 					break;
 				}
 
-				if(Buy(dock, Cargo, dock.Price(Cargo), 1))
+				if(Buy(_dock, Cargo, _dock.Price(Cargo), 1))
 				{
-					transactions.add(new Transaction(count, Cargo, dock.Price(Cargo)));
-					log("Bought "+Cargo+" for $"+dock.Price(Cargo)+" (+$"+(dest.Price(Cargo)-dock.Price(Cargo))+")");
+					transactions.add(new Transaction(count, Cargo, _dock.Price(Cargo)));
+					log("Bought "+Cargo+" for $"+_dock.Price(Cargo)+" (+$"+(_dest.Price(Cargo)-_dock.Price(Cargo))+")");
 				}
 				else
 				{
@@ -209,17 +200,17 @@ public class Ship extends Entity
 				}
 				break;
 			case ENROUTE:
-				log("Enroute to "+dest.ID);
-				state=State.UNLOADING;
+				log("Enroute to "+_dest._id);
+				_state=State.UNLOADING;
 				break;
 			case UNLOADING:
 				Transaction sale = null;//the good you will be selling!
 				for(Transaction xact : transactions)
 				{//for each transaction in your records
 					//ignore transaction if the city can't afford it.
-					if(dest.Credit()<dest.Price(xact.Resource())){continue;}
+					if(_dest.Credit()<_dest.Price(xact.Resource())){continue;}
 
-					int delta = dest.Price(xact.Resource())-xact.Price();
+					int delta = _dest.Price(xact.Resource())-xact.Price();
 					if(delta>mostProfit)
 					{
 						mostProfit=delta;
@@ -228,17 +219,17 @@ public class Ship extends Entity
 				}
 				if(sale==null)
 				{//if you're all out of profitable transactions to be had..
-					dock=dest;
-					dest=null;
+					_dock=_dest;
+					_dest=null;
 					log("Time to assess profits for my next trip...");
-					state=State.ASSESSING;
+					_state=State.ASSESSING;
 					break;
 				}
 
-				if(Sell(dest, sale.Resource(),dest.Price(sale.Resource()),1))
+				if(Sell(_dest, sale.Resource(),_dest.Price(sale.Resource()),1))
 				{//try to tell the stupid stuff
 					transactions.remove(sale);
-					log("Sold "+sale.Resource()+" for $"+dest.Price(sale.Resource()));
+					log("Sold "+sale.Resource()+" for $"+_dest.Price(sale.Resource()));
 				}
 				else
 				{//What? for some reason you couldn't sell that resource.. so don't keep trying.
@@ -251,33 +242,5 @@ public class Ship extends Entity
 				break;
 		}
 		logCol=oldLogCol;
-	}
-
-	public void render(Graphics g)
-	{
-		super.render(g);
-	}
-
-	private double findDistance(City c1, City c2)
-	{
-		double a = c1.X()-c2.X();
-		double b = c1.Y()-c2.Y();
-		
-		return Math.sqrt(a*a+b*b);
-	}
-	
-	private Entry<String, City> findClosestCity()
-	{
-		Entry<String, City> nextCity=null;
-		double amt = Double.MAX_VALUE;
-		for(Entry<String, City> map : cityRef.entrySet())
-		{//for every city
-			if(findDistance(dock, map.getValue())<amt
-					&&!map.getKey().equals(dock.ID))
-			{
-				nextCity=map;
-			}
-		}
-		return nextCity;
 	}
 }

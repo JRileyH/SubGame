@@ -1,10 +1,9 @@
 package marketflow;
 
 import engine.Game;
-import misc.*;
+import org.newdawn.slick.*;
+import org.newdawn.slick.geom.Vector2f;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.Map;
 
 /**
@@ -12,65 +11,61 @@ import java.util.Map;
  */
 public class Player extends Entity
 {
-    private boolean initUP = false;
-    private boolean initDOWN = false;
-
-    private boolean left = false;
-    private boolean right = false;
-
-    private Vector oldV = new Vector(0, Math.PI/2);        // current vector
-    private Vector newV = new Vector(0, Math.PI/2);        // destination vector
-
-    private int maxSpeed=14;
-    private int acc=1;
-    private int gearSize=1;
-    private int drag = 20;
-    private double tack=0.01;
-    public int maxViewDistance=300;
-
-    private int destX=0,maxX=0;
-    private int destY=0,maxY=0;
-
-
-    public Player(String id, String desc, Map<String, Stock> st_ref, int x, int y)
+    private Vector2f _carrot = new Vector2f(0,0);
+    private int _gear;
+    private int _gearSize;
+    private int _maxGear;
+    private int _minGear;
+    private float _angle;
+    private float _handling;
+    private enum yaw
     {
-        super(id, desc, st_ref, x, y);
-        img = Game.gfx.load("res/ship.png");
-        //hitbox=new Rectangle(posX-img.getWidth()/2, posY-img.getHeight()/2, img.getWidth(), img.getHeight());
+        HARD_LEFT,
+        LEFT,
+        NONE,
+        RIGHT,
+        HARD_RIGHT,
+    }
+    private yaw _yaw;
+
+    public Player(String id, String desc, Map<String, Stock> st_ref, int x, int y, int gear, int max, int min, float handling)
+    {
+        super(id, desc, st_ref, x, y, "res/ship.png");
+        _gear = 0;
+        _gearSize=gear;
+        _maxGear =max;
+        _minGear =min;
+        _angle = (float)Math.PI/2;
+        _handling=handling;
+        _yaw = yaw.NONE;
     }
 
     public void update(int count)
     {
-        //Vector Catch Up
-        if ((newV.magnitude() > oldV.magnitude())) {
-            oldV.incMagnitude(acc);
-        } else if ((newV.magnitude() < oldV.magnitude())) {
-            oldV.incMagnitude(-acc);
+        //Determine amount to turn
+        switch(_yaw)
+        {
+            case HARD_RIGHT:
+                _angle+=_handling*2;
+                break;
+            case RIGHT:
+                _angle+=_handling;
+                break;
+            case LEFT:
+                _angle-=_handling;
+                break;
+            case HARD_LEFT:
+                _angle-=_handling*2;
+                break;
         }
 
-        //Turn
-        if(left){oldV().incAngle(-tack);}
-        if(right){oldV().incAngle(tack);}
-
-        //Move
-        if(count%gearSize==0) {
-            Game.mf.map.scroll(
-                (int) Math.round(oldV.magnitude() * gearSize * Math.cos(oldV.angle())),
-                (int) Math.round(oldV.magnitude() * gearSize * Math.sin(oldV.angle()))
-            );
-        }
+        //Set Ship Velocity
+        _carrot.x = (float)(Speed() * Math.cos(_angle));
+        _carrot.y = (float)(Speed() * Math.sin(_angle));
 
         //Keep ship centered
-        posX = (Game.WIDTH/2)-Game.mf.map.OffsetX();
-        posY = (Game.HEIGHT/2)-Game.mf.map.OffsetY();
-
-        //Magnitude arrow indicator
-        destX=(int)((Game.WIDTH/2)-10*oldV.magnitude()*Math.cos(oldV.angle()));
-        destY=(int)((Game.HEIGHT/2)-10*oldV.magnitude()*Math.sin(oldV.angle()));
-
-        maxX=(int)((Game.WIDTH/2)-10*maxSpeed*Math.cos(oldV.angle()));
-        maxY=(int)((Game.HEIGHT/2)-10*maxSpeed*Math.sin(oldV.angle()));
-
+        _posX = (Game.WIDTH/2)-Game.mf.Map().OffsetX();
+        _posY = (Game.HEIGHT/2)-Game.mf.Map().OffsetY();
     }
 
     public void tick(int count)
@@ -78,41 +73,63 @@ public class Player extends Entity
 
     }
 
-    public void render(Graphics g)
+    public void render(GameContainer game, Graphics g)
     {
-        super.render(g);
-        int x = (Game.WIDTH/2)+Game.mf.map.PanX();
-        int y = (Game.HEIGHT/2)+Game.mf.map.PanY();
+        super.render(game, g);
+        int panx = Game.mf.Map().PanX();
+        int pany = Game.mf.Map().PanY();
+        int x = (Game.WIDTH/2)+panx;
+        int y = (Game.HEIGHT/2)+pany;
 
-        g.setColor(Color.RED);
-        g.drawLine(x,y,maxX+Game.mf.map.PanX(),maxY+Game.mf.map.PanY());
-        g.setColor(Color.BLUE);
-        g.drawLine(x,y,destX+Game.mf.map.PanX(),destY+Game.mf.map.PanY());
-        g.setColor(Color.BLACK);
+        g.setColor(Color.red);
+        g.drawLine(x,y,x- _carrot.x*5,y- _carrot.y*5);
+        g.setColor(Color.black);
+
+        g.drawString("Gear: "+ _gear , x+50,y+50);
+        g.drawString("Speed: "+ Speed(), x+50,y+70);
+        g.drawString("X: "+ _carrot.x+" Y: "+ _carrot.y, x+50,y+90);
+        g.drawString("Yaw: "+_yaw.toString(), x+50,y+110);
     }
 
-    public void incSpeed()
+    public void shiftUp()
     {
-        if (newV.magnitude() < maxSpeed)
+        if (_gear < _maxGear)
         {
-            newV.incMagnitude(acc);
+            _gear++;
         }
     }
 
-    public void decSpeed()
+    public void shiftDown()
     {
-
-        if (newV.magnitude() > -maxSpeed)
+        if (_gear > _minGear)
         {
-            newV.incMagnitude(-acc);
+            _gear--;
         }
     }
 
-    public void left(boolean l){left=l;}
-    public boolean left(){return left;}
-    public void right(boolean r){right=r;}
-    public boolean right(){return right;}
+    public void tackLeft()
+    {
+        if(_yaw!=yaw.HARD_LEFT)
+        {
+            _yaw=_yaw.values()[_yaw.ordinal()-1];
+        }
+    }
 
-    public Vector oldV(){return oldV;}
-    public Vector newV(){return newV;}
+    public void tackRight()
+    {
+        if(_yaw!=yaw.HARD_RIGHT)
+        {
+            _yaw=_yaw.values()[_yaw.ordinal()+1];
+        }
+    }
+
+    public int Speed(){return _gear * _gearSize;}
+    public int Gear(){return _gear;}
+    public void GearSize(int amt){_gearSize =amt;}
+    public Vector2f Velocity(){return _carrot;}
+    public float Angle(){return _angle;}
+    public float Handling(){return _handling;}
+    public void Handling(int amt){_handling=amt;}
+    public int MaxGear(){return _maxGear;}
+    public int MinGear(){return _minGear;}
 }

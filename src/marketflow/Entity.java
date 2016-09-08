@@ -1,7 +1,5 @@
 package marketflow;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -9,50 +7,56 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 
 import engine.Game;
+import org.newdawn.slick.*;
 
 public class Entity
 {
-	protected int Credit;
-	protected String ID;
-	protected Map<String, Stock> stockRef;
-	protected int Population;
-	protected int PopulationMax = 1;
-	protected int posX, posY;
-	protected String Description;
-	protected BufferedImage img;
-	protected Rectangle hitbox;
-	protected HSSFSheet reportSheet;
+	protected int _credit;
+	protected String _id;
+	protected Map<String, Stock> _stockRef;
+	protected int _population;
+	protected int _populationMax = 1;
+	protected int _posX, _posY;
+	protected String _description;
+	protected org.newdawn.slick.Image _img = null;
+	protected HSSFSheet _reportSheet;
 	
-	public Entity(String id, String desc, Map<String, Stock> st_ref, int x, int y)
+	public Entity(String id, String desc, Map<String, Stock> st_ref, int x, int y, String spritePath)
 	{
-		ID = id;
-		Description=desc;
-		stockRef = st_ref;
-		posX=x;
-		posY=y;
+		_id = id;
+		_description = desc;
+		_stockRef = st_ref;
+		_posX = x;
+		_posY = y;
 
-		hitbox = new Rectangle(x,y, 0, 0);
+		if(spritePath!=null){
+			try {
+				_img = new Image(spritePath);
+			} catch (SlickException e) {
+				e.printStackTrace();
+			}
+		}
 
 		if(this.getClass().getName().equals("marketflow.City"))
 		{
-			reportSheet = Init.cityBook.createSheet(ID+" Report");
+			_reportSheet = Init.cityBook.createSheet(_id +" Report");
 		}
 		else if(this.getClass().getName().equals("marketflow.Ship"))
 		{
-			reportSheet = Init.shipBook.createSheet(ID+" Report");
+			_reportSheet = Init.shipBook.createSheet(_id +" Report");
 		}
 		else if(this.getClass().getName().equals("marketflow.Housing"))
 		{
-			reportSheet = Init.housingBook.createSheet(ID+" Report");
+			_reportSheet = Init.housingBook.createSheet(_id +" Report");
 		}
 		else if(this.getClass().getName().equals("marketflow.Generator"))
 		{
-			reportSheet = Init.generatorBook.createSheet(ID+" Report");
+			_reportSheet = Init.generatorBook.createSheet(_id +" Report");
 		}
 
-		if(reportSheet!=null)
+		if(_reportSheet != null)
 		{//create excel sheet for outputting actions
-			Row row = reportSheet.createRow(0);
+			Row row = _reportSheet.createRow(0);
 			Cell cell = row.createCell(0);
 			cell.setCellValue("Time");
 			cell = row.createCell(1);
@@ -81,7 +85,7 @@ public class Entity
 	public void print(){
 		String toPrint = "";
 		toPrint+="/=================================\\\n";
-		toPrint+=makeLine(ID, ""+time);
+		toPrint+=makeLine(_id, ""+time);
 		toPrint+=makeLine("Cred: "+Credit(), "Pop: "+Population());
 		toPrint+="|--Consumables--------------------|\n";
 		toPrint+=makeLine("Water:    "+Resource("Water"), 		"Fish:     "+Resource("Fish"));
@@ -123,8 +127,8 @@ public class Entity
 	}
 	protected void log(String msg)
 	{
-		if(console){System.out.println(ID+": "+msg);}
-		if(reportSheet != null && row != null) {
+		if(console){System.out.println(_id +": "+msg);}
+		if(_reportSheet != null && row != null) {
 			Cell cell = row.createCell(logCol);
 			cell.setCellValue(msg);
 		}
@@ -133,16 +137,16 @@ public class Entity
 //===================================================================//
 
 	public void update(int count)
-	{
+	{//Fast Logic Loop
 
 	}
 
 	protected int rowNum = 1;
 	protected Row row;
 	public void tick(int count)
-	{
-		if(reportSheet!=null) {
-			row = reportSheet.createRow(rowNum);
+	{//One Second Loop
+		if(_reportSheet !=null) {
+			row = _reportSheet.createRow(rowNum);
 			Cell cell = row.createCell(0);
 			cell.setCellValue(count);
 			cell = row.createCell(1);
@@ -150,27 +154,27 @@ public class Entity
 			cell = row.createCell(2);
 			cell.setCellValue(Population());
 			int colNum = 3;
-			for (Stock val : stockRef.values()) {
+			for (Stock val : _stockRef.values()) {
 				cell = row.createCell(colNum);
-				cell.setCellValue(val.Resource(ID));
+				cell.setCellValue(val.Resource(_id));
 				colNum++;
 			}
 			rowNum++;
 		}
 	}
 
-	public void render(Graphics g)
+	public void render(GameContainer game, Graphics g)
 	{
-		int x = posX+Game.mf.map.OffsetX()-img.getWidth()/2+Game.mf.map.PanX();
-		int y = posY+Game.mf.map.OffsetY()-img.getHeight()/2+Game.mf.map.PanY();
+		int x = _posX +Game.mf.Map().OffsetX()-_img.getWidth()/2+Game.mf.Map().PanX();
+		int y = _posY +Game.mf.Map().OffsetY()-_img.getHeight()/2+Game.mf.Map().PanY();
 
-		g.drawImage(img, x, y, null);
-		g.drawString(ID, x-30, y-20);
+		g.drawImage(_img, x, y);
+		g.drawString(_id, x-30, y-20);
 	}
 	
 	public boolean Immigrate(Entity source, int amt)
 	{
-		if(source.Population()>amt&&Population<(PopulationMax-amt)){
+		if(source.Population()>amt&& _population <(_populationMax -amt)){
 			source.incPopulation(-amt);
 			incPopulation(amt);
 		}else{
@@ -191,7 +195,7 @@ public class Entity
 	public boolean Buy(Entity seller, String res, int pricePer, int amt)
 	{
 		int cost=pricePer*amt;
-		if(Credit>=cost&&seller.Resource(res)>=amt){
+		if(_credit >=cost&&seller.Resource(res)>=amt){
 			seller.incCredit(cost);
 			incCredit(-cost);
 			seller.incResource(res, -amt);
@@ -215,18 +219,20 @@ public class Entity
 		return true;
 	}
 
-	public void Description(String str){Description=str;}
-	public String Description(){return Description;}
-	public void Credit(int amt){Credit=amt;}
-	public int Credit(){return Credit;}
-	public void incCredit(int amt){Credit+=amt;}
+	public String ID(){return _id;}
+
+	public void Description(String str){ _description = str;}
+	public String Description(){return _description;}
+	public void Credit(int amt){ _credit = amt;}
+	public int Credit(){return _credit;}
+	public void incCredit(int amt){ _credit += amt;}
+
+	public void Population(int amt){ _population = amt;}
+	public int Population(){return _population;}
+	public int PopulationMax(){return _populationMax;}
+	public void incPopulation(int amt){ _population +=amt;}
 	
-	public void Population(int amt){Population=amt;}
-	public int Population(){return Population;}
-	public int PopulationMax(){return PopulationMax;}
-	public void incPopulation(int amt){Population+=amt;}
-	
-	public void Resource(String rid, int amt){stockRef.get(rid).Resource(ID, amt);}
-	public int Resource(String rid){return stockRef.get(rid).Resource(ID);}
-	public void incResource(String rid, int amt){stockRef.get(rid).incResource(ID, amt);}
+	public void Resource(String rid, int amt){_stockRef.get(rid).Resource(_id, amt);}
+	public int Resource(String rid){return _stockRef.get(rid).Resource(_id);}
+	public void incResource(String rid, int amt){_stockRef.get(rid).incResource(_id, amt);}
 }

@@ -1,232 +1,152 @@
 package engine;
-import marketflow.Entity;
-
-import java.awt.*;
-import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.swing.JFrame;
+import org.newdawn.slick.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 //Version 1.0
 
-public class Game extends Canvas implements Runnable
+public class Game extends BasicGame
 {
-	//TODO: Remove this.. temporary
-	public static Map<Entity, Rectangle> clickables = new HashMap<>();
+	//Screen
+	public static int WIDTH, HEIGHT;						//screen dimensions
 
-	private static final long serialVersionUID = 1L;
-	public static int WIDTH, HEIGHT;
-	public static boolean running = false;	//game running
-	public Thread gameThread;
-	
-	private BufferedImage spriteSheet;		
-	public static enum State
-	{
+	//States
+	public enum State
+	{//What state the game is running in. Controls what logic is done and what is rendered
 		UI,
 		MARKETFLOW,
 		SUBBATTLE,
 		MYESTATE
 	}
-	private static State state = State.MARKETFLOW;
-	
-	
-	public static Graphix gfx;			// reads an image in res folder
-	XMLHandler xmlh;
-	SpriteSheet ss;				// cuts an image out of sprite sheet
-	public static Mouse mouse;				// Everything that you could possibly do with a mouse
-	Keyboard keyboard;			// Keyboard stuff.
-	static KeyMap keymap;		//Keyboard Bindings
-	
-	public static ui.Init ui;					//Menu mode.
-	public static marketflow.Init mf;			//World map mode.
-	public static subbattle.Init sb;			//Combat mode.
-	public static myestate.Init me;			//City builder mode.
-	
-	public void init()			//Initialized (runs ONCE at beginning of program)
+	public static State state = State.MARKETFLOW;			//Starting State
+
+	//Timing
+	private int[] _counts = new int[State.values().length];	//Fast Logic Timers
+	private int[] _ticks =  new int[State.values().length];	//One Second Logic Timers
+	private int _sec = 0;									//# of Fast Logic ticks until One Second Logic fires
+
+	//Input
+	static KeyMap keymap;									//Keyboard Bindings
+	//Modules
+	public static ui.Init ui;								//Menu mode.
+	public static marketflow.Init mf;						//World map mode.
+	public static subbattle.Init sb;						//Combat mode.
+	public static myestate.Init me;							//City builder mode.
+
+	public Game(String name)
 	{
-		xmlh = new XMLHandler();
-		gfx = new Graphix();
-		//spriteSheet = gfx.load("SpriteSheet.png");
-		ss = new SpriteSheet(spriteSheet);
-		mouse = new Mouse(this);
-		keymap = new KeyMap(xmlh);
-		keyboard = new Keyboard(this, keymap);
-		
-		ui = new ui.Init(this);
-		mf = new marketflow.Init(this, xmlh);
-		sb = new subbattle.Init(this, xmlh);
-		me = new myestate.Init(this, xmlh);
-	}
-	
-	public static void state(State s)
-	{
+		super(name);
+	}				//Constructor
+
+	public static void setState(State s)
+	{//Changes the game state enum and resets the bound keys for that state
 		state = s;
 		keymap.mapKeys(s);
 	}
-	
-	public synchronized void start()			//starts game
-	{
-		if(running)return;
-		
-		running = true;
-		gameThread = new Thread(this);
-		gameThread.start();
-	}
-	
-	public synchronized void stop()				//stops game
-	{
-		if(!running)return;
-		
-		running = false;
-		try
-		{
-			gameThread.join();
-		}
-		catch(InterruptedException e)
-		{
-			e.printStackTrace();
-		}
-	}
-	
 	@Override
-	public void run()
-	{
-		long lastTime = System.nanoTime();
-		final double amountOfTicks = 60D;
-		double ns = 1000000000 / amountOfTicks;
-		double delta = 0;
-		double second = 0;
-		
-		while(running)
-		{
-			long now = System.nanoTime();
-			delta += (now-lastTime)/ns;
-			second +=(now-lastTime)/ns;
-			lastTime = now;
-			if(delta >= 1)
-			{
-				update();
-				tick();//uncomment if you wanna do speed testing
-				delta--;
-			}
-			if(second >= amountOfTicks)
-			{
-				//tick();
-				second-=amountOfTicks;
-			}
-			render();
-		}
-		stop();
+	public void keyPressed(int key, char c)
+	{//Sends Keyboard Input to KeyMap class for processing
+		super.keyPressed(key, c);
+		keymap.press(key,true);
 	}
-	
-	private int count;
-	public void update()
-	{//this runs 100 times a second
-		count++;
-		switch(state)
-		{
-		case UI:
-			ui.update(count);
-			break;
-		case MARKETFLOW:
-			mf.update(count);
-			break;
-		case SUBBATTLE:
-			sb.update(count);
-			break;
-		case MYESTATE:
-			me.update(count);
-			break;
-		}
+	@Override
+	public void keyReleased(int key, char c)
+	{//Sends Keyboard Input to KeyMap class for processing
+		super.keyPressed(key, c);
+		keymap.press(key,false);
 	}
 
-	private int second;
-	public void tick()
-	{//this runs once a second
-		second++;
+	@Override
+	public void init(GameContainer game) throws SlickException
+	{
+		game.setTargetFrameRate(60);
+		XMLHandler xmlh = new XMLHandler();
+		keymap = new KeyMap(xmlh);
+
+		ui = new ui.Init();
+		mf = new marketflow.Init(xmlh);
+		sb = new subbattle.Init(xmlh);
+		me = new myestate.Init(xmlh);
+	}
+
+	@Override
+	public void update(GameContainer game, int i) throws SlickException
+	{//Slick2D game loop
+		//One Second Logic
+		int fps = game.getFPS();
+		if (_sec++>=fps&&fps>0)
+		{
+			int t = ++_ticks[state.ordinal()];
+			switch(state)
+			{
+				case UI:
+					ui.tick(t);
+					break;
+				case MARKETFLOW:
+					mf.tick(t);
+					break;
+				case SUBBATTLE:
+					sb.tick(t);
+					break;
+				case MYESTATE:
+					me.tick(t);
+					break;
+			}
+			_sec -=fps;
+		}
+		//Fast logic
+		int c = ++_counts[state.ordinal()];
 		switch(state)
 		{
 			case UI:
-				ui.tick(second);
+				ui.update(c);
 				break;
 			case MARKETFLOW:
-				mf.tick(second);
+				mf.update(c);
 				break;
 			case SUBBATTLE:
-				sb.tick(second);
+				sb.update(c);
 				break;
 			case MYESTATE:
-				me.tick(second);
+				me.update(c);
 				break;
 		}
 	}
-	
-	public void render()
-	{
-		BufferStrategy bs = this.getBufferStrategy();
-		if(bs == null)
-		{
-			createBufferStrategy(3);
-			return;
-		}
-		Graphics g = bs.getDrawGraphics();
 
-		//RENDER START
-		g.fillRect(0, 0, (int)(WIDTH), (int)(WIDTH));
-		
-		//---TEXT ON SCREEN---
-		
-		
+	@Override
+	public void render(GameContainer game, Graphics g) throws SlickException
+	{//Slick2D render loop
 		switch(state)
 		{
-		case UI:
-			ui.render(g);
-			break;
-		case MARKETFLOW:
-			mf.render(g);
-			break;
-		case SUBBATTLE:
-			sb.render(g);
-			break;
-		case MYESTATE:
-			me.render(g);
-			break;
+			case UI:
+				ui.render(game,g);
+				break;
+			case MARKETFLOW:
+				mf.render(game,g);
+				break;
+			case SUBBATTLE:
+				sb.render(game,g);
+				break;
+			case MYESTATE:
+				me.render(game,g);
+				break;
 		}
-		
-		g.setColor(Color.ORANGE);
-		g.drawString("Time: "+String.format("%02d", count), 10, 10);
-		
-		//RENDER END
-		
-		g.dispose();
-		bs.show();
 	}
 	
 	public static void main(String[] args)
 	{
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		WIDTH=(int)screenSize.getWidth();
-		HEIGHT=(int)screenSize.getHeight();
-
-		Game game = new Game();
-		game.setPreferredSize(new Dimension(WIDTH, HEIGHT));
-		game.setMaximumSize(new Dimension(WIDTH, HEIGHT));
-		game.setMinimumSize(new Dimension(WIDTH, HEIGHT));
-		
-		JFrame frame = new JFrame("Sub Game");
-		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-
-		frame.setUndecorated(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
-		frame.setResizable(false);
-		frame.add(game);
-		
-		game.init();
-		
-		game.start();
+		try
+		{
+			AppGameContainer agc;
+			agc = new AppGameContainer(new Game("Sub Game"));
+			agc.setDisplayMode(1600, 900, false);
+			WIDTH=agc.getWidth();
+			HEIGHT=agc.getHeight();
+			agc.start();
+		}
+		catch (SlickException ex)
+		{
+			Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+		}
 	}
-	
 }
