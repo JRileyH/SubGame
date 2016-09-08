@@ -44,7 +44,6 @@ public class KeyMap
 			case "tackLeft":
 				if(!_keyFlags.get(c)){Game.mf.Player().tackLeft();}
 				break;
-
 			case "tackRight":
 				if(!_keyFlags.get(c)){Game.mf.Player().tackRight();}
 				break;
@@ -56,17 +55,20 @@ public class KeyMap
 				break;
 			
 			case "SwitchToUI":
-				Game.setState(Game.State.UI);
+				if(Game.state!=Game.State.UI)Game.setState(Game.State.UI);
 				break;
 			case "SwitchToMF":
-				Game.setState(Game.State.MARKETFLOW);
+				if(Game.state!=Game.State.MARKETFLOW)Game.setState(Game.State.MARKETFLOW);
 				break;
 			case "SwitchToSB":
-				Game.setState(Game.State.SUBBATTLE);
-				if(d){Game.mf.Report();}
+				if(Game.state!=Game.State.SUBBATTLE)Game.setState(Game.State.SUBBATTLE);
 				break;
 			case "SwitchToME":
-				Game.setState(Game.State.MYESTATE);
+				if(Game.state!=Game.State.MYESTATE)Game.setState(Game.State.MYESTATE);
+				break;
+
+			case "Report":
+				if(d){Game.mf.Report();}
 				break;
 			}
 			_keyFlags.put(c, d);

@@ -71,6 +71,8 @@ public class WorldMap
     {
         _offsetX+=_player.Velocity().getX();
         _offsetY+=_player.Velocity().getY();
+        if(_offsetX>0){_offsetX=0;}else if(_offsetX<_edgeX){_offsetX=_edgeX;}
+        if(_offsetY>0){_offsetY=0;}else if(_offsetY<_edgeY){_offsetY=_edgeY;}
     }
 
     public void tick(int count)
@@ -81,7 +83,6 @@ public class WorldMap
     public void render(GameContainer game, Graphics g)
     {
         g.drawImage(_img, _offsetX+_panX, _offsetY+_panY);
-        g.drawString("MarketFlow " + _offsetX + ", " + _offsetY, 100, 10);
 
         for(Rectangle r : _scrollBoxes.values())
         {

@@ -9,4 +9,6 @@
 	<Binding id="3" action="SwitchToMF"></Binding>
 	<Binding id="4" action="SwitchToSB"></Binding>
 	<Binding id="5" action="SwitchToME"></Binding>
+
+	<Binding id="19" action="Report"></Binding>
 </class>
