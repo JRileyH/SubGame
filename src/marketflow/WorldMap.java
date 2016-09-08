@@ -3,7 +3,7 @@ package marketflow;
 import engine.Game;
 import org.newdawn.slick.*;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
+import org.newdawn.slick.tiled.TiledMap;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -14,26 +14,28 @@ import java.util.Map;
  */
 public class WorldMap
 {
-    public Image _img;
+    //public Image _img;
     private int _width,_height;
     private int _offsetX,_offsetY;
     private int _newX,_newY;
     private int _panX,_panY;
     private int _edgeX,_edgeY;
     private Player _player;
+    private TiledMap _tiles;
     private Map<String, Rectangle> _scrollBoxes;
 
 
     public WorldMap(String path, Player player, int initX, int initY)
     {
         try {
-            _img = new Image(path);
+            _tiles = new TiledMap("res/map.tmx");
         } catch (SlickException e) {
             e.printStackTrace();
         }
         _player=player;
-        _width=_img.getWidth();
-        _height=_img.getHeight();
+
+        _width=3200;//_img.getWidth();
+        _height=3200;//_img.getHeight();
         _offsetX=-initX;
         _offsetY=-initY;
         _newX=-initX;
@@ -82,7 +84,8 @@ public class WorldMap
 
     public void render(GameContainer game, Graphics g)
     {
-        g.drawImage(_img, _offsetX+_panX, _offsetY+_panY);
+       // g.drawImage(_img, _offsetX+_panX, _offsetY+_panY);
+        _tiles.render(_offsetX+_panX,_offsetY+_panY);
 
         for(Rectangle r : _scrollBoxes.values())
         {
@@ -90,7 +93,7 @@ public class WorldMap
         }
     }
 
-    public Image Img() { return _img; }
+   // public Image Img() { return _img; }
 
     public int OffsetX(){return _offsetX;}//Gets the Offset in the X direction
     public void OffsetX(int x){_offsetX=x;}//Gets the Offset in the Y direction

@@ -116,6 +116,9 @@ public class Game extends BasicGame
 	@Override
 	public void render(GameContainer game, Graphics g) throws SlickException
 	{//Slick2D render loop
+		g.setColor(Color.gray);
+		g.fillRect(0,0,WIDTH,HEIGHT);
+		g.setColor(Color.black);
 		switch(state)
 		{
 			case UI:
