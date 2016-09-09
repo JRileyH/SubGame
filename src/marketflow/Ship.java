@@ -67,8 +67,6 @@ public class Ship extends Entity
 			_posX += _speed * Math.cos(angle);
 			_posY += _speed * Math.sin(angle);
 
-			//hitbox.setLocation(_posX+Game.mf.mapOffsetX-img.getWidth()/2, _posY+Game.mf.mapOffsetY-img.getHeight()/2);
-
 			double a = _dest.X()-_posX;
 			double b = _dest.Y()-_posY;
 			if(Math.sqrt(a*a+b*b)< _speed *10)

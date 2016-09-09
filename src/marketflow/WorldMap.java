@@ -17,7 +17,6 @@ public class WorldMap
     //public Image _img;
     private int _width,_height;
     private int _offsetX,_offsetY;
-    private int _newX,_newY;
     private int _panX,_panY;
     private int _edgeX,_edgeY;
     private Player _player;
@@ -38,8 +37,6 @@ public class WorldMap
         _height=3200;//_img.getHeight();
         _offsetX=-initX;
         _offsetY=-initY;
-        _newX=-initX;
-        _newY=-initY;
         _panX=0;
         _panY=0;
         _edgeX = Game.WIDTH-_width;

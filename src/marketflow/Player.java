@@ -30,7 +30,7 @@ public class Player extends Entity
 
     public Player(String id, String desc, Map<String, Stock> st_ref, int x, int y, int gear, int max, int min, float handling)
     {
-        super(id, desc, st_ref, x, y, "res/ship.png");
+        super(id, desc, st_ref, x, y, "res/player.png");
         _gear = 0;
         _gearSize=gear;
         _maxGear =max;
@@ -38,6 +38,7 @@ public class Player extends Entity
         _angle = (float)Math.PI/2;
         _handling=handling;
         _yaw = yaw.NONE;
+        _img.setCenterOfRotation(0,32);
     }
 
     public void update(int count)
@@ -47,15 +48,19 @@ public class Player extends Entity
         {
             case HARD_RIGHT:
                 _angle+=_handling*2;
+                _img.setRotation(_img.getRotation()+(float)Math.toDegrees(_handling*2));
                 break;
             case RIGHT:
                 _angle+=_handling;
+                _img.setRotation(_img.getRotation()+(float)Math.toDegrees(_handling));
                 break;
             case LEFT:
                 _angle-=_handling;
+                _img.setRotation(_img.getRotation()-(float)Math.toDegrees(_handling));
                 break;
             case HARD_LEFT:
                 _angle-=_handling*2;
+                _img.setRotation(_img.getRotation()-(float)Math.toDegrees(_handling*2));
                 break;
         }
 
