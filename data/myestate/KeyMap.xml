@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<class>
-	<Binding id="2" action="SwitchToUI"></Binding>
-	<Binding id="3" action="SwitchToMF"></Binding>
-	<Binding id="4" action="SwitchToSB"></Binding>
-	<Binding id="5" action="SwitchToME"></Binding>
-</class>

@@ -53,13 +53,30 @@ public class XMLHandler
 	{
 		Document doc = read(path);
 		map.clear();
-		NodeList nodes = doc.getElementsByTagName("Binding");
-		for(int i = 0; i < nodes.getLength(); i++)
+		Node keys = doc.getElementsByTagName("Keys").item(0);
+		Element keys_elem = (Element) keys;
+		NodeList bindings = keys_elem.getElementsByTagName("Binding");
+		for(int i = 0; i < bindings.getLength(); i++)
 		{
-			Node node = nodes.item(i);
-			Element elem = (Element) node;
-			map.put(Integer.parseInt(elem.getAttribute("id")), elem.getAttribute("action"));
-			flags.put(Integer.parseInt(elem.getAttribute("id")), false);
+			Node binding = bindings.item(i);
+			Element binding_elem = (Element) binding;
+			map.put(Integer.parseInt(binding_elem.getAttribute("id")), binding_elem.getAttribute("action"));
+			flags.put(Integer.parseInt(binding_elem.getAttribute("id")), false);
+		}
+	}
+	public void setMouseMap(String path, Map<Integer, String> map, Map<Integer, Boolean> flags)
+	{
+		Document doc = read(path);
+		map.clear();
+		Node mouse = doc.getElementsByTagName("Mouse").item(0);
+		Element mouse_elem = (Element) mouse;
+		NodeList bindings = mouse_elem.getElementsByTagName("Binding");
+		for(int i = 0; i < bindings.getLength(); i++)
+		{
+			Node binding = bindings.item(i);
+			Element binding_elem = (Element) binding;
+			map.put(Integer.parseInt(binding_elem.getAttribute("id")), binding_elem.getAttribute("action"));
+			flags.put(Integer.parseInt(binding_elem.getAttribute("id")), false);
 		}
 	}
 	
@@ -239,7 +256,7 @@ public class XMLHandler
 						house,
 						Integer.parseInt(c_elem.getAttribute("x")),		//X Coordinate
 						Integer.parseInt(c_elem.getAttribute("y")),		//Y Coordinate
-						cc.get(city),											//Home City
+						cc.get(city),									//Home City
 						hrc												//reference to Generator Resource Stock
 				));
 

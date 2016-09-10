@@ -5,13 +5,13 @@ import java.util.Map;
 
 public class KeyMap
 {
-	private Map<Integer, String> _keymap;
+	private Map<Integer, String> _keyMap;
 	private Map<Integer, Boolean> _keyFlags;
 	private XMLHandler _xmlh;
 	public KeyMap(XMLHandler xmlh)
 	{
 		_xmlh = xmlh;
-		_keymap = new HashMap<>();
+		_keyMap = new HashMap<>();
 		_keyFlags = new HashMap<>();
 		mapKeys(Game.state);
 	}
@@ -21,30 +21,30 @@ public class KeyMap
 		switch (state)
 		{
 		case UI:
-			_xmlh.setKeyMap("data/userinterface/KeyMap.xml", _keymap, _keyFlags);
+			_xmlh.setKeyMap("data/userinterface/InputMap.xml", _keyMap, _keyFlags);
 			break;
 		case MARKETFLOW:
-			_xmlh.setKeyMap("data/marketflow/KeyMap.xml", _keymap, _keyFlags);
+			_xmlh.setKeyMap("data/marketflow/InputMap.xml", _keyMap, _keyFlags);
 			break;
 		case SUBBATTLE:
-			_xmlh.setKeyMap("data/subbattle/KeyMap.xml", _keymap, _keyFlags);
+			_xmlh.setKeyMap("data/subbattle/InputMap.xml", _keyMap, _keyFlags);
 			break;
 		case MYESTATE:
-			_xmlh.setKeyMap("data/myestate/KeyMap.xml", _keymap, _keyFlags);
+			_xmlh.setKeyMap("data/myestate/InputMap.xml", _keyMap, _keyFlags);
 			break;
 		}
 	}
 	
 	public void press(int c, boolean d)
 	{//registers a key action d: true=pressed, false=released
-		if(_keymap.containsKey(c))
+		if(_keyMap.containsKey(c))
 		{
-			switch(_keymap.get(c))
+			switch(_keyMap.get(c))
 			{
-			case "tackLeft":
+			case "TackLeft":
 				if(!_keyFlags.get(c)){Game.mf.Player().tackLeft();}
 				break;
-			case "tackRight":
+			case "TackRight":
 				if(!_keyFlags.get(c)){Game.mf.Player().tackRight();}
 				break;
 			case "Forward":
@@ -52,6 +52,9 @@ public class KeyMap
 				break;
 			case "Reverse":
 				if(!_keyFlags.get(c)){Game.mf.Player().shiftDown();}
+				break;
+			case "AutoPilot":
+				if(!_keyFlags.get(c)){Game.mf.Player().toggleAutoPilot();}
 				break;
 			
 			case "SwitchToUI":

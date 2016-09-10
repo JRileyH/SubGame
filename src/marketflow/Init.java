@@ -14,7 +14,8 @@ import org.newdawn.slick.*;
 public class Init
 {
 	private WorldMap _map;
-	private Player _player;
+	//private Player _player;
+	private PlayerAuto _player;
 	private Map<String, City> _cityColl;
 	private Map<String, Stock> _cityResColl;
 	private Map<String, Ship> _shipColl;
@@ -31,7 +32,8 @@ public class Init
 
 	public Init(XMLHandler xmlh)
 	{
-		_player = new Player("Player Name",										//Player Name
+		//_player = new Player("Player Name",										//Player Name
+		_player = new PlayerAuto("Player Name",								//Player Name
 				"Your Ship. There are many like it but this one is yours.",		//Description
 				null,															//Stock Reference
 				0,																//X
@@ -192,5 +194,6 @@ public class Init
 	}
 
 	public WorldMap Map(){return _map;}
-	public Player Player(){return _player;}
+	//public Player Player(){return _player;}
+	public PlayerAuto Player(){return _player;}
 }

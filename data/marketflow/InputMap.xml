@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<class>
+	<Mouse>
+		<Binding id="0" action="GoTo"></Binding>
+	</Mouse>
+	<Keys>
+		<Binding id="30" action="TackLeft"></Binding>
+		<Binding id="32" action="TackRight"></Binding>
+		<Binding id="17" action="Forward"></Binding>
+		<Binding id="31" action="Reverse"></Binding>
+		<Binding id="33" action="AutoPilot"></Binding>
+
+		<Binding id="2" action="SwitchToUI"></Binding>
+		<Binding id="3" action="SwitchToMF"></Binding>
+		<Binding id="4" action="SwitchToSB"></Binding>
+		<Binding id="5" action="SwitchToME"></Binding>
+
+		<Binding id="19" action="Report"></Binding>
+	</Keys>
+</class>

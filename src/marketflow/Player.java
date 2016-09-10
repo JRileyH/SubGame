@@ -23,6 +23,8 @@ public class Player extends Entity
     private float _drag;
     private float _handling;
 
+    private boolean _autopilot=false;
+
 
     public Player(String id, String desc, Map<String, Stock> st_ref, int x, int y, int gear, int max_gear, int min_gear, int max_yaw, float drag, float handling)
     {
@@ -41,24 +43,27 @@ public class Player extends Entity
     public void update(int count)
     {
         //Determine yaw
-        _angle +=_handling*_yaw;
-        _img.setRotation(_img.getRotation()+(float)Math.toDegrees(_handling*_yaw));
+        if(!_autopilot) {
+            _angle += _handling * _yaw;
+            _img.setRotation(_img.getRotation() + (float) Math.toDegrees(_handling * _yaw));
 
-        //Set Carrot
-        _carrot.x = (float)(Speed() * Math.cos(_angle));
-        _carrot.y = (float)(Speed() * Math.sin(_angle));
+            //Set Carrot
+            _carrot.x = (float) (Speed() * Math.cos(_angle));
+            _carrot.y = (float) (Speed() * Math.sin(_angle));
 
-        //Catch Up to Carrot
-        double deltaX = _carrot.x - _velocity.x;
-        double deltaY = _carrot.y - _velocity.y;
-        float delta = (float)Math.atan2(deltaY, deltaX);
-        _velocity.x += (float)(_drag * Math.cos(delta));
-        _velocity.y += (float)(_drag * Math.sin(delta));
+            //Catch Up to Carrot
+            double deltaX = _carrot.x - _velocity.x;
+            double deltaY = _carrot.y - _velocity.y;
+            float delta = (float) Math.atan2(deltaY, deltaX);
+            _velocity.x += (float) (_drag * Math.cos(delta));
+            _velocity.y += (float) (_drag * Math.sin(delta));
+        }else{
 
+        }
 
         //Keep ship centered
-        _posX = (Game.WIDTH/2)-Game.mf.Map().OffsetX();
-        _posY = (Game.HEIGHT/2)-Game.mf.Map().OffsetY();
+        _posX = (Game.WIDTH / 2) - Game.mf.Map().OffsetX();
+        _posY = (Game.HEIGHT / 2) - Game.mf.Map().OffsetY();
     }
 
     public void tick(int count)
@@ -82,13 +87,15 @@ public class Player extends Entity
 
         g.drawString("Gear: "+ _gear , x+50,y+50);
         g.drawString("Speed: "+ Speed(), x+50,y+70);
-        g.drawString("X: "+ -(int)_velocity.x+" Y: "+ -(int)_velocity.y, x+50,y+90);
-        g.drawString("Yaw: "+_yaw, x+50,y+110);
+        g.drawString("Velocity - X: "+ -(int)_velocity.x+" Y: "+ -(int)_velocity.y, x+50,y+90);
+        g.drawString("Carrot - X: "+ -(int)_carrot.x+" Y: "+ -(int)_carrot.y, x+50,y+110);
+        g.drawString("Yaw: "+_yaw, x+50,y+130);
+        g.drawString("AutoPilot: "+_autopilot, x+50,y+150);
     }
 
     public void shiftUp()
     {
-        if (_gear < _maxGear)
+        if (_gear < _maxGear && !_autopilot)
         {
             _gear++;
         }
@@ -96,7 +103,7 @@ public class Player extends Entity
 
     public void shiftDown()
     {
-        if (_gear > _minGear)
+        if (_gear > _minGear && !_autopilot)
         {
             _gear--;
         }
@@ -104,7 +111,7 @@ public class Player extends Entity
 
     public void tackLeft()
     {
-        if(_yaw>-_maxYaw)
+        if(_yaw>-_maxYaw && !_autopilot)
         {
             _yaw--;
         }
@@ -112,10 +119,28 @@ public class Player extends Entity
 
     public void tackRight()
     {
-        if(_yaw<_maxYaw)
+        if(_yaw<_maxYaw && !_autopilot)
         {
             _yaw++;
         }
+    }
+
+    public void GoTo(float x, float y)
+    {
+        if(_autopilot)
+        {
+            _carrot.x = ((Game.WIDTH*Game.SCALE/2)-x)/2;
+            _carrot.y = ((Game.HEIGHT*Game.SCALE/2)-y)/3;
+            _gear = 3;
+        }
+    }
+
+    public void toggleAutoPilot()
+    {
+        _autopilot=!_autopilot;
+        _gear=0;
+        _carrot.x=0;
+        _carrot.y=0;
     }
 
     public int Speed(){return _gear * _gearSize;}

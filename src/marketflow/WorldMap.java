@@ -20,13 +20,15 @@ public class WorldMap
     private int _panX,_panY;
     private int _edgeX,_edgeY;
     private int _waveX,_waveY;
-    private Player _player;
+    private PlayerAuto _player;
+    //private Player _player;
     private TiledMap _tiles;
     private TiledMap _overlay;
     private Map<String, Rectangle> _scrollBoxes;
 
 
-    public WorldMap(String path, Player player, int initX, int initY)
+    //public WorldMap(String path, Player player, int initX, int initY)
+    public WorldMap(String path, PlayerAuto player, int initX, int initY)
     {
         try {
             _tiles = new TiledMap("res/map3.tmx");

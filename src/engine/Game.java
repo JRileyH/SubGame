@@ -27,6 +27,8 @@ public class Game extends BasicGame
 
 	//Input
 	static KeyMap keymap;									//Keyboard Bindings
+	static MouseMap mousemap;								//Mouse Bindings
+
 	//Modules
 	public static ui.Init ui;								//Menu mode.
 	public static marketflow.Init mf;						//World map mode.
@@ -42,6 +44,7 @@ public class Game extends BasicGame
 	{//Changes the game state enum and resets the bound keys for that state
 		state = s;
 		keymap.mapKeys(s);
+		mousemap.mapMouse(s);
 	}
 	@Override
 	public void keyPressed(int key, char c)
@@ -57,11 +60,25 @@ public class Game extends BasicGame
 	}
 
 	@Override
+	public void mousePressed(int button, int x, int y)
+	{//Sends Mouse Input to MouseMap class for processing
+		super.mousePressed(button, x, y);
+		mousemap.press(button, true, (int)(x/SCALE), (int)(y/SCALE));
+	}
+	@Override
+	public void mouseReleased(int button, int x, int y)
+	{//Sends Mouse Input to MouseMap class for processing
+		super.mousePressed(button, x, y);
+		mousemap.press(button, false, x, y);
+	}
+
+	@Override
 	public void init(GameContainer game) throws SlickException
 	{
 		game.setTargetFrameRate(60);
 		XMLHandler xmlh = new XMLHandler();
 		keymap = new KeyMap(xmlh);
+		mousemap = new MouseMap(xmlh);
 
 		ui = new ui.Init();
 		mf = new marketflow.Init(xmlh);
