@@ -4,7 +4,7 @@
   <image source="water.png" width="256" height="256"/>
  </tileset>
  <tileset firstgid="65" name="water" tilewidth="32" tileheight="32" tilecount="64" columns="8">
-  <image source="../../../Desktop/water.png" width="256" height="256"/>
+  <image source="water.png" width="256" height="256"/>
  </tileset>
  <layer name="Tile Layer 1" width="100" height="100">
   <data encoding="base64" compression="gzip">
