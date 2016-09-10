@@ -39,6 +39,8 @@ public class Init
 				3,																//Gear Size
 				7,																//Max Forward Gears
 				-3,																//Max Reverse Gears
+				4,																//Max Yaw
+				0.3f,															//Drag
 				0.01f															//Turning Speed
 		);
 

@@ -20,7 +20,6 @@ public class WorldMap
     private int _panX,_panY;
     private int _edgeX,_edgeY;
     private int _waveX,_waveY;
-    private boolean swap=false;
     private Player _player;
     private TiledMap _tiles;
     private TiledMap _overlay;
@@ -30,15 +29,15 @@ public class WorldMap
     public WorldMap(String path, Player player, int initX, int initY)
     {
         try {
-            _tiles = new TiledMap("res/map.tmx");
+            _tiles = new TiledMap("res/map3.tmx");
             _overlay = new TiledMap("res/overlay.tmx");
         } catch (SlickException e) {
             e.printStackTrace();
         }
         _player=player;
 
-        _width=3200;//_img.getWidth();
-        _height=3200;//_img.getHeight();
+        _width= _tiles.getWidth();//_img.getWidth();
+        _height=_tiles.getHeight();//_img.getHeight();
         _offsetX=-initX;
         _offsetY=-initY;
         _panX=0;
@@ -74,10 +73,11 @@ public class WorldMap
 
     public void update(int count)
     {
-        _offsetX+=_player.Velocity().getX();
-        _offsetY+=_player.Velocity().getY();
-        if(_offsetX>0){_offsetX=0;}else if(_offsetX<_edgeX){_offsetX=_edgeX;}
-        if(_offsetY>0){_offsetY=0;}else if(_offsetY<_edgeY){_offsetY=_edgeY;}
+
+        _offsetX+=(int)_player.Velocity().getX();
+        _offsetY+=(int)_player.Velocity().getY();
+        //if(_offsetX>0){_offsetX=0;}else if(_offsetX<_edgeX){_offsetX=_edgeX;}
+        //if(_offsetY>0){_offsetY=0;}else if(_offsetY<_edgeY){_offsetY=_edgeY;}
         _waveX--;_waveY--;
         if(_waveX<-32){_waveX=0;_waveY=0;}
     }

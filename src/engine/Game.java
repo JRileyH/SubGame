@@ -9,7 +9,7 @@ public class Game extends BasicGame
 {
 	//Screen
 	public static int WIDTH, HEIGHT;						//screen dimensions
-
+	public static float SCALE=0.5f;								//zoom value
 	//States
 	public enum State
 	{//What state the game is running in. Controls what logic is done and what is rendered
@@ -116,6 +116,7 @@ public class Game extends BasicGame
 	@Override
 	public void render(GameContainer game, Graphics g) throws SlickException
 	{//Slick2D render loop
+		game.getGraphics().scale(SCALE,SCALE);
 		g.setColor(Color.gray);
 		g.fillRect(0,0,WIDTH,HEIGHT);
 		g.setColor(Color.black);
@@ -143,8 +144,8 @@ public class Game extends BasicGame
 			AppGameContainer agc;
 			agc = new AppGameContainer(new Game("Sub Game"));
 			agc.setDisplayMode(1600, 900, false);
-			WIDTH=agc.getWidth();
-			HEIGHT=agc.getHeight();
+			WIDTH=(int)(agc.getWidth()/SCALE);
+			HEIGHT=(int)(agc.getHeight()/SCALE);
 			agc.start();
 		}
 		catch (SlickException ex)

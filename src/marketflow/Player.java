@@ -12,77 +12,49 @@ import java.util.Map;
 public class Player extends Entity
 {
     private Vector2f _velocity = new Vector2f(0,0);
-    private float _velocity_angle;
     private Vector2f _carrot = new Vector2f(0,0);
-    private float _carrot_angle;
+    private float _angle;
     private int _gear;
     private int _gearSize;
     private int _maxGear;
     private int _minGear;
+    private int _yaw;
+    private int _maxYaw;
+    private float _drag;
     private float _handling;
-    private enum yaw
-    {
-        HARD_LEFT,
-        LEFT,
-        NONE,
-        RIGHT,
-        HARD_RIGHT,
-    }
-    private yaw _yaw;
 
-    public Player(String id, String desc, Map<String, Stock> st_ref, int x, int y, int gear, int max, int min, float handling)
+
+    public Player(String id, String desc, Map<String, Stock> st_ref, int x, int y, int gear, int max_gear, int min_gear, int max_yaw, float drag, float handling)
     {
         super(id, desc, st_ref, x, y, "res/player.png");
         _gear = 0;
         _gearSize=gear;
-        _maxGear =max;
-        _minGear =min;
-        _velocity_angle = (float)Math.PI/2;
-        _carrot_angle = (float)Math.PI/2;
+        _maxGear =max_gear;
+        _minGear =min_gear;
+        _angle = (float)Math.PI/2;
+        _yaw = 0;
+        _maxYaw = max_yaw;
+        _drag=drag;
         _handling=handling;
-        _yaw = yaw.NONE;
-        _img.setCenterOfRotation(0,32);
     }
 
     public void update(int count)
     {
-        //Determine amount to turn
-        switch(_yaw)
-        {
-            case HARD_RIGHT:
-                _carrot_angle+=_handling*2;
-                _img.setRotation(_img.getRotation()+(float)Math.toDegrees(_handling*2));
-                break;
-            case RIGHT:
-                _carrot_angle+=_handling;
-                _img.setRotation(_img.getRotation()+(float)Math.toDegrees(_handling));
-                break;
-            case LEFT:
-                _carrot_angle-=_handling;
-                _img.setRotation(_img.getRotation()-(float)Math.toDegrees(_handling));
-                break;
-            case HARD_LEFT:
-                _carrot_angle-=_handling*2;
-                _img.setRotation(_img.getRotation()-(float)Math.toDegrees(_handling*2));
-                break;
-        }
-
-        //Set Ship Velocity
-        //_velocity.x = (float)(Speed() * Math.cos(_velocity_angle));
-        //_velocity.y = (float)(Speed() * Math.sin(_velocity_angle));
-
-
+        //Determine yaw
+        _angle +=_handling*_yaw;
+        _img.setRotation(_img.getRotation()+(float)Math.toDegrees(_handling*_yaw));
 
         //Set Carrot
-        _carrot.x = (float)(Speed() * Math.cos(_carrot_angle));
-        _carrot.y = (float)(Speed() * Math.sin(_carrot_angle));
-
+        _carrot.x = (float)(Speed() * Math.cos(_angle));
+        _carrot.y = (float)(Speed() * Math.sin(_angle));
 
         //Catch Up to Carrot
-        if(_velocity.x<_carrot.x){_velocity.x+=0.1;}
-        if(_velocity.x>_carrot.x){_velocity.x-=0.1;}
-        if(_velocity.y<_carrot.y){_velocity.y+=0.1;}
-        if(_velocity.y>_carrot.y){_velocity.y-=0.1;}
+        double deltaX = _carrot.x - _velocity.x;
+        double deltaY = _carrot.y - _velocity.y;
+        float delta = (float)Math.atan2(deltaY, deltaX);
+        _velocity.x += (float)(_drag * Math.cos(delta));
+        _velocity.y += (float)(_drag * Math.sin(delta));
+
 
         //Keep ship centered
         _posX = (Game.WIDTH/2)-Game.mf.Map().OffsetX();
@@ -110,8 +82,8 @@ public class Player extends Entity
 
         g.drawString("Gear: "+ _gear , x+50,y+50);
         g.drawString("Speed: "+ Speed(), x+50,y+70);
-        g.drawString("X: "+ _velocity.x+" Y: "+ _velocity.y, x+50,y+90);
-        g.drawString("Yaw: "+_yaw.toString(), x+50,y+110);
+        g.drawString("X: "+ -(int)_velocity.x+" Y: "+ -(int)_velocity.y, x+50,y+90);
+        g.drawString("Yaw: "+_yaw, x+50,y+110);
     }
 
     public void shiftUp()
@@ -132,17 +104,17 @@ public class Player extends Entity
 
     public void tackLeft()
     {
-        if(_yaw!=yaw.HARD_LEFT)
+        if(_yaw>-_maxYaw)
         {
-            _yaw=_yaw.values()[_yaw.ordinal()-1];
+            _yaw--;
         }
     }
 
     public void tackRight()
     {
-        if(_yaw!=yaw.HARD_RIGHT)
+        if(_yaw<_maxYaw)
         {
-            _yaw=_yaw.values()[_yaw.ordinal()+1];
+            _yaw++;
         }
     }
 
@@ -154,4 +126,6 @@ public class Player extends Entity
     public void Handling(int amt){_handling=amt;}
     public int MaxGear(){return _maxGear;}
     public int MinGear(){return _minGear;}
+    public int Yaw(){return _yaw;}
+    public int MaxYaw(){return _maxYaw;}
 }
