@@ -130,6 +130,9 @@ public class Init
 		{
 			s.render(game,g);
 		}
+
+		_map.overlay(game,g);
+
 		g.setColor(Color.orange);
 		g.drawString("MarketFlow " + _map.OffsetX() + ", " + _map.OffsetY(), 100, 10);
 		g.setColor(Color.black);

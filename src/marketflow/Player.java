@@ -11,12 +11,14 @@ import java.util.Map;
  */
 public class Player extends Entity
 {
+    private Vector2f _velocity = new Vector2f(0,0);
+    private float _velocity_angle;
     private Vector2f _carrot = new Vector2f(0,0);
+    private float _carrot_angle;
     private int _gear;
     private int _gearSize;
     private int _maxGear;
     private int _minGear;
-    private float _angle;
     private float _handling;
     private enum yaw
     {
@@ -35,7 +37,8 @@ public class Player extends Entity
         _gearSize=gear;
         _maxGear =max;
         _minGear =min;
-        _angle = (float)Math.PI/2;
+        _velocity_angle = (float)Math.PI/2;
+        _carrot_angle = (float)Math.PI/2;
         _handling=handling;
         _yaw = yaw.NONE;
         _img.setCenterOfRotation(0,32);
@@ -47,26 +50,39 @@ public class Player extends Entity
         switch(_yaw)
         {
             case HARD_RIGHT:
-                _angle+=_handling*2;
+                _carrot_angle+=_handling*2;
                 _img.setRotation(_img.getRotation()+(float)Math.toDegrees(_handling*2));
                 break;
             case RIGHT:
-                _angle+=_handling;
+                _carrot_angle+=_handling;
                 _img.setRotation(_img.getRotation()+(float)Math.toDegrees(_handling));
                 break;
             case LEFT:
-                _angle-=_handling;
+                _carrot_angle-=_handling;
                 _img.setRotation(_img.getRotation()-(float)Math.toDegrees(_handling));
                 break;
             case HARD_LEFT:
-                _angle-=_handling*2;
+                _carrot_angle-=_handling*2;
                 _img.setRotation(_img.getRotation()-(float)Math.toDegrees(_handling*2));
                 break;
         }
 
         //Set Ship Velocity
-        _carrot.x = (float)(Speed() * Math.cos(_angle));
-        _carrot.y = (float)(Speed() * Math.sin(_angle));
+        //_velocity.x = (float)(Speed() * Math.cos(_velocity_angle));
+        //_velocity.y = (float)(Speed() * Math.sin(_velocity_angle));
+
+
+
+        //Set Carrot
+        _carrot.x = (float)(Speed() * Math.cos(_carrot_angle));
+        _carrot.y = (float)(Speed() * Math.sin(_carrot_angle));
+
+
+        //Catch Up to Carrot
+        if(_velocity.x<_carrot.x){_velocity.x+=0.1;}
+        if(_velocity.x>_carrot.x){_velocity.x-=0.1;}
+        if(_velocity.y<_carrot.y){_velocity.y+=0.1;}
+        if(_velocity.y>_carrot.y){_velocity.y-=0.1;}
 
         //Keep ship centered
         _posX = (Game.WIDTH/2)-Game.mf.Map().OffsetX();
@@ -88,11 +104,13 @@ public class Player extends Entity
 
         g.setColor(Color.red);
         g.drawLine(x,y,x- _carrot.x*5,y- _carrot.y*5);
+        g.setColor(Color.blue);
+        g.drawLine(x,y,x- _velocity.x*5,y- _velocity.y*5);
         g.setColor(Color.black);
 
         g.drawString("Gear: "+ _gear , x+50,y+50);
         g.drawString("Speed: "+ Speed(), x+50,y+70);
-        g.drawString("X: "+ _carrot.x+" Y: "+ _carrot.y, x+50,y+90);
+        g.drawString("X: "+ _velocity.x+" Y: "+ _velocity.y, x+50,y+90);
         g.drawString("Yaw: "+_yaw.toString(), x+50,y+110);
     }
 
@@ -131,8 +149,7 @@ public class Player extends Entity
     public int Speed(){return _gear * _gearSize;}
     public int Gear(){return _gear;}
     public void GearSize(int amt){_gearSize =amt;}
-    public Vector2f Velocity(){return _carrot;}
-    public float Angle(){return _angle;}
+    public Vector2f Velocity(){return _velocity;}
     public float Handling(){return _handling;}
     public void Handling(int amt){_handling=amt;}
     public int MaxGear(){return _maxGear;}

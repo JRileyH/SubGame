@@ -19,8 +19,11 @@ public class WorldMap
     private int _offsetX,_offsetY;
     private int _panX,_panY;
     private int _edgeX,_edgeY;
+    private int _waveX,_waveY;
+    private boolean swap=false;
     private Player _player;
     private TiledMap _tiles;
+    private TiledMap _overlay;
     private Map<String, Rectangle> _scrollBoxes;
 
 
@@ -28,6 +31,7 @@ public class WorldMap
     {
         try {
             _tiles = new TiledMap("res/map.tmx");
+            _overlay = new TiledMap("res/overlay.tmx");
         } catch (SlickException e) {
             e.printStackTrace();
         }
@@ -39,6 +43,8 @@ public class WorldMap
         _offsetY=-initY;
         _panX=0;
         _panY=0;
+        _waveX=0;
+        _waveY=0;
         _edgeX = Game.WIDTH-_width;
         _edgeY = Game.HEIGHT-_height;
 
@@ -72,6 +78,8 @@ public class WorldMap
         _offsetY+=_player.Velocity().getY();
         if(_offsetX>0){_offsetX=0;}else if(_offsetX<_edgeX){_offsetX=_edgeX;}
         if(_offsetY>0){_offsetY=0;}else if(_offsetY<_edgeY){_offsetY=_edgeY;}
+        _waveX--;_waveY--;
+        if(_waveX<-32){_waveX=0;_waveY=0;}
     }
 
     public void tick(int count)
@@ -81,13 +89,17 @@ public class WorldMap
 
     public void render(GameContainer game, Graphics g)
     {
-       // g.drawImage(_img, _offsetX+_panX, _offsetY+_panY);
         _tiles.render(_offsetX+_panX,_offsetY+_panY);
 
         for(Rectangle r : _scrollBoxes.values())
         {
             g.drawRect(r.x,r.y,r.width,r.height);
         }
+    }
+
+    public void overlay(GameContainer game, Graphics g)
+    {
+        _overlay.render(_panX+_waveX,_panY+_waveY);
     }
 
    // public Image Img() { return _img; }
