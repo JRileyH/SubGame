@@ -26,16 +26,17 @@ public class PlayerAuto extends Entity
 
     public PlayerAuto(String id, String desc, Map<String, Stock> st_ref, int x, int y, int gear, int max_gear, int min_gear, int max_yaw, float drag, float handling)
     {
-        super(id, desc, st_ref, x, y, "res/player.png");
+        super(id, desc, st_ref, "res/marketflow/entities/player.png", null, x, y);
         _center = new Vector2f((Game.WIDTH/2),(Game.HEIGHT/2));
         _trajectory = new Vector2f((Game.WIDTH/2),(Game.HEIGHT/2));
         _carrot = new Vector2f((Game.WIDTH/2),(Game.HEIGHT/2));
+        _angle=0.0f;
 
         _gear = 0;
         _gearSize=gear;
         _maxGear =max_gear;
         _minGear =min_gear;
-        _angle = (float)Math.PI/2;
+        _angle = (float)-Math.PI/2;
         _yaw = 0;
         _maxYaw = max_yaw;
         _drag=drag;
@@ -44,14 +45,16 @@ public class PlayerAuto extends Entity
 
     public void update(int count)
     {
+        _carrot.x+=(int)Velocity().x;
+        _carrot.y+=(int)Velocity().y;
+
         double deltaX = _carrot.x - _trajectory.x;
         double deltaY = _carrot.y - _trajectory.y;
-        float angle = (float) Math.atan2(deltaY, deltaX);
-        _trajectory.x += (float) (_drag * Math.cos(angle));
-        _trajectory.y += (float) (_drag * Math.sin(angle));
+        float _angle = (float) Math.atan2(deltaY, deltaX);
+        _trajectory.x += (float) (_drag * Math.cos(_angle));
+        _trajectory.y += (float) (_drag * Math.sin(_angle));
 
-        _carrot.x+=Velocity().x;
-        _carrot.y+=Velocity().y;
+        //_img.setRotation((float)Math.toDegrees(_angle+Math.PI/2));
 
         //Keep ship centered
         _posX = (Game.WIDTH / 2) - Game.mf.Map().OffsetX();

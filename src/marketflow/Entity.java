@@ -8,34 +8,24 @@ import org.apache.poi.ss.usermodel.Row;
 
 import engine.Game;
 import org.newdawn.slick.*;
+import org.newdawn.slick.geom.Polygon;
 
-public class Entity
+public class Entity extends Obstacle
 {
 	protected int _credit;
 	protected String _id;
 	protected Map<String, Stock> _stockRef;
 	protected int _population;
 	protected int _populationMax = 1;
-	protected int _posX, _posY;
 	protected String _description;
-	protected org.newdawn.slick.Image _img = null;
 	protected HSSFSheet _reportSheet;
 	
-	public Entity(String id, String desc, Map<String, Stock> st_ref, int x, int y, String spritePath)
+	public Entity(String id, String desc, Map<String, Stock> st_ref, String path, Polygon hitbox, int x, int y)
 	{
+		super(path,hitbox,x,y);
 		_id = id;
 		_description = desc;
 		_stockRef = st_ref;
-		_posX = x;
-		_posY = y;
-
-		if(spritePath!=null){
-			try {
-				_img = new Image(spritePath);
-			} catch (SlickException e) {
-				e.printStackTrace();
-			}
-		}
 
 		if(this.getClass().getName().equals("marketflow.City"))
 		{
@@ -138,7 +128,7 @@ public class Entity
 
 	public void update(int count)
 	{//Fast Logic Loop
-
+		super.update(count);
 	}
 
 	protected int rowNum = 1;
@@ -165,13 +155,10 @@ public class Entity
 
 	public void render(GameContainer game, Graphics g)
 	{
-		int x = _posX +Game.mf.Map().OffsetX()-_img.getWidth()/2+Game.mf.Map().PanX();
-		int y = _posY +Game.mf.Map().OffsetY()-_img.getHeight()/2+Game.mf.Map().PanY();
-
-		g.drawImage(_img, x, y);
-		g.drawString(_id, x-30, y-20);
+		super.render(game,g);
+		if(renderable) g.drawString(_id, _relX, _relY);
 	}
-	
+
 	public boolean Immigrate(Entity source, int amt)
 	{
 		if(source.Population()>amt&& _population <(_populationMax -amt)){

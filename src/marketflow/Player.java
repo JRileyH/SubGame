@@ -2,6 +2,8 @@ package marketflow;
 
 import engine.Game;
 import org.newdawn.slick.*;
+import org.newdawn.slick.geom.Polygon;
+import org.newdawn.slick.geom.Transform;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.Map;
@@ -11,8 +13,9 @@ import java.util.Map;
  */
 public class Player extends Entity
 {
-    private Vector2f _velocity = new Vector2f(0,0);
-    private Vector2f _carrot = new Vector2f(0,0);
+    private Vector2f _center;
+    private Vector2f _trajectory;
+    private Vector2f _carrot;
     private float _angle;
     private int _gear;
     private int _gearSize;
@@ -23,12 +26,13 @@ public class Player extends Entity
     private float _drag;
     private float _handling;
 
-    private boolean _autopilot=false;
-
 
     public Player(String id, String desc, Map<String, Stock> st_ref, int x, int y, int gear, int max_gear, int min_gear, int max_yaw, float drag, float handling)
     {
-        super(id, desc, st_ref, x, y, "res/player.png");
+        super(id, desc, st_ref, "res/marketflow/entities/player.png", null, x, y);
+        _center = new Vector2f((Game.WIDTH/2),(Game.HEIGHT/2));
+        _trajectory = new Vector2f((Game.WIDTH/2),(Game.HEIGHT/2));
+        _carrot = new Vector2f((Game.WIDTH/2),(Game.HEIGHT/2));
         _gear = 0;
         _gearSize=gear;
         _maxGear =max_gear;
@@ -42,24 +46,23 @@ public class Player extends Entity
 
     public void update(int count)
     {
+        super.update(count);
         //Determine yaw
-        if(!_autopilot) {
-            _angle += _handling * _yaw;
-            _img.setRotation(_img.getRotation() + (float) Math.toDegrees(_handling * _yaw));
+        _angle += _handling * _yaw;
+        _img.setRotation(_img.getRotation() + (float) Math.toDegrees(_handling * _yaw));
+        //TODO: Make Rotation happen baby
+        //_hitbox=(Polygon)_hitbox.transform(Transform.createRotateTransform(_angle));
 
-            //Set Carrot
-            _carrot.x = (float) (Speed() * Math.cos(_angle));
-            _carrot.y = (float) (Speed() * Math.sin(_angle));
+        //Set Carrot
+        _carrot.x = (float) (_center.x-(Speed() * Math.cos(_angle)));
+        _carrot.y = (float) (_center.y-(Speed() * Math.sin(_angle)));
 
-            //Catch Up to Carrot
-            double deltaX = _carrot.x - _velocity.x;
-            double deltaY = _carrot.y - _velocity.y;
-            float delta = (float) Math.atan2(deltaY, deltaX);
-            _velocity.x += (float) (_drag * Math.cos(delta));
-            _velocity.y += (float) (_drag * Math.sin(delta));
-        }else{
-
-        }
+        //Catch Up to Carrot
+        double deltaX = _carrot.x - _trajectory.x;
+        double deltaY = _carrot.y - _trajectory.y;
+        float delta = (float) Math.atan2(deltaY, deltaX);
+        _trajectory.x += (float) (_drag * Math.cos(delta));
+        _trajectory.y += (float) (_drag * Math.sin(delta));
 
         //Keep ship centered
         _posX = (Game.WIDTH / 2) - Game.mf.Map().OffsetX();
@@ -79,23 +82,26 @@ public class Player extends Entity
         int x = (Game.WIDTH/2)+panx;
         int y = (Game.HEIGHT/2)+pany;
 
+        g.setColor(Color.green);
+        g.drawOval(_center.x-3,_center.y-3,6,6);
+        g.drawOval(_center.x-13,_center.y-13,26,26);
         g.setColor(Color.red);
-        g.drawLine(x,y,x- _carrot.x*5,y- _carrot.y*5);
+        g.drawOval(_carrot.x-3,_carrot.y-3,6,6);
+        g.drawOval(_carrot.x-13,_carrot.y-13,26,26);
         g.setColor(Color.blue);
-        g.drawLine(x,y,x- _velocity.x*5,y- _velocity.y*5);
+        g.drawOval(_trajectory.x-3, _trajectory.y-3,6,6);
+        g.drawOval(_trajectory.x-13, _trajectory.y-13,26,26);
         g.setColor(Color.black);
 
         g.drawString("Gear: "+ _gear , x+50,y+50);
         g.drawString("Speed: "+ Speed(), x+50,y+70);
-        g.drawString("Velocity - X: "+ -(int)_velocity.x+" Y: "+ -(int)_velocity.y, x+50,y+90);
-        g.drawString("Carrot - X: "+ -(int)_carrot.x+" Y: "+ -(int)_carrot.y, x+50,y+110);
+        g.drawString("Velocity - X: "+ -(int)Velocity().x+" Y: "+ -(int)Velocity().y, x+50,y+90);
         g.drawString("Yaw: "+_yaw, x+50,y+130);
-        g.drawString("AutoPilot: "+_autopilot, x+50,y+150);
     }
 
     public void shiftUp()
     {
-        if (_gear < _maxGear && !_autopilot)
+        if (_gear < _maxGear)
         {
             _gear++;
         }
@@ -103,50 +109,47 @@ public class Player extends Entity
 
     public void shiftDown()
     {
-        if (_gear > _minGear && !_autopilot)
+        if (_gear > _minGear)
         {
             _gear--;
         }
     }
 
-    public void tackLeft()
+    public void tackLeft(boolean on)
     {
-        if(_yaw>-_maxYaw && !_autopilot)
+        /*if(_yaw>-_maxYaw)
         {
             _yaw--;
-        }
+        }*/
+        if(on){_yaw=-3;}else{_yaw=0;}
     }
 
-    public void tackRight()
+    public void tackRight(boolean on)
     {
-        if(_yaw<_maxYaw && !_autopilot)
+        /*if(_yaw<_maxYaw)
         {
             _yaw++;
-        }
+        }*/
+        if(on){_yaw=3;}else{_yaw=0;}
     }
 
     public void GoTo(float x, float y)
     {
-        if(_autopilot)
-        {
-            _carrot.x = ((Game.WIDTH*Game.SCALE/2)-x)/2;
-            _carrot.y = ((Game.HEIGHT*Game.SCALE/2)-y)/3;
-            _gear = 3;
-        }
+
     }
 
     public void toggleAutoPilot()
     {
-        _autopilot=!_autopilot;
-        _gear=0;
-        _carrot.x=0;
-        _carrot.y=0;
+
     }
 
     public int Speed(){return _gear * _gearSize;}
     public int Gear(){return _gear;}
     public void GearSize(int amt){_gearSize =amt;}
-    public Vector2f Velocity(){return _velocity;}
+    public Vector2f Velocity()
+    {
+        return new Vector2f(_center.x- _trajectory.x,_center.y- _trajectory.y);
+    }
     public float Handling(){return _handling;}
     public void Handling(int amt){_handling=amt;}
     public int MaxGear(){return _maxGear;}

@@ -1,5 +1,8 @@
 package engine;
 import org.newdawn.slick.*;
+import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL11.*;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -9,7 +12,7 @@ public class Game extends BasicGame
 {
 	//Screen
 	public static int WIDTH, HEIGHT;						//screen dimensions
-	public static float SCALE=0.5f;								//zoom value
+	public static float SCALE=1f;								//zoom value
 	//States
 	public enum State
 	{//What state the game is running in. Controls what logic is done and what is rendered

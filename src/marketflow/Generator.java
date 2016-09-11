@@ -24,7 +24,7 @@ public class Generator extends Entity
 	
 	public Generator(String id, String desc, int x, int y, int cost, int output, String[] inputs, String product, City home, Map<String, Stock> st_ref, int time, int maxpop)
 	{
-		super(id, desc, st_ref, x, y,null);
+		super(id, desc, st_ref, null, null, x, y);
 		_state = State.PRODUCING;
 		_inputs = inputs;
 		_output = output;

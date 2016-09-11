@@ -25,7 +25,7 @@ public class Ship extends Entity
 	
 	public Ship(String id, String desc, int x, int y, int spd, City location, City home, Map<String, City> c_ref, Map<String, Stock> ref, int maxpop)
 	{
-		super(id, desc, ref, x, y,"res/ship.png");
+		super(id, desc, ref,"res/marketflow/entities/ship.png", null, x, y);
 		_state = State.ASSESSING;
 		_populationMax =maxpop;
 		_cityRef=c_ref;
@@ -59,6 +59,8 @@ public class Ship extends Entity
 
 	public void update(int count)
 	{
+		super.update(count);
+
 		if(_state==State.ENROUTE)
 		{
 			//Go go go!
@@ -67,9 +69,7 @@ public class Ship extends Entity
 			_posX += _speed * Math.cos(angle);
 			_posY += _speed * Math.sin(angle);
 
-			double a = _dest.X()-_posX;
-			double b = _dest.Y()-_posY;
-			if(Math.sqrt(a*a+b*b)< _speed *10)
+			if(_dest.Hitbox().contains(_hitbox))
 			{//you made it!
 				_speed--;
 				if(_speed ==0){_state=State.UNLOADING;}

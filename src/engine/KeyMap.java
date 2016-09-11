@@ -42,10 +42,10 @@ public class KeyMap
 			switch(_keyMap.get(c))
 			{
 			case "TackLeft":
-				if(!_keyFlags.get(c)){Game.mf.Player().tackLeft();}
+				Game.mf.Player().tackLeft(d);
 				break;
 			case "TackRight":
-				if(!_keyFlags.get(c)){Game.mf.Player().tackRight();}
+				Game.mf.Player().tackRight(d);
 				break;
 			case "Forward":
 				if(!_keyFlags.get(c)){Game.mf.Player().shiftUp();}

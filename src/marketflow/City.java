@@ -23,7 +23,7 @@ public class City extends Entity
 	
 	public City(String id, String desc, int x, int y, Map<String, Ship> sh_ref, Map<String, Generator> g_ref, Map<String, Housing> h_ref, Map<String, Stock> st_ref)
 	{
-		super(id, desc, st_ref, x, y,"res/city.png");
+		super(id, desc, st_ref,"res/marketflow/entities/city.png", null, x, y);
 		_shipRef =sh_ref;
 		_genRef =g_ref;
 		_houseRef =h_ref;
@@ -60,9 +60,6 @@ public class City extends Entity
 		}
 		logCol=oldLogCol;
 	}
-	
-	public int X(){return _posX;}
-	public int Y(){return _posY;}
 
 	public void BasePrices(Map<String, Integer> in){_basePrices =in;}
 	public Map<String, Integer> BasePrices()

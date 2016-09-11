@@ -13,7 +13,7 @@ public class Housing extends Entity
 	
 	public Housing(String id, String desc, int x, int y, String[] consumes, String[] lux, City city, Map<String, Stock> st_ref, int tax, int maxpop)
 	{
-		super(id, desc, st_ref, x, y,null);
+		super(id, desc, st_ref, null, null, x, y);
 
 		_home =city;
 		_populationMax = maxpop;

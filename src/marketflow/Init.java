@@ -3,19 +3,23 @@ package marketflow;
 import java.io.File;
 import java.io.FileOutputStream;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import engine.XMLHandler;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL14;
 import org.newdawn.slick.*;
+import org.newdawn.slick.geom.Polygon;
 
 public class Init
 {
 	private WorldMap _map;
-	//private Player _player;
-	private PlayerAuto _player;
+	private Player _player;
+	//private PlayerAuto _player;
 	private Map<String, City> _cityColl;
 	private Map<String, Stock> _cityResColl;
 	private Map<String, Ship> _shipColl;
@@ -25,6 +29,12 @@ public class Init
 	private Map<String, Housing> _houseColl;
 	private Map<String, Stock> _houseResColl;
 
+	private ArrayList<Obstacle> _obstacles;
+	private ArrayList<Light> _lights;
+	private Graphics _shading;
+	private Image _shadow;
+
+
 	public static HSSFWorkbook cityBook;
 	public static HSSFWorkbook shipBook;
 	public static HSSFWorkbook housingBook;
@@ -32,8 +42,8 @@ public class Init
 
 	public Init(XMLHandler xmlh)
 	{
-		//_player = new Player("Player Name",										//Player Name
-		_player = new PlayerAuto("Player Name",								//Player Name
+		_player = new Player("Player Name",										//Player Name
+		//_player = new PlayerAuto("Player Name",								//Player Name
 				"Your Ship. There are many like it but this one is yours.",		//Description
 				null,															//Stock Reference
 				0,																//X
@@ -46,7 +56,7 @@ public class Init
 				0.01f															//Turning Speed
 		);
 
-		_map = new WorldMap("res/map.jpg", _player, 100, 100);
+		_map = new WorldMap(_player, 0, 0);
 
 		cityBook = new HSSFWorkbook();
 		shipBook = new HSSFWorkbook();
@@ -64,12 +74,31 @@ public class Init
 		
 		_houseColl = new HashMap<>();
 		_houseResColl = new HashMap<>();
-		
-		xmlh.processMarketFlow(_cityColl,_shipColl,_genColl,_cityResColl,_shipResColl,_genResColl,_houseColl,_houseResColl);
-		for(City c : _cityColl.values())
-		{
-			c.update(0);
+
+		_obstacles = new ArrayList<>();
+		_lights = new ArrayList<>();
+		try {
+			_shadow = new Image("res/marketflow/shadow.png");
+		} catch (SlickException e) {
+			e.printStackTrace();
 		}
+		//TESTING OBSTACLES
+		float[] o_points=new float[]{
+				46,50-36,
+				157,0,
+				247,128-36,
+				239,154-36,
+				205,196-36,
+				125,220-36,
+				58,193-36,
+				0,121-36
+		};
+		_obstacles.add(new Obstacle("res/marketflow/rock.png",new Polygon(o_points),400,400));
+
+		//TESTING LIGHTING
+		_lights.add(new Light(500,500,1.0f));
+
+		xmlh.processMarketFlow(_cityColl,_shipColl,_genColl,_cityResColl,_shipResColl,_genResColl,_houseColl,_houseResColl);
 	}
 
 	public void update(int count)
@@ -93,6 +122,14 @@ public class Init
 		for(Housing h : _houseColl.values())
 		{
 			h.update(count);
+		}
+		for(Obstacle o : _obstacles)
+		{
+			o.update(count);
+		}
+		for(Light l : _lights)
+		{
+			l.update(count);
 		}
 	}
 
@@ -134,6 +171,24 @@ public class Init
 		{
 			s.render(game,g);
 		}
+		for(Obstacle o : _obstacles)
+		{
+			o.render(game,g);
+		}
+
+
+
+		//GL14.glBlendFuncSeparate(GL11.GL_SRC_ALPHA,GL11.GL_ONE_MINUS_SRC_ALPHA,GL11.GL_ONE,GL11.GL_ONE_MINUS_SRC_ALPHA);
+		_shadow.startUse();
+		GL11.glColorMask(false,false,false,true);
+		for(Light l : _lights)
+		{
+			_shadow.drawEmbedded(l.X(),l.Y(),l.Width(),l.Height());
+		}
+		//g.drawImage(_shadow, 0,0,(float)game.getWidth(),(float)game.getHeight(),0,0,(float)game.getWidth(),(float)game.getHeight());
+		_shadow.endUse();
+
+
 
 		_map.overlay(game,g);
 
@@ -194,6 +249,6 @@ public class Init
 	}
 
 	public WorldMap Map(){return _map;}
-	//public Player Player(){return _player;}
-	public PlayerAuto Player(){return _player;}
+	public Player Player(){return _player;}
+	//public PlayerAuto Player(){return _player;}
 }
