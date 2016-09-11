@@ -1,7 +1,5 @@
 package engine;
 import org.newdawn.slick.*;
-import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL11.*;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

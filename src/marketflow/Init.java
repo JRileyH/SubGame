@@ -1,4 +1,6 @@
 package marketflow;
+import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL11.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -10,8 +12,6 @@ import java.util.Map;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import engine.XMLHandler;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL14;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Polygon;
 
@@ -178,14 +178,14 @@ public class Init
 
 
 
-		//GL14.glBlendFuncSeparate(GL11.GL_SRC_ALPHA,GL11.GL_ONE_MINUS_SRC_ALPHA,GL11.GL_ONE,GL11.GL_ONE_MINUS_SRC_ALPHA);
 		_shadow.startUse();
-		GL11.glColorMask(false,false,false,true);
+
 		for(Light l : _lights)
 		{
-			_shadow.drawEmbedded(l.X(),l.Y(),l.Width(),l.Height());
+
 		}
-		//g.drawImage(_shadow, 0,0,(float)game.getWidth(),(float)game.getHeight(),0,0,(float)game.getWidth(),(float)game.getHeight());
+		_shadow.setAlpha(0.5f);
+		g.drawImage(_shadow, 0,0,(float)game.getWidth(),(float)game.getHeight(),0,0,(float)game.getWidth(),(float)game.getHeight());
 		_shadow.endUse();
 
 

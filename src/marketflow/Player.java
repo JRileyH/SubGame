@@ -44,8 +44,7 @@ public class Player extends Entity
         _handling=handling;
     }
 
-    public void update(int count)
-    {
+    public void update(int count) {
         super.update(count);
         //Determine yaw
         _angle += _handling * _yaw;
@@ -54,8 +53,8 @@ public class Player extends Entity
         //_hitbox=(Polygon)_hitbox.transform(Transform.createRotateTransform(_angle));
 
         //Set Carrot
-        _carrot.x = (float) (_center.x-(Speed() * Math.cos(_angle)));
-        _carrot.y = (float) (_center.y-(Speed() * Math.sin(_angle)));
+        _carrot.x = (float) (_center.x - (Speed() * Math.cos(_angle)));
+        _carrot.y = (float) (_center.y - (Speed() * Math.sin(_angle)));
 
         //Catch Up to Carrot
         double deltaX = _carrot.x - _trajectory.x;
