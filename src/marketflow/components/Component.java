@@ -1,4 +1,4 @@
-package marketflow;
+package marketflow.components;
 
 import engine.Game;
 import org.newdawn.slick.GameContainer;
@@ -10,7 +10,7 @@ import org.newdawn.slick.geom.Polygon;
 /**
  * Created by Riggy on 9/10/2016.
  */
-public class Obstacle
+public class Component
 {
     protected boolean hasImage;
     protected boolean hasHitbox;
@@ -23,7 +23,7 @@ public class Obstacle
     protected Image _img = null;
     protected Polygon _hitbox = null;
 
-    public Obstacle(String path, Polygon hitbox, int x, int y){
+    public Component(String path, Polygon hitbox, int x, int y){
         if(path!=null){
             try {
                 _img = new Image(path);
@@ -78,7 +78,10 @@ public class Obstacle
 
     public int X(){return _posX;}
     public int Y(){return _posY;}
+    public int relX(){return _relX;}
+    public int relY(){return _relY;}
     public int Width(){return _width;}
     public int Height(){return _height;}
     public Polygon Hitbox(){return _hitbox;}
+    public boolean Renderable(){return renderable;}
 }

@@ -1,16 +1,18 @@
-package marketflow;
+package marketflow.components.entities;
 
 import java.util.Map;
 
+import marketflow.Init;
+import marketflow.components.Component;
+import marketflow.econ.Stock;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 
-import engine.Game;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Polygon;
 
-public class Entity extends Obstacle
+public class Entity extends Component
 {
 	protected int _credit;
 	protected String _id;
@@ -27,19 +29,19 @@ public class Entity extends Obstacle
 		_description = desc;
 		_stockRef = st_ref;
 
-		if(this.getClass().getName().equals("marketflow.City"))
+		if(this.getClass().getName().equals("marketflow.components.entities.City"))
 		{
 			_reportSheet = Init.cityBook.createSheet(_id +" Report");
 		}
-		else if(this.getClass().getName().equals("marketflow.Ship"))
+		else if(this.getClass().getName().equals("marketflow.components.entities.Ship"))
 		{
 			_reportSheet = Init.shipBook.createSheet(_id +" Report");
 		}
-		else if(this.getClass().getName().equals("marketflow.Housing"))
+		else if(this.getClass().getName().equals("marketflow.components.entities.Housing"))
 		{
 			_reportSheet = Init.housingBook.createSheet(_id +" Report");
 		}
-		else if(this.getClass().getName().equals("marketflow.Generator"))
+		else if(this.getClass().getName().equals("marketflow.components.entities.Generator"))
 		{
 			_reportSheet = Init.generatorBook.createSheet(_id +" Report");
 		}

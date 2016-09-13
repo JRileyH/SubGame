@@ -1,12 +1,11 @@
 package marketflow;
 
 import engine.Game;
+import marketflow.components.entities.Player;
 import org.newdawn.slick.*;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.tiled.TiledMap;
 import org.newdawn.slick.geom.Polygon;
-
-import java.awt.*;
 
 /**
  * Created by Riggy on 9/4/2016.
@@ -24,7 +23,6 @@ public class WorldMap
     private TiledMap _tiles;
     private TiledMap _overlay;
 
-
     public WorldMap(Player player, int initX, int initY)
     //public WorldMap(PlayerAuto player, int initX, int initY)
     {
@@ -38,6 +36,7 @@ public class WorldMap
         }
         _player=player;
 
+
         _width= _tiles.getWidth();
         _height=_tiles.getHeight();
         _offsetX=-initX;
@@ -48,6 +47,7 @@ public class WorldMap
         _waveY=0;
         _edgeX = Game.WIDTH-_width;
         _edgeY = Game.HEIGHT-_height;
+
     }
 
     public void update(int count)
@@ -74,6 +74,7 @@ public class WorldMap
         _overlay.render(_offsetX%_overlay.getTileWidth()+_panX+_waveX-_overlay.getTileWidth(),_offsetY%_overlay.getTileHeight()+_panY+_waveY-_overlay.getTileHeight());
         g.draw(_viewport);
     }
+
 
     public Polygon ViewPort(){return _viewport;}
     public int OffsetX(){return _offsetX;}//Gets the Offset in the X direction

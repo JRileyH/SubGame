@@ -1,5 +1,8 @@
-package marketflow;
+package marketflow.components.entities;
 
+import marketflow.components.entities.City;
+import marketflow.components.entities.Entity;
+import marketflow.econ.Stock;
 import org.newdawn.slick.*;
 
 import java.util.Map;
@@ -52,7 +55,7 @@ public class Housing extends Entity
 				{
 					log("Bought "+ _consumeOrder[i]+" for $"+ _home.Price(_consumeOrder[i]));
 					i--;
-					excess=true;
+					//excess=true;
 				}
 				else
 				{
@@ -88,16 +91,19 @@ public class Housing extends Entity
 				incResource("Water",-1);
 				log("Drank 1 Water.");
 			}
-			boolean ateSomething = false;
+			int amt = Integer.MAX_VALUE;
+			String toEat = null;
 			for(int i = 0; i < _consumeOrder.length; i++) {
-				if (Resource(_consumeOrder[i])>0) {
-					incResource(_consumeOrder[i],-1);
-					log("Ate 1 "+ _consumeOrder[i]);
-					ateSomething=true;
-					break;
+				if (Resource(_consumeOrder[i]) > 0 && amt > Resource(_consumeOrder[i])) {
+					toEat=_consumeOrder[i];
+					amt=Resource(toEat);
 				}
 			}
-			if(!ateSomething){
+			if(toEat!=null) {
+				incResource(toEat, -1);
+				log("Ate 1 " + toEat);
+			}
+			else {
 				incPopulation(-1);
 				log("Dying of Hunger. "+ _population);
 			}

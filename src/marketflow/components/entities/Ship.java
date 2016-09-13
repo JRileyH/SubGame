@@ -1,4 +1,9 @@
-package marketflow;
+package marketflow.components.entities;
+
+import marketflow.components.entities.City;
+import marketflow.components.entities.Entity;
+import marketflow.econ.Stock;
+import marketflow.econ.Transaction;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -33,7 +38,7 @@ public class Ship extends Entity
 		_dock=location;
 		_dest=null;
 		_maxSpeed =spd;
-		console=true;
+		//console=true;
 	}
 
 	public City Location()
@@ -66,20 +71,23 @@ public class Ship extends Entity
 			//Go go go!
 			double angle = Math.atan2(_dest.Y() - _posY, _dest.X() - _posX);
 
-			_posX += _speed * Math.cos(angle);
-			_posY += _speed * Math.sin(angle);
+
 
 			if(_dest.Hitbox().contains(_hitbox))
 			{//you made it!
-				_speed--;
-				if(_speed ==0){_state=State.UNLOADING;}
+				_speed=0;
+				_state=State.UNLOADING;
 			}
 			else
 			{
-				_speed++;
-				if(_speed >= _maxSpeed){
-					_speed = _maxSpeed;}
+				_speed=_maxSpeed;
+				//_speed++;
+				//if(_speed >= _maxSpeed){
+					//_speed = _maxSpeed;}
 			}
+
+			_posX += _speed * Math.cos(angle);
+			_posY += _speed * Math.sin(angle);
 		}
 	}
 
@@ -105,7 +113,7 @@ public class Ship extends Entity
 				for (City city : _cityRef.values())
 				{//check each city
 					//Ignore the city you're in
-					if(_dock._id.equals(city._id)){continue;}
+					if(_dock.ID().equals(city.ID())){continue;}
 
 					//TODO: prevent all traders going to the same place
 
@@ -135,21 +143,21 @@ public class Ship extends Entity
 					{//if you've found a better city to go to..
 						mostProfit=profit;
 						_dest=city;
-						log("Decided to go to "+city._id +" for $"+mostProfit);
+						log("Decided to go to "+city.ID() +" for $"+mostProfit);
 					}
 				}
 				if(_dest==null)
 				{//if you haven't found a city to go to...
-					if(_dock._id.equals(_home._id))
+					if(_dock.ID().equals(_home.ID()))
 					{//if you're already home.. just chill.
 						_state = State.WAITING;
-						log("Could not find profit. Waiting in "+_home._id);
+						log("Could not find profit. Waiting in "+_home.ID());
 						break;
 					}
 					//other wise.. head home to kill time for a bit
 					_dest = _home;
 					_state = State.ENROUTE;
-					log("Could not find profit. Heading home to "+_home._id);
+					log("Could not find profit. Heading home to "+_home.ID());
 				}
 				else
 				{//start loading up for the trip!
@@ -183,7 +191,7 @@ public class Ship extends Entity
 				if(Cargo==null)
 				{
 					_state = State.ENROUTE;
-					log("Setting sail for "+_dest._id +"!");
+					log("Setting sail for "+_dest.ID() +"!");
 					break;
 				}
 
@@ -198,8 +206,8 @@ public class Ship extends Entity
 				}
 				break;
 			case ENROUTE:
-				log("Enroute to "+_dest._id);
-				_state=State.UNLOADING;
+				//log("Enroute to "+_dest._id);
+				//_state=State.UNLOADING;
 				break;
 			case UNLOADING:
 				Transaction sale = null;//the good you will be selling!

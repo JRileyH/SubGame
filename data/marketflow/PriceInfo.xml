@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<class>
+    <Price id="Water">10</Price>
+    <Price id="Fish">12</Price>
+    <Price id="Seaweed">10</Price>
+    <Price id="Soylent">5</Price>
+    <Price id="Decapoda">15</Price>
+    <Price id="Jellies">8</Price>
+    <Price id="Voles">20</Price>
+    <Price id="Veggies">50</Price>
+    <Price id="Oil">25</Price>
+    <Price id="Hard Metals">35</Price>
+    <Price id="Soft Metals">45</Price>
+    <Price id="Chems">35</Price>
+    <Price id="Energy">15</Price>
+    <Price id="Minerals">25</Price>
+    <Price id="Fuel">10</Price>
+    <Price id="Plastic">20</Price>
+    <Price id="Drugs">65</Price>
+    <Price id="Electronics">60</Price>
+    <Price id="Glass">45</Price>
+    <Price id="Parts">85</Price>
+    <Price id="Shells">15</Price>
+    <Price id="Coral">35</Price>
+    <Price id="Pearls">75</Price>
+    <Price id="Spirits">20</Price>
+    <Price id="Salvage">120</Price>
+</class>

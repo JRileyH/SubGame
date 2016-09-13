@@ -1,4 +1,4 @@
-package marketflow;
+package marketflow.econ;
 
 import java.util.HashMap;
 import java.util.Map;

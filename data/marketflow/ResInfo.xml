@@ -5,31 +5,31 @@
 
 		<Description>Deep in a shadows of sunless trench, Black Bottom, an old world mining operation never meant for human occupation has become a vestige and booming industrial hub.</Description>
 
-		<cRes id="Water" type="consumable" base="10">0</cRes>
-		<cRes id="Fish" type="consumable" base="10">0</cRes>
-		<cRes id="Seaweed" type="consumable" base="10">0</cRes>
-		<cRes id="Soylent" type="consumable" base="5">0</cRes>
-		<cRes id="Decapoda" type="consumable" base="15">0</cRes>
-		<cRes id="Jellies" type="consumable" base="8">0</cRes>
-		<cRes id="Voles" type="consumable" base="20">0</cRes>
-		<cRes id="Veggies" type="consumable" base="10">0</cRes>
-		<cRes id="Oil" type="good" base="25">0</cRes>
-		<cRes id="Hard Metals" type="good" base="35">0</cRes>
-		<cRes id="Soft Metals" type="good" base="10">0</cRes>
-		<cRes id="Chems" type="good" base="10">0</cRes>
-		<cRes id="Energy" type="good" base="15">0</cRes>
-		<cRes id="Minerals" type="good" base="10">0</cRes>
-		<cRes id="Fuel" type="good" base="15">0</cRes>
-		<cRes id="Plastic" type="good" base="10">0</cRes>
-		<cRes id="Drugs" type="good" base="10">0</cRes>
-		<cRes id="Electronics" type="good" base="10">0</cRes>
-		<cRes id="Glass" type="good" base="10">0</cRes>
-		<cRes id="Parts" type="good" base="55">0</cRes>
-		<cRes id="Shells" type="luxury" base="15">0</cRes>
-		<cRes id="Coral" type="luxury" base="35">0</cRes>
-		<cRes id="Pearls" type="luxury" base="75">0</cRes>
-		<cRes id="Spirits" type="luxury" base="20">0</cRes>
-		<cRes id="Salvage" type="luxury" base="10">0</cRes>
+		<cRes id="Water" type="consumable">1000</cRes>
+		<cRes id="Fish" type="consumable">0</cRes>
+		<cRes id="Seaweed" type="consumable">0</cRes>
+		<cRes id="Soylent" type="consumable">0</cRes>
+		<cRes id="Decapoda" type="consumable">0</cRes>
+		<cRes id="Jellies" type="consumable">0</cRes>
+		<cRes id="Voles" type="consumable">0</cRes>
+		<cRes id="Veggies" type="consumable">0</cRes>
+		<cRes id="Oil" type="good">0</cRes>
+		<cRes id="Hard Metals" type="good">0</cRes>
+		<cRes id="Soft Metals" type="good">0</cRes>
+		<cRes id="Chems" type="good">0</cRes>
+		<cRes id="Energy" type="good">0</cRes>
+		<cRes id="Minerals" type="good">0</cRes>
+		<cRes id="Fuel" type="good">0</cRes>
+		<cRes id="Plastic" type="good">0</cRes>
+		<cRes id="Drugs" type="good">0</cRes>
+		<cRes id="Electronics" type="good">0</cRes>
+		<cRes id="Glass" type="good">0</cRes>
+		<cRes id="Parts" type="good">0</cRes>
+		<cRes id="Shells" type="luxury">0</cRes>
+		<cRes id="Coral" type="luxury">0</cRes>
+		<cRes id="Pearls" type="luxury">0</cRes>
+		<cRes id="Spirits" type="luxury">0</cRes>
+		<cRes id="Salvage" type="luxury">0</cRes>
 
 		<Ship id="Steam Needle" x="700" y="50" speed="15" dock="Black Bottom" cred="100" pop="10" max="20">
 
@@ -228,31 +228,31 @@
 
 		<Description>Default</Description>
 
-		<cRes id="Water" type="consumable" base="10">0</cRes>
-		<cRes id="Fish" type="consumable" base="10">0</cRes>
-		<cRes id="Seaweed" type="consumable" base="10">0</cRes>
-		<cRes id="Soylent" type="consumable" base="5">0</cRes>
-		<cRes id="Decapoda" type="consumable" base="15">0</cRes>
-		<cRes id="Jellies" type="consumable" base="8">0</cRes>
-		<cRes id="Voles" type="consumable" base="20">0</cRes>
-		<cRes id="Veggies" type="consumable" base="10">0</cRes>
-		<cRes id="Oil" type="good" base="25">0</cRes>
-		<cRes id="Hard Metals" type="good" base="35">0</cRes>
-		<cRes id="Soft Metals" type="good" base="10">0</cRes>
-		<cRes id="Chems" type="good" base="10">0</cRes>
-		<cRes id="Energy" type="good" base="15">0</cRes>
-		<cRes id="Minerals" type="good" base="10">0</cRes>
-		<cRes id="Fuel" type="good" base="15">0</cRes>
-		<cRes id="Plastic" type="good" base="10">0</cRes>
-		<cRes id="Drugs" type="good" base="10">0</cRes>
-		<cRes id="Electronics" type="good" base="10">0</cRes>
-		<cRes id="Glass" type="good" base="10">0</cRes>
-		<cRes id="Parts" type="good" base="55">0</cRes>
-		<cRes id="Shells" type="luxury" base="15">0</cRes>
-		<cRes id="Coral" type="luxury" base="35">0</cRes>
-		<cRes id="Pearls" type="luxury" base="75">0</cRes>
-		<cRes id="Spirits" type="luxury" base="20">0</cRes>
-		<cRes id="Salvage" type="luxury" base="10">0</cRes>
+		<cRes id="Water" type="consumable">1000</cRes>
+		<cRes id="Fish" type="consumable">0</cRes>
+		<cRes id="Seaweed" type="consumable">0</cRes>
+		<cRes id="Soylent" type="consumable">0</cRes>
+		<cRes id="Decapoda" type="consumable">0</cRes>
+		<cRes id="Jellies" type="consumable">0</cRes>
+		<cRes id="Voles" type="consumable">0</cRes>
+		<cRes id="Veggies" type="consumable">0</cRes>
+		<cRes id="Oil" type="good">0</cRes>
+		<cRes id="Hard Metals" type="good">0</cRes>
+		<cRes id="Soft Metals" type="good">0</cRes>
+		<cRes id="Chems" type="good">0</cRes>
+		<cRes id="Energy" type="good">0</cRes>
+		<cRes id="Minerals" type="good">0</cRes>
+		<cRes id="Fuel" type="good">0</cRes>
+		<cRes id="Plastic" type="good">0</cRes>
+		<cRes id="Drugs" type="good">0</cRes>
+		<cRes id="Electronics" type="good">0</cRes>
+		<cRes id="Glass" type="good">0</cRes>
+		<cRes id="Parts" type="good">0</cRes>
+		<cRes id="Shells" type="luxury">0</cRes>
+		<cRes id="Coral" type="luxury">0</cRes>
+		<cRes id="Pearls" type="luxury">0</cRes>
+		<cRes id="Spirits" type="luxury">0</cRes>
+		<cRes id="Salvage" type="luxury">0</cRes>
 
 		<Ship id="Iron Pearl" x="100" y="400" speed="10" dock="Palamine" cred="100" pop="10" max="20">
 
@@ -434,31 +434,31 @@
 
 		<Description>Build on a tall plataue close to the water's surface, This is a lush green farm land full of fish and greenery.</Description>
 
-		<cRes id="Water" type="consumable" base="10">0</cRes>
-		<cRes id="Fish" type="consumable" base="10">0</cRes>
-		<cRes id="Seaweed" type="consumable" base="10">0</cRes>
-		<cRes id="Soylent" type="consumable" base="5">0</cRes>
-		<cRes id="Decapoda" type="consumable" base="15">0</cRes>
-		<cRes id="Jellies" type="consumable" base="8">0</cRes>
-		<cRes id="Voles" type="consumable" base="20">0</cRes>
-		<cRes id="Veggies" type="consumable" base="10">0</cRes>
-		<cRes id="Oil" type="good" base="25">0</cRes>
-		<cRes id="Hard Metals" type="good" base="35">0</cRes>
-		<cRes id="Soft Metals" type="good" base="10">0</cRes>
-		<cRes id="Chems" type="good" base="10">0</cRes>
-		<cRes id="Energy" type="good" base="15">0</cRes>
-		<cRes id="Minerals" type="good" base="10">0</cRes>
-		<cRes id="Fuel" type="good" base="15">0</cRes>
-		<cRes id="Plastic" type="good" base="10">0</cRes>
-		<cRes id="Drugs" type="good" base="10">0</cRes>
-		<cRes id="Electronics" type="good" base="10">0</cRes>
-		<cRes id="Glass" type="good" base="10">0</cRes>
-		<cRes id="Parts" type="good" base="55">0</cRes>
-		<cRes id="Shells" type="luxury" base="15">0</cRes>
-		<cRes id="Coral" type="luxury" base="35">0</cRes>
-		<cRes id="Pearls" type="luxury" base="75">0</cRes>
-		<cRes id="Spirits" type="luxury" base="20">0</cRes>
-		<cRes id="Salvage" type="luxury" base="10">0</cRes>
+		<cRes id="Water" type="consumable">1000</cRes>
+		<cRes id="Fish" type="consumable">0</cRes>
+		<cRes id="Seaweed" type="consumable">0</cRes>
+		<cRes id="Soylent" type="consumable">0</cRes>
+		<cRes id="Decapoda" type="consumable">0</cRes>
+		<cRes id="Jellies" type="consumable">0</cRes>
+		<cRes id="Voles" type="consumable">0</cRes>
+		<cRes id="Veggies" type="consumable">0</cRes>
+		<cRes id="Oil" type="good">0</cRes>
+		<cRes id="Hard Metals" type="good">0</cRes>
+		<cRes id="Soft Metals" type="good">0</cRes>
+		<cRes id="Chems" type="good">0</cRes>
+		<cRes id="Energy" type="good">0</cRes>
+		<cRes id="Minerals" type="good">0</cRes>
+		<cRes id="Fuel" type="good">0</cRes>
+		<cRes id="Plastic" type="good">0</cRes>
+		<cRes id="Drugs" type="good">0</cRes>
+		<cRes id="Electronics" type="good">0</cRes>
+		<cRes id="Glass" type="good">0</cRes>
+		<cRes id="Parts" type="good">0</cRes>
+		<cRes id="Shells" type="luxury">0</cRes>
+		<cRes id="Coral" type="luxury">0</cRes>
+		<cRes id="Pearls" type="luxury">0</cRes>
+		<cRes id="Spirits" type="luxury">0</cRes>
+		<cRes id="Salvage" type="luxury">0</cRes>
 
 		<Ship id="Farm Buggy" x="1200" y="300" speed="5" dock="Flat Sands Farm" cred="100" pop="10" max="20">
 
@@ -641,31 +641,31 @@
 
 		<Description>A city held together with spit and duct tape. Its a miracle it's water proof but damn those junker's can build.</Description>
 
-		<cRes id="Water" type="consumable" base="10">0</cRes>
-		<cRes id="Fish" type="consumable" base="10">0</cRes>
-		<cRes id="Seaweed" type="consumable" base="10">0</cRes>
-		<cRes id="Soylent" type="consumable" base="5">0</cRes>
-		<cRes id="Decapoda" type="consumable" base="15">0</cRes>
-		<cRes id="Jellies" type="consumable" base="8">0</cRes>
-		<cRes id="Voles" type="consumable" base="20">0</cRes>
-		<cRes id="Veggies" type="consumable" base="10">0</cRes>
-		<cRes id="Oil" type="good" base="25">0</cRes>
-		<cRes id="Hard Metals" type="good" base="35">0</cRes>
-		<cRes id="Soft Metals" type="good" base="10">0</cRes>
-		<cRes id="Chems" type="good" base="10">0</cRes>
-		<cRes id="Energy" type="good" base="15">0</cRes>
-		<cRes id="Minerals" type="good" base="10">0</cRes>
-		<cRes id="Fuel" type="good" base="15">0</cRes>
-		<cRes id="Plastic" type="good" base="10">0</cRes>
-		<cRes id="Drugs" type="good" base="10">0</cRes>
-		<cRes id="Electronics" type="good" base="10">0</cRes>
-		<cRes id="Glass" type="good" base="10">0</cRes>
-		<cRes id="Parts" type="good" base="55">0</cRes>
-		<cRes id="Shells" type="luxury" base="15">0</cRes>
-		<cRes id="Coral" type="luxury" base="35">0</cRes>
-		<cRes id="Pearls" type="luxury" base="75">0</cRes>
-		<cRes id="Spirits" type="luxury" base="20">0</cRes>
-		<cRes id="Salvage" type="luxury" base="10">0</cRes>
+		<cRes id="Water" type="consumable">1000</cRes>
+		<cRes id="Fish" type="consumable">0</cRes>
+		<cRes id="Seaweed" type="consumable">0</cRes>
+		<cRes id="Soylent" type="consumable">0</cRes>
+		<cRes id="Decapoda" type="consumable">0</cRes>
+		<cRes id="Jellies" type="consumable">0</cRes>
+		<cRes id="Voles" type="consumable">0</cRes>
+		<cRes id="Veggies" type="consumable">0</cRes>
+		<cRes id="Oil" type="good">0</cRes>
+		<cRes id="Hard Metals" type="good">0</cRes>
+		<cRes id="Soft Metals" type="good">0</cRes>
+		<cRes id="Chems" type="good">0</cRes>
+		<cRes id="Energy" type="good">0</cRes>
+		<cRes id="Minerals" type="good">0</cRes>
+		<cRes id="Fuel" type="good">0</cRes>
+		<cRes id="Plastic" type="good">0</cRes>
+		<cRes id="Drugs" type="good">0</cRes>
+		<cRes id="Electronics" type="good">0</cRes>
+		<cRes id="Glass" type="good">0</cRes>
+		<cRes id="Parts" type="good">0</cRes>
+		<cRes id="Shells" type="luxury">0</cRes>
+		<cRes id="Coral" type="luxury">0</cRes>
+		<cRes id="Pearls" type="luxury">0</cRes>
+		<cRes id="Spirits" type="luxury">0</cRes>
+		<cRes id="Salvage" type="luxury">0</cRes>
 
 		<Ship id="Wave Breaker" x="650" y="850" speed="5" dock="Junk Town" cred="100" pop="10" max="20">
 

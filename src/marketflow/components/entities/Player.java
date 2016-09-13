@@ -1,9 +1,9 @@
-package marketflow;
+package marketflow.components.entities;
 
 import engine.Game;
+import marketflow.components.entities.Entity;
+import marketflow.econ.Stock;
 import org.newdawn.slick.*;
-import org.newdawn.slick.geom.Polygon;
-import org.newdawn.slick.geom.Transform;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.Map;
@@ -29,7 +29,7 @@ public class Player extends Entity
 
     public Player(String id, String desc, Map<String, Stock> st_ref, int x, int y, int gear, int max_gear, int min_gear, int max_yaw, float drag, float handling)
     {
-        super(id, desc, st_ref, "res/marketflow/entities/player.png", null, x, y);
+        super(id, desc, st_ref, "res/marketflow/entities/player2.png", null, x, y);
         _center = new Vector2f((Game.WIDTH/2),(Game.HEIGHT/2));
         _trajectory = new Vector2f((Game.WIDTH/2),(Game.HEIGHT/2));
         _carrot = new Vector2f((Game.WIDTH/2),(Game.HEIGHT/2));

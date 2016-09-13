@@ -1,4 +1,4 @@
-package marketflow;
+package marketflow.econ;
 
 public class Transaction
 {

@@ -1,6 +1,9 @@
 
-package marketflow;
+package marketflow.components.entities;
 
+import marketflow.components.entities.City;
+import marketflow.components.entities.Entity;
+import marketflow.econ.Stock;
 import org.newdawn.slick.*;
 
 import java.util.Map;

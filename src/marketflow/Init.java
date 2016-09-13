@@ -1,6 +1,4 @@
 package marketflow;
-import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL11.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -9,15 +7,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import engine.*;
+import marketflow.components.entities.*;
+import marketflow.components.lights.HeadLight;
+import marketflow.components.lights.Light;
+import marketflow.econ.Stock;
+import marketflow.components.*;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
-import engine.XMLHandler;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Polygon;
 
 public class Init
 {
 	private WorldMap _map;
+	private LightMap _lmap;
 	private Player _player;
 	//private PlayerAuto _player;
 	private Map<String, City> _cityColl;
@@ -29,11 +33,7 @@ public class Init
 	private Map<String, Housing> _houseColl;
 	private Map<String, Stock> _houseResColl;
 
-	private ArrayList<Obstacle> _obstacles;
-	private ArrayList<Light> _lights;
-	private Graphics _shading;
-	private Image _shadow;
-
+	private ArrayList<Component> _obstacles;
 
 	public static HSSFWorkbook cityBook;
 	public static HSSFWorkbook shipBook;
@@ -57,6 +57,7 @@ public class Init
 		);
 
 		_map = new WorldMap(_player, 0, 0);
+		_lmap = new LightMap(15,0.8f);
 
 		cityBook = new HSSFWorkbook();
 		shipBook = new HSSFWorkbook();
@@ -76,12 +77,18 @@ public class Init
 		_houseResColl = new HashMap<>();
 
 		_obstacles = new ArrayList<>();
-		_lights = new ArrayList<>();
-		try {
-			_shadow = new Image("res/marketflow/shadow.png");
-		} catch (SlickException e) {
-			e.printStackTrace();
+
+		_lmap.addLight(new Light(500,500,150,Color.red));
+		_lmap.addLight(new Light(650,500,150,Color.blue));
+		_lmap.addLight(new Light(575,600,150, Color.green));
+		_lmap.addLight(new HeadLight(_player, 500,600,150, Color.white));
+
+		//GayBones Rainbow Time
+		for(int i = 0; i<1000; i++)
+		{
+			_lmap.addLight(new Light(1400, i*300, 350, new Color((float)Math.random(), (float)Math.random(), (float)Math.random())));
 		}
+
 		//TESTING OBSTACLES
 		float[] o_points=new float[]{
 				46,50-36,
@@ -93,10 +100,7 @@ public class Init
 				58,193-36,
 				0,121-36
 		};
-		_obstacles.add(new Obstacle("res/marketflow/rock.png",new Polygon(o_points),400,400));
-
-		//TESTING LIGHTING
-		_lights.add(new Light(500,500,1.0f));
+		_obstacles.add(new Component("res/marketflow/rock.png",new Polygon(o_points),400,400));
 
 		xmlh.processMarketFlow(_cityColl,_shipColl,_genColl,_cityResColl,_shipResColl,_genResColl,_houseColl,_houseResColl);
 	}
@@ -104,7 +108,7 @@ public class Init
 	public void update(int count)
 	{//Fast Update Loop
 		_map.update(count);
-
+		_lmap.update(count);
 		_player.update(count);
 
 		for(City c : _cityColl.values())
@@ -123,19 +127,30 @@ public class Init
 		{
 			h.update(count);
 		}
-		for(Obstacle o : _obstacles)
+		for(Component o : _obstacles)
 		{
 			o.update(count);
 		}
-		for(Light l : _lights)
-		{
-			l.update(count);
-		}
+
 	}
 
+	private int _time = 0;
+	private boolean shadeUp = true;
 	public void tick(int count)
 	{//One Second Update Loop
 		_map.tick(count);
+
+		//Testing out amient shadow values
+		if(_lmap.AbientShadow()>=1.0f){shadeUp=false;}
+		if(_lmap.AbientShadow()<=0){shadeUp=true;}
+		if(shadeUp)
+		{
+			_lmap.incAbientShadow(0.1f);
+		}
+		else
+		{
+			_lmap.incAbientShadow(-0.1f);
+		}
 
 		_player.tick(count);
 
@@ -155,6 +170,7 @@ public class Init
 		{
 			s.tick(count);
 		}
+		_time++;
 	}
 
 	public void render(GameContainer game, Graphics g)
@@ -171,30 +187,19 @@ public class Init
 		{
 			s.render(game,g);
 		}
-		for(Obstacle o : _obstacles)
+		for(Component o : _obstacles)
 		{
 			o.render(game,g);
 		}
 
-
-
-		_shadow.startUse();
-
-		for(Light l : _lights)
-		{
-
-		}
-		_shadow.setAlpha(0.5f);
-		g.drawImage(_shadow, 0,0,(float)game.getWidth(),(float)game.getHeight(),0,0,(float)game.getWidth(),(float)game.getHeight());
-		_shadow.endUse();
-
-
+		_lmap.render(game,g);
 
 		_map.overlay(game,g);
 
 		g.setColor(Color.orange);
-		g.drawString("MarketFlow " + _map.OffsetX() + ", " + _map.OffsetY(), 100, 10);
+		g.drawString("MarketFlow " + _map.OffsetX() + ", " + _map.OffsetY() + " : " + _time, 100, 10);
 		g.setColor(Color.black);
+
 	}
 	
 	public void Report()

@@ -4,31 +4,31 @@
     <Gen id="IcePick" product="Water" cost="1" max="10" out="3" time="10">
         <Description>A ship with a saw like graspers for removing pieces from the bottom of icebergs to be thawed into fresh water.</Description>
     </Gen>
-    <Gen id="Boiler" product="Water" cost="1" max="10" out="1" time="10">
+    <Gen id="Boiler" product="Water" cost="1" max="10" out="5" time="10">
         <Description>Large pod designed to heat water into steam and then collect the condensation as fresh water.</Description>
         <Input>Fuel</Input>
     </Gen>
-    <Gen id="Desalinator" product="Water" cost="1" max="10" out="1" time="10">
+    <Gen id="Desalinator" product="Water" cost="1" max="10" out="7" time="10">
         <Description>High tech process of removing salt be shocking it to hell!</Description>
         <Input>Energy</Input>
     </Gen>
-    <Gen id="RainBuckets" product="Water" cost="1" max="10" out="1" time="10">
+    <Gen id="RainBuckets" product="Water" cost="1" max="10" out="3" time="10">
         <Description>Surface floaters attached to wipe funnels used to direct water down into a filtration system.</Description>
     </Gen>
-    <Gen id="Angler" product="Fish" cost="1" max="10" out="1" time="10">
+    <Gen id="Angler" product="Fish" cost="1" max="10" out="3" time="10">
         <Description>A ship with a forward facing trawling net for sweeping through schools of fish.</Description>
     </Gen>
-    <Gen id="Harvester" product="Seaweed" cost="1" max="10" out="1" time="10">
+    <Gen id="Harvester" product="Seaweed" cost="1" max="10" out="3" time="10">
         <Description>A ship with long reapers used for mowing massive fields of kelp and seaweed.</Description>
     </Gen>
-    <Gen id="SoylentPress" product="Soylent" cost="1" max="10" out="4" time="10">
-        <Description>Mixing chemical geletine byproducts with seaweed "nutrient" extract and squishing them into "edible" cubes. Hey its better than starving!</Description>
+    <Gen id="SoylentPress" product="Soylent" cost="1" max="10" out="5" time="10">
+        <Description>Mixing chemical geletin byproducts with seaweed extract and squishing them into "edible" cubes. Hey its better than starving!</Description>
         <Input>Seaweed</Input>
     </Gen>
-    <Gen id="Crabber" product="Decapoda" cost="1" max="10" out="1" time="10">
+    <Gen id="Crabber" product="Decapoda" cost="1" max="10" out="2" time="10">
         <Description>A none manned drone used for monitoring decapod and bringing in the harvest as they mature.</Description>
     </Gen>
-    <Gen id="JellyNet" product="Jellies" cost="1" max="10" out="1" time="10">
+    <Gen id="JellyNet" product="Jellies" cost="1" max="10" out="3" time="10">
         <Description>Huge fan like nets adorned in dim lights to attract and catch all the strange jellies that float along the deepest sunless trenches.</Description>
     </Gen>
     <Gen id="VolePit" product="Voles" cost="1" max="10" out="1" time="10">

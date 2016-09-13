@@ -1,4 +1,6 @@
-package marketflow;
+package marketflow.components.entities;
+
+import marketflow.econ.Stock;
 
 import java.util.Map;
 
@@ -83,7 +85,7 @@ public class City extends Entity
 		{
 			if(h.Home().ID().equals(ID()))
 			{
-				pop=pop+h._population;
+				pop=pop+h.Population();
 			}
 		}
 		return pop;

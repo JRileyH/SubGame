@@ -6,11 +6,11 @@ import java.util.Map;
 import javax.xml.parsers.*;
 import org.w3c.dom.*;
 
-import marketflow.City;
-import marketflow.Generator;
-import marketflow.Housing;
-import marketflow.Ship;
-import marketflow.Stock;
+import marketflow.components.entities.City;
+import marketflow.components.entities.Generator;
+import marketflow.components.entities.Housing;
+import marketflow.components.entities.Ship;
+import marketflow.econ.Stock;
 
 public class XMLHandler
 {
@@ -81,9 +81,26 @@ public class XMLHandler
 	}
 	
 //===___|CUSTOM FUNCTIONS|___===//
+
+	public Map<String, Integer> setBasePrices()
+	{
+		Map<String, Integer> out = new HashMap<>();
+		Document doc = read("data/marketflow/PriceInfo.xml");
+		NodeList nodes = doc.getElementsByTagName("Price");
+		for(int i = 0; i < nodes.getLength(); i++)
+		{
+			Node node = nodes.item(i);
+			Element elem = (Element) node;
+			out.put(elem.getAttribute("id"),Integer.parseInt(node.getTextContent()));
+		}
+		//System.out.println(out);
+		return out;
+	}
 	public void processMarketFlow(Map<String, City> cc, Map<String, Ship> sc, Map<String, Generator> gc, Map<String, Stock> crc, Map<String, Stock> src, Map<String, Stock> grc, Map<String, Housing> hc, Map<String, Stock> hrc)
 	{//Loads resource holdings for ships, cities, generators, etc for world map mode.
-		
+
+		Map<String, Integer> stockPrices = setBasePrices();
+
 		String city;
 		String ship;
 		String gen;
@@ -132,7 +149,7 @@ public class XMLHandler
 				//sets the cargo type
 				restype = cr_elem.getAttribute("type");
 				//set the base price
-				basePrices.put(res, Integer.parseInt(cr_elem.getAttribute("base")));
+				basePrices.put(res, 0);
 
 				//initializes city resource stock (if not already)
 				if(crc.get(res)==null){crc.put(res, new Stock(res, restype));}
@@ -210,8 +227,9 @@ public class XMLHandler
 						gen,
 						Integer.parseInt(c_elem.getAttribute("x")),		//X Coordinate
 						Integer.parseInt(c_elem.getAttribute("y")),		//Y Coordinate
-						cc.get(city),											//Home City
-						grc												//reference to Generator Resource Stock
+						cc.get(city),									//Home City
+						grc,											//reference to Generator Resource Stock
+						stockPrices										//For setting Base Prices
 				));
 
 				//initializes generator credit amount
@@ -257,7 +275,8 @@ public class XMLHandler
 						Integer.parseInt(c_elem.getAttribute("x")),		//X Coordinate
 						Integer.parseInt(c_elem.getAttribute("y")),		//Y Coordinate
 						cc.get(city),									//Home City
-						hrc												//reference to Generator Resource Stock
+						hrc,											//reference to Generator Resource Stock
+						stockPrices										//For Setting Base Prices
 				));
 
 				//initializes housing unit's credit amount
@@ -285,6 +304,16 @@ public class XMLHandler
 					hrc.get(res).initStock(house, Integer.parseInt(hr_elem.getTextContent()));
 				}
 			}
+
+
+			//Print out the base prices to make sure they are right....
+			/*System.out.println(cc.get(city).ID()+":");
+			for(Map.Entry<String, Integer> print : cc.get(city).BasePrices().entrySet())
+			{
+				System.out.println(print.getKey()+": "+print.getValue());
+			}
+			System.out.println("=======================");*/
+
 		}
 	}
 
@@ -294,7 +323,8 @@ public class XMLHandler
 		int x,
 		int y,
 		City city,
-		Map<String, Stock> grc
+		Map<String, Stock> grc,
+		Map<String, Integer> stockPrices
 	)
 	{//This function received data from ResInfo.xml and pulls data from GenInfo.xml to initialize Generator Objects
 		Document doc = read("data/marketflow/GenInfo.xml");
@@ -317,14 +347,23 @@ public class XMLHandler
 
 			//adjust city base price and set inputs ^^^
 			String inputRes = input_elem.getTextContent();
-			city.incBasePrice(inputRes,1);
+			//If you dont have a base price yet then set it. Other wise make it MORE valuable since you will be buying it for generator inputs
+			if(city.BasePrices().get(inputRes)==0){
+				city.BasePrice(inputRes,stockPrices.get(inputRes));
+			}else{
+				city.incBasePrice(inputRes,1);
+			}
 			inputs[k]=inputRes;
 
 		}}catch(Exception e){}
 
-		//adjust city base price for product vvv
+		//If you don't have a base price set then set it. Other wise make it LESS valuable since you have a home course of it.
 		String product = elem.getAttribute("product");
-		city.incBasePrice(product, -1);
+		if(city.BasePrices().get(product)==0){
+			city.BasePrice(product,stockPrices.get(product));
+		}else{
+			city.incBasePrice(product,-1);
+		}
 
 		return new Generator(id,
 				elem.getElementsByTagName("Description").item(0).getTextContent(),
@@ -347,7 +386,8 @@ public class XMLHandler
 			int x,
 			int y,
 			City city,
-			Map<String, Stock> hrc
+			Map<String, Stock> hrc,
+			Map<String, Integer> stockPrices
 	)
 	{//This function received data from ResInfo.xml and pulls data from HouseInfo.xml to initialize Housing Objects
 		Document doc = read("data/marketflow/HouseInfo.xml");
@@ -365,17 +405,39 @@ public class XMLHandler
 		for(int i = 0; i < consumables.getLength(); i++)
 		{
 			consumeOrder[i]=consumables.item(i).getTextContent();
+
+			//If base prices isn't set then set it because you have atleast one house that will buy this consumable.
+			//Other wise increase the price because you have ANOTHER housing pod that will buy this consumable.
+			if(city.BasePrices().get(consumeOrder[i])==0){
+				city.BasePrice(consumeOrder[i],stockPrices.get(consumeOrder[i]));
+			}else{
+				city.incBasePrice(consumeOrder[i],1);
+			}
 		}
 
 		NodeList luxury = elem.getElementsByTagName("Luxury");
 		String[] luxOrder = new String[luxury.getLength()];
 		for(int i = 0; i < luxury.getLength(); i++)
 		{
-			luxury.item(i).getTextContent();
 			luxOrder[i]=luxury.item(i).getTextContent();
+
+			//If base prices isn't set then set it because you have atleast one house that will buy this lux.
+			//Other wise increase the price because you have ANOTHER housing pod that will buy this lux.
+			if(city.BasePrices().get(luxOrder[i])==0){
+				city.BasePrice(luxOrder[i],stockPrices.get(luxOrder[i]));
+			}else{
+				city.incBasePrice(luxOrder[i],1);
+			}
 		}
 
-//public Housing(String id, String desc, int x, int y, String location, Map<String, City> c_ref, Map<String, Stock> st_ref, int pm)
+		//Hard coded for water because everyone needs water!
+		//Each housing unit will increase the base price since you'll be drinking more of it.
+		if(city.BasePrices().get("Water")==0){
+			city.BasePrice("Water",stockPrices.get("Water"));
+		}else{
+			city.incBasePrice("Water",1);
+		}
+
 		return new Housing(id,
 				elem.getElementsByTagName("Description").item(0).getTextContent(),
 				x,

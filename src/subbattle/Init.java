@@ -1,10 +1,7 @@
 package subbattle;
 
 import engine.XMLHandler;
-import marketflow.Ship;
 import org.newdawn.slick.*;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Init
 {
