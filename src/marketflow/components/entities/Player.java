@@ -152,6 +152,11 @@ public class Player extends Entity
         System.out.println(x+","+y);
     }
 
+    @Override
+    public int relX(){return (int)_center.x;}
+    @Override
+    public int relY(){return (int)_center.y;}
+
     private int Speed(){return _gear * _gearSize;}
     @SuppressWarnings("unused")
     public int Gear(){return _gear;}
