@@ -166,6 +166,7 @@ public class Player extends Entity
     {
         return new Vector2f(_center.x- _trajectory.x,_center.y- _trajectory.y);
     }
+    public void Velocity(Vector2f v){ Velocity().set(v);}
     @SuppressWarnings("unused")
     public float Handling(){return _handling;}
     @SuppressWarnings("unused")

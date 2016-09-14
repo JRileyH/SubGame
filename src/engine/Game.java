@@ -156,6 +156,7 @@ public class Game extends BasicGame
 	
 	public static void main(String[] args)
 	{
+		System.out.println("HEYO");
 		try
 		{
 			AppGameContainer agc;
