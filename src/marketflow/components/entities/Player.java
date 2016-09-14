@@ -4,6 +4,8 @@ import engine.Game;
 
 import marketflow.econ.Stock;
 import org.newdawn.slick.*;
+import org.newdawn.slick.geom.Polygon;
+import org.newdawn.slick.geom.Transform;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.Map;
@@ -24,9 +26,9 @@ public class Player extends Entity
     private float _handling;
 
 
-    public Player(String id, String desc, Map<String, Stock> st_ref, int x, int y, int gear, int max_gear, int min_gear, int max_yaw, float drag, float handling)
+    public Player(String id, String path, Polygon hitbox, String desc, Map<String, Stock> st_ref, int x, int y, int gear, int max_gear, int min_gear, int max_yaw, float drag, float handling)
     {
-        super(id, desc, st_ref, "res/marketflow/entities/player2.png", null, x, y);
+        super(id, desc, st_ref, path, hitbox, x, y);
         _center = new Vector2f((Game.WIDTH/2),(Game.HEIGHT/2));
         _trajectory = new Vector2f((Game.WIDTH/2),(Game.HEIGHT/2));
         _carrot = new Vector2f((Game.WIDTH/2),(Game.HEIGHT/2));
@@ -39,15 +41,19 @@ public class Player extends Entity
         _maxYaw = max_yaw;
         _drag=drag;
         _handling=handling;
+        renderable=true;
     }
 
+
+
     public void update(int count) {
-        super.update(count);
         //Determine yaw
         _angle += _handling * _yaw;
         _img.setRotation(_img.getRotation() + (float) Math.toDegrees(_handling * _yaw));
-        //TODO: Make Rotation happen baby
-        //_hitbox=(Polygon)_hitbox.transform(Transform.createRotateTransform(_angle));
+
+        _hitbox = (Polygon)_hitbox.transform(Transform.createRotateTransform(_handling * _yaw));
+        _hitbox.setCenterX(_center.x);
+        _hitbox.setCenterY(_center.y);
 
         //Set Carrot
         _carrot.x = (float) (_center.x - (Speed() * Math.cos(_angle)));
@@ -60,23 +66,30 @@ public class Player extends Entity
         _trajectory.x += (float) (_drag * Math.cos(delta));
         _trajectory.y += (float) (_drag * Math.sin(delta));
 
-        //Keep ship centered
-        _posX = (Game.WIDTH / 2) - Game.mf.Map().OffsetX();
-        _posY = (Game.HEIGHT / 2) - Game.mf.Map().OffsetY();
+        _posX=Game.WIDTH/2;
+        _posY=Game.HEIGHT/2;
+
+        _relX = _posX + Game.mf.Map().OffsetX() - _width / 2 + Game.mf.Map().PanX();
+        _relY = _posY + Game.mf.Map().OffsetY() - _height / 2 + Game.mf.Map().PanY();
     }
 
+    @Override
     public void tick(int count)
     {
 
     }
 
+    @Override
     public void render(GameContainer game, Graphics g)
     {
-        super.render(game, g);
+        //super.render(game, g);
         int panx = Game.mf.Map().PanX();
         int pany = Game.mf.Map().PanY();
         int x = (Game.WIDTH/2)+panx;
         int y = (Game.HEIGHT/2)+pany;
+
+        g.drawImage(_img, x-_width/2, y-_height/2);
+        g.draw(_hitbox);
 
         g.setColor(Color.green);
         g.drawOval(_center.x-3,_center.y-3,6,6);
@@ -93,6 +106,11 @@ public class Player extends Entity
         g.drawString("Speed: "+ Speed(), x+50,y+70);
         g.drawString("Velocity - X: "+ -(int)Velocity().x+" Y: "+ -(int)Velocity().y, x+50,y+90);
         g.drawString("Yaw: "+_yaw, x+50,y+130);
+    }
+
+    public void toggleLight()
+    {
+        _headlight.Toggle();
     }
 
     public void shiftUp()
@@ -132,11 +150,6 @@ public class Player extends Entity
     public void GoTo(float x, float y)
     {
         System.out.println(x+","+y);
-    }
-
-    public void toggleAutoPilot()
-    {
-
     }
 
     private int Speed(){return _gear * _gearSize;}

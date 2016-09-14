@@ -14,6 +14,7 @@ public class WorldMap
     private int _offsetX,_offsetY;
     private int _panX,_panY;
     private int _edgeX,_edgeY;
+    @SuppressWarnings("unused")
     private int _waveX,_waveY;
     private Player _player;
     private TiledMap _tiles;
@@ -62,7 +63,6 @@ public class WorldMap
     void overlay(GameContainer game, Graphics g)
     {
         _overlay.render(_offsetX%_overlay.getTileWidth()+_panX+_waveX-_overlay.getTileWidth(),_offsetY%_overlay.getTileHeight()+_panY+_waveY-_overlay.getTileHeight());
-        g.draw(_viewport);
     }
 
     @SuppressWarnings("unused")public int Width(){return _width;}

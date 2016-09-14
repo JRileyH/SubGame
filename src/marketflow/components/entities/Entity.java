@@ -4,6 +4,7 @@ import java.util.Map;
 
 import marketflow.Init;
 import marketflow.components.Component;
+import marketflow.components.lights.HeadLight;
 import marketflow.econ.Stock;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.ss.usermodel.Cell;
@@ -21,6 +22,7 @@ public class Entity extends Component
 	int _populationMax = 1;
 	private String _description;
 	private HSSFSheet _reportSheet;
+    public HeadLight _headlight = null;
 	
 	Entity(String id, String desc, Map<String, Stock> st_ref, String path, Polygon hitbox, int x, int y)
 	{
@@ -227,4 +229,6 @@ public class Entity extends Component
 	void Resource(String rid, int amt){_stockRef.get(rid).Resource(_id, amt);}
 	int Resource(String rid){return _stockRef.get(rid).Resource(_id);}
 	void incResource(String rid, int amt){_stockRef.get(rid).incResource(_id, amt);}
+
+    public void HeadLight(HeadLight light){_headlight=light;}
 }

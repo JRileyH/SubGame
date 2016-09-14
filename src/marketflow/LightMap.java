@@ -7,7 +7,8 @@ import org.newdawn.slick.*;
 import java.util.ArrayList;
 
 class LightMap {
-    private final int RED=0,GREEN=1,BLUE=2;
+    private final int RED=0,GREEN=1,BLUE=2;//value of RGG in array
+    private final int NW=0,NE=1,SE=2,SW=3;//value of quadrant in array
     private ArrayList<Light> _lights;
     private float[][][] _lux;
     private float _shadow;
@@ -46,7 +47,7 @@ class LightMap {
 
                 for(Light l : _lights)
                 {
-                    if(l.Renderable()) {
+                    if(l.Renderable()&&l.On()) {
                         float[] effect = l.getColorAt(x, y, _lightBox);
                         _lux[x][y][RED] += effect[RED];
                         _lux[x][y][BLUE] += effect[BLUE];
@@ -88,9 +89,11 @@ class LightMap {
     {
         _lights.add(light);
     }
+    @SuppressWarnings("unused")
     float AbientShadow(){return _shadow;}
     @SuppressWarnings("unused")
     void AbientShadow(float amt){_shadow=amt;}
+    @SuppressWarnings("unused")
     void incAbientShadow(float amt){_shadow+=amt;}
 
 

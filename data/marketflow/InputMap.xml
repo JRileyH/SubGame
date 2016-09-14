@@ -8,7 +8,7 @@
 		<Binding id="32" action="TackRight"></Binding>
 		<Binding id="17" action="Forward"></Binding>
 		<Binding id="31" action="Reverse"></Binding>
-		<Binding id="33" action="AutoPilot"></Binding>
+		<Binding id="33" action="ToggleLight"></Binding>
 
 		<Binding id="2" action="SwitchToUI"></Binding>
 		<Binding id="3" action="SwitchToMF"></Binding>

@@ -22,7 +22,6 @@ public class Init
 	private WorldMap _map;
 	private LightMap _lmap;
 	private Player _player;
-	//private PlayerAuto _player;
 	private Map<String, City> _cityColl;
 	private Map<String, Ship> _shipColl;
 	private Map<String, Generator> _genColl;
@@ -37,8 +36,21 @@ public class Init
 
 	public Init(XMLHandler xmlh)
 	{
+        float[] p_points = new float[]{
+                32,0,
+                17,25,
+                3,73,
+                0,117,
+                23,100,
+                32,125,
+                41,100,
+                63,117,
+                60,73,
+                46,25
+        };
 		_player = new Player("Player Name",										//Player Name
-		//_player = new PlayerAuto("Player Name",								//Player Name
+                "res/marketflow/entities/player2.png",                          //Image Path
+                new Polygon(p_points),                                                           //hitbox
 				"Your Ship. There are many like it but this one is yours.",		//Description
 				null,															//Stock Reference
 				0,																//X
@@ -73,15 +85,15 @@ public class Init
 
 		_obstacles = new ArrayList<>();
 
-		_lmap.addLight(new Light(500,500,150,Color.red));
-		_lmap.addLight(new Light(650,500,150,Color.blue));
-		_lmap.addLight(new Light(575,600,150, Color.green));
-		_lmap.addLight(new HeadLight(_player, 500,600,150, Color.white));
+		_lmap.addLight(new Light(500,500,150,0.5f,Color.red));
+		_lmap.addLight(new Light(650,500,150,0.5f,Color.blue));
+		_lmap.addLight(new Light(575,600,150,0.5f,Color.green));
+		_lmap.addLight(new HeadLight(_player,500,600,550,0.5f,Color.white));
 
 		//GayBones Rainbow Time
 		for(int i = 0; i<1000; i++)
 		{
-			_lmap.addLight(new Light(1400, i*300, 350, new Color((float)Math.random(), (float)Math.random(), (float)Math.random())));
+			_lmap.addLight(new Light(1400, i*300, 350, (float)Math.random(), new Color((float)Math.random(), (float)Math.random(), (float)Math.random())));
 		}
 
 		//TESTING OBSTACLES
@@ -126,25 +138,11 @@ public class Init
 		{
 			o.update(count);
 		}
-
 	}
 
 	private int _time = 0;
-	private boolean shadeUp = true;
 	public void tick(int count)
 	{//One Second Update Loop
-
-		//Testing out amient shadow values
-		if(_lmap.AbientShadow()>=1.0f){shadeUp=false;}
-		if(_lmap.AbientShadow()<=0){shadeUp=true;}
-		if(shadeUp)
-		{
-			_lmap.incAbientShadow(0.1f);
-		}
-		else
-		{
-			_lmap.incAbientShadow(-0.1f);
-		}
 
 		_player.tick(count);
 
@@ -193,7 +191,6 @@ public class Init
 		g.setColor(Color.orange);
 		g.drawString("MarketFlow " + _map.OffsetX() + ", " + _map.OffsetY() + " : " + _time, 100, 10);
 		g.setColor(Color.black);
-
 	}
 	
 	public void Report()
@@ -249,5 +246,4 @@ public class Init
 
 	public WorldMap Map(){return _map;}
 	public Player Player(){return _player;}
-	//public PlayerAuto Player(){return _player;}
 }

@@ -76,7 +76,6 @@ public class Game extends BasicGame
 	@Override
 	public void init(GameContainer game) throws SlickException
 	{
-		game.setTargetFrameRate(60);
 		XMLHandler xmlh = new XMLHandler();
 		keymap = new KeyMap(xmlh);
 		mousemap = new MouseMap(xmlh);
@@ -162,6 +161,7 @@ public class Game extends BasicGame
 			AppGameContainer agc;
 			agc = new AppGameContainer(new Game("Sub Game"));
 			agc.setDisplayMode(1600, 900, false);
+            agc.setTargetFrameRate(60);
 			WIDTH=(int)(agc.getWidth()/SCALE);
 			HEIGHT=(int)(agc.getHeight()/SCALE);
 			agc.start();

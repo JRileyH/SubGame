@@ -10,9 +10,11 @@ import org.newdawn.slick.geom.Polygon;
 public class Light extends Component
 {
     private Color _tint;
-    float _radius;
+    protected float _radius;
+    private float _lux;
+    private boolean _on;
 
-    Light(int x, int y, float radius)
+    Light(int x, int y, float radius, float lux)
     {
         super(null, null, x,y);
         _radius=radius;
@@ -24,8 +26,10 @@ public class Light extends Component
                 radius,-radius
         });
         hasHitbox=true;
+        _lux=lux;
+        _on=true;
     }
-    public Light(int x, int y, float radius, Color tint)
+    public Light(int x, int y, float radius, float lux, Color tint)
     {
         super(null, null, x,y);
         _radius=radius;
@@ -37,6 +41,8 @@ public class Light extends Component
                 radius,-radius
         });
         hasHitbox=true;
+        _lux=lux;
+        _on=true;
     }
 
     public void update(int count)
@@ -69,6 +75,16 @@ public class Light extends Component
     public Color Tint(){return _tint;}
     @SuppressWarnings("unused")
     public void Tint(Color tint){_tint=tint;}
+    @SuppressWarnings("unused")
+    public float Lux(){return _lux;}
+    @SuppressWarnings("unused")
+    public void Lux(float lux){_lux=lux;}
+    @SuppressWarnings("unused")
+    public boolean On(){return _on;}
+    @SuppressWarnings("unused")
+    public void On(boolean on){_on=on;}
+    @SuppressWarnings("unused")
+    public void Toggle(){_on=!_on;}
 
     public float[] getColorAt(float x, float y, int box) {
         float dx = (x - _relX/box);
@@ -76,6 +92,8 @@ public class Light extends Component
         float hypotenuse = (dx*dx)+(dy*dy);
         float value = 1-(hypotenuse/((_radius*_radius)/(box*box)));
         if(value<0){value=0;}
+        value*=_lux;
         return new float[] {value*_tint.r,value*_tint.g,value*_tint.b};
     }
+
 }

@@ -54,8 +54,8 @@ class KeyMap
 			case "Reverse":
 				if(!_keyFlags.get(c)){Game.mf.Player().shiftDown();}
 				break;
-			case "AutoPilot":
-				if(!_keyFlags.get(c)){Game.mf.Player().toggleAutoPilot();}
+			case "ToggleLight":
+				if(!_keyFlags.get(c)){Game.mf.Player().toggleLight();}
 				break;
 			
 			case "SwitchToUI":
