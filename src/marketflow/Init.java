@@ -133,7 +133,6 @@ public class Init
 	private boolean shadeUp = true;
 	public void tick(int count)
 	{//One Second Update Loop
-		_map.tick(count);
 
 		//Testing out amient shadow values
 		if(_lmap.AbientShadow()>=1.0f){shadeUp=false;}

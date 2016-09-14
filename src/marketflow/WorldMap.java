@@ -15,13 +15,11 @@ public class WorldMap
     private int _panX,_panY;
     private int _edgeX,_edgeY;
     private int _waveX,_waveY;
-    //private PlayerAuto _player;
     private Player _player;
     private TiledMap _tiles;
     private TiledMap _overlay;
 
     WorldMap(Player player, int initX, int initY)
-    //public WorldMap(PlayerAuto player, int initX, int initY)
     {
         float[] vp_points = new float[]{0, 0, Game.WIDTH, 0, Game.WIDTH, Game.HEIGHT, 0, Game.HEIGHT};
         _viewport = new Polygon(vp_points);
@@ -32,7 +30,6 @@ public class WorldMap
             e.printStackTrace();
         }
         _player = player;
-
 
         _width = _tiles.getWidth();
         _height = _tiles.getHeight();
