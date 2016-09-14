@@ -7,12 +7,9 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Polygon;
 
-/**
- * Created by Riggy on 9/10/2016.
- */
 public class Component
 {
-    protected boolean hasImage;
+    private boolean hasImage;
     protected boolean hasHitbox;
     protected boolean renderable = false;
 

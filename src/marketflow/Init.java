@@ -9,8 +9,7 @@ import java.util.Map;
 
 import engine.*;
 import marketflow.components.entities.*;
-import marketflow.components.lights.HeadLight;
-import marketflow.components.lights.Light;
+import marketflow.components.lights.*;
 import marketflow.econ.Stock;
 import marketflow.components.*;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -25,13 +24,9 @@ public class Init
 	private Player _player;
 	//private PlayerAuto _player;
 	private Map<String, City> _cityColl;
-	private Map<String, Stock> _cityResColl;
 	private Map<String, Ship> _shipColl;
-	private Map<String, Stock> _shipResColl;
 	private Map<String, Generator> _genColl;
-	private Map<String, Stock> _genResColl;
 	private Map<String, Housing> _houseColl;
-	private Map<String, Stock> _houseResColl;
 
 	private ArrayList<Component> _obstacles;
 
@@ -65,16 +60,16 @@ public class Init
 		generatorBook = new HSSFWorkbook();
 
 		_cityColl = new HashMap<>();
-		_cityResColl = new HashMap<>();
+		Map<String, Stock> _cityResColl = new HashMap<>();
 		
 		_shipColl = new HashMap<>();
-		_shipResColl = new HashMap<>();
+		Map<String, Stock> _shipResColl = new HashMap<>();
 		
 		_genColl = new HashMap<>();
-		_genResColl = new HashMap<>();
+		Map<String, Stock> _genResColl = new HashMap<>();
 		
 		_houseColl = new HashMap<>();
-		_houseResColl = new HashMap<>();
+		Map<String, Stock> _houseResColl = new HashMap<>();
 
 		_obstacles = new ArrayList<>();
 
@@ -102,7 +97,7 @@ public class Init
 		};
 		_obstacles.add(new Component("res/marketflow/rock.png",new Polygon(o_points),400,400));
 
-		xmlh.processMarketFlow(_cityColl,_shipColl,_genColl,_cityResColl,_shipResColl,_genResColl,_houseColl,_houseResColl);
+		xmlh.processMarketFlow(_cityColl,_shipColl,_genColl, _cityResColl, _shipResColl, _genResColl,_houseColl, _houseResColl);
 	}
 
 	public void update(int count)

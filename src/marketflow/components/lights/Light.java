@@ -7,15 +7,12 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Polygon;
 
-/**
- * Created by Riggy on 9/11/2016.
- */
 public class Light extends Component
 {
-    protected Color _tint;
-    protected float _radius;
+    private Color _tint;
+    float _radius;
 
-    public Light(int x, int y, float radius)
+    Light(int x, int y, float radius)
     {
         super(null, null, x,y);
         _radius=radius;
@@ -64,10 +61,13 @@ public class Light extends Component
             g.drawRect(_hitbox.getX(), _hitbox.getY(), _hitbox.getWidth(), _hitbox.getHeight());
         }
     }
-
+    @SuppressWarnings("unused")
     public float Radius(){return _radius;}
+    @SuppressWarnings("unused")
     public void Radius(float radius){_radius=radius;}
+    @SuppressWarnings("unused")
     public Color Tint(){return _tint;}
+    @SuppressWarnings("unused")
     public void Tint(Color tint){_tint=tint;}
 
     public float[] getColorAt(float x, float y, int box) {
@@ -76,7 +76,6 @@ public class Light extends Component
         float hypotenuse = (dx*dx)+(dy*dy);
         float value = 1-(hypotenuse/((_radius*_radius)/(box*box)));
         if(value<0){value=0;}
-        float[] hue = new float[] {value*_tint.r,value*_tint.g,value*_tint.b};
-        return hue;
+        return new float[] {value*_tint.r,value*_tint.g,value*_tint.b};
     }
 }

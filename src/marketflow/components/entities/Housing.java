@@ -1,7 +1,5 @@
 package marketflow.components.entities;
 
-import marketflow.components.entities.City;
-import marketflow.components.entities.Entity;
 import marketflow.econ.Stock;
 import org.newdawn.slick.*;
 
@@ -25,7 +23,7 @@ public class Housing extends Entity
 		_luxuryOrder = lux;
 		//console=true;
 	}
-	public City Home()
+	City Home()
 	{
 		return _home;
 	}
@@ -54,29 +52,18 @@ public class Housing extends Entity
 				if(Buy(_home, _consumeOrder[i], _home.Price(_consumeOrder[i]),1))
 				{
 					log("Bought "+ _consumeOrder[i]+" for $"+ _home.Price(_consumeOrder[i]));
-					i--;
-					//excess=true;
-				}
-				else
-				{
-					//log("Tried but couldn't buy "+_consumeOrder[i]);
+					i--;//Buy one more if you can!
 				}
 			}
 		}
 		if(excess)
 		{//If you've got all the food you need. BUY LUXURY!
-			for (int i = 0; i < _luxuryOrder.length; i++)
-			{
-				if(Buy(_home, _luxuryOrder[i], _home.Price(_luxuryOrder[i]),1))
-				{
-					log("Bought "+ _luxuryOrder[i]+" for $"+ _home.Price(_luxuryOrder[i]));
-					break;
-				}
-				else
-				{
-					//log("Tried but couldn't buy "+_luxuryOrder[i]);
-				}
-			}
+            for (String a_luxuryOrder : _luxuryOrder) {
+                if (Buy(_home, a_luxuryOrder, _home.Price(a_luxuryOrder), 1)) {
+                    log("Bought " + a_luxuryOrder + " for $" + _home.Price(a_luxuryOrder));
+                    break;
+                }
+            }
 		}
 
 		if(count%(int)(10/multiplier)==0)
@@ -93,12 +80,12 @@ public class Housing extends Entity
 			}
 			int amt = Integer.MAX_VALUE;
 			String toEat = null;
-			for(int i = 0; i < _consumeOrder.length; i++) {
-				if (Resource(_consumeOrder[i]) > 0 && amt > Resource(_consumeOrder[i])) {
-					toEat=_consumeOrder[i];
-					amt=Resource(toEat);
-				}
-			}
+            for (String a_consumeOrder : _consumeOrder) {
+                if (Resource(a_consumeOrder) > 0 && amt > Resource(a_consumeOrder)) {
+                    toEat = a_consumeOrder;
+                    amt = Resource(toEat);
+                }
+            }
 			if(toEat!=null) {
 				incResource(toEat, -1);
 				log("Ate 1 " + toEat);

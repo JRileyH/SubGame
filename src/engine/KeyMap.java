@@ -3,12 +3,13 @@ package engine;
 import java.util.HashMap;
 import java.util.Map;
 
-public class KeyMap
+class KeyMap
 {
 	private Map<Integer, String> _keyMap;
 	private Map<Integer, Boolean> _keyFlags;
 	private XMLHandler _xmlh;
-	public KeyMap(XMLHandler xmlh)
+
+	KeyMap(XMLHandler xmlh)
 	{
 		_xmlh = xmlh;
 		_keyMap = new HashMap<>();
@@ -16,7 +17,7 @@ public class KeyMap
 		mapKeys(Game.state);
 	}
 	
-	public void mapKeys(Game.State state)
+	void mapKeys(Game.State state)
 	{//Initialized each module with its stored key bindings from XML
 		switch (state)
 		{
@@ -35,7 +36,7 @@ public class KeyMap
 		}
 	}
 	
-	public void press(int c, boolean d)
+	void press(int c, boolean d)
 	{//registers a key action d: true=pressed, false=released
 		if(_keyMap.containsKey(c))
 		{

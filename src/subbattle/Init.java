@@ -5,26 +5,21 @@ import org.newdawn.slick.*;
 
 public class Init
 {
-
 	public Init(XMLHandler xmlh)
 	{
-		xmlh.processSubBattle();
+        xmlh.processSubBattle();
 	}
 
-	public void StartBattle(String enemy)
-	{
-
-	}
-
+    @SuppressWarnings("unused")
 	public void update(int count)
 	{
 
 	}
-
+    @SuppressWarnings("unused")
     public void tick(int count) {
 
     }
-
+    @SuppressWarnings("unused")
 	public void render(GameContainer game, Graphics g)
 	{
 

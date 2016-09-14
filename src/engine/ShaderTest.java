@@ -9,9 +9,6 @@ import java.io.IOException;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL11.*;
 
-/**
- * Created by Riggy on 9/11/2016.
- */
 public class ShaderTest
 {
     public static void main(String[] args)

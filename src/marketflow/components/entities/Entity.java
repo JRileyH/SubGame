@@ -14,15 +14,15 @@ import org.newdawn.slick.geom.Polygon;
 
 public class Entity extends Component
 {
-	protected int _credit;
-	protected String _id;
-	protected Map<String, Stock> _stockRef;
-	protected int _population;
-	protected int _populationMax = 1;
-	protected String _description;
-	protected HSSFSheet _reportSheet;
+	int _credit;
+	String _id;
+	Map<String, Stock> _stockRef;
+	int _population;
+	int _populationMax = 1;
+	private String _description;
+	private HSSFSheet _reportSheet;
 	
-	public Entity(String id, String desc, Map<String, Stock> st_ref, String path, Polygon hitbox, int x, int y)
+	Entity(String id, String desc, Map<String, Stock> st_ref, String path, Polygon hitbox, int x, int y)
 	{
 		super(path,hitbox,x,y);
 		_id = id;
@@ -70,10 +70,10 @@ public class Entity extends Component
 	}
 
 //===Reporting================================//
-	protected boolean console = false;
+    private boolean console = false;
 	private int time = 0;
-	protected int logCol = 0;
-	protected int oldLogCol = 0;
+	int logCol = 0;
+	int oldLogCol = 0;
 	public void print(){
 		String toPrint = "";
 		toPrint+="/=================================\\\n";
@@ -117,7 +117,7 @@ public class Entity extends Component
 		line+="|";
 		return line+"\n";
 	}
-	protected void log(String msg)
+	void log(String msg)
 	{
 		if(console){System.out.println(_id +": "+msg);}
 		if(_reportSheet != null && row != null) {
@@ -133,8 +133,8 @@ public class Entity extends Component
 		super.update(count);
 	}
 
-	protected int rowNum = 1;
-	protected Row row;
+	private int rowNum = 1;
+	private Row row;
 	public void tick(int count)
 	{//One Second Loop
 		if(_reportSheet !=null) {
@@ -161,6 +161,7 @@ public class Entity extends Component
 		if(renderable) g.drawString(_id, _relX, _relY);
 	}
 
+	@SuppressWarnings("unused")
 	public boolean Immigrate(Entity source, int amt)
 	{
 		if(source.Population()>amt&& _population <(_populationMax -amt)){
@@ -171,6 +172,7 @@ public class Entity extends Component
 		}
 		return true;
 	}
+    @SuppressWarnings("unused")
 	public boolean Emigrate(Entity destination, int amt)
 	{
 		if(Population()>amt&&destination.Population()<(destination.PopulationMax()-amt)){
@@ -181,7 +183,7 @@ public class Entity extends Component
 		}
 		return true;
 	}
-	public boolean Buy(Entity seller, String res, int pricePer, int amt)
+	boolean Buy(Entity seller, String res, int pricePer, int amt)
 	{
 		int cost=pricePer*amt;
 		if(_credit >=cost&&seller.Resource(res)>=amt){
@@ -194,7 +196,7 @@ public class Entity extends Component
 		}
 		return true;
 	}
-	public boolean Sell(Entity buyer, String res, int pricePer, int amt)
+	boolean Sell(Entity buyer, String res, int pricePer, int amt)
 	{
 		int cost=pricePer*amt;
 		if(buyer.Credit()>=cost&&Resource(res)>=amt){
@@ -208,20 +210,21 @@ public class Entity extends Component
 		return true;
 	}
 
-	public String ID(){return _id;}
-
+	String ID(){return _id;}
+    @SuppressWarnings("unused")
 	public void Description(String str){ _description = str;}
+    @SuppressWarnings("unused")
 	public String Description(){return _description;}
 	public void Credit(int amt){ _credit = amt;}
-	public int Credit(){return _credit;}
-	public void incCredit(int amt){ _credit += amt;}
+	int Credit(){return _credit;}
+	void incCredit(int amt){ _credit += amt;}
 
 	public void Population(int amt){ _population = amt;}
 	public int Population(){return _population;}
 	public int PopulationMax(){return _populationMax;}
 	public void incPopulation(int amt){ _population +=amt;}
-	
-	public void Resource(String rid, int amt){_stockRef.get(rid).Resource(_id, amt);}
-	public int Resource(String rid){return _stockRef.get(rid).Resource(_id);}
-	public void incResource(String rid, int amt){_stockRef.get(rid).incResource(_id, amt);}
+    @SuppressWarnings("unused")
+	void Resource(String rid, int amt){_stockRef.get(rid).Resource(_id, amt);}
+	int Resource(String rid){return _stockRef.get(rid).Resource(_id);}
+	void incResource(String rid, int amt){_stockRef.get(rid).incResource(_id, amt);}
 }

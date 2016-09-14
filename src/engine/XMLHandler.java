@@ -17,8 +17,8 @@ public class XMLHandler
 	private DocumentBuilderFactory _factory;
 	private static DocumentBuilder _builder;
 	private static StringBuilder _xmlSB;
-	
-	public XMLHandler()
+
+	XMLHandler()
 	{
 		_factory = DocumentBuilderFactory.newInstance();
 		try
@@ -49,10 +49,11 @@ public class XMLHandler
 		return null;
 	}
 	
-	public void setKeyMap(String path, Map<Integer, String> map, Map<Integer, Boolean> flags)
+	void setKeyMap(String path, Map<Integer, String> map, Map<Integer, Boolean> flags)
 	{
 		Document doc = read(path);
 		map.clear();
+		if (doc == null) throw new AssertionError();
 		Node keys = doc.getElementsByTagName("Keys").item(0);
 		Element keys_elem = (Element) keys;
 		NodeList bindings = keys_elem.getElementsByTagName("Binding");

@@ -6,10 +6,7 @@ import org.newdawn.slick.*;
 
 import java.util.ArrayList;
 
-/**
- * Created by Riggy on 9/12/2016.
- */
-public class LightMap {
+class LightMap {
     private final int RED=0,GREEN=1,BLUE=2;
     private ArrayList<Light> _lights;
     private float[][][] _lux;
@@ -18,7 +15,7 @@ public class LightMap {
     private int _lightBox;
     private int _lightMapX, _lightMapY;
 
-    public LightMap(int lightBox, float shadow)
+    LightMap(int lightBox, float shadow)
     {
         _lights = new ArrayList<>();
         try {
@@ -60,6 +57,7 @@ public class LightMap {
         }
     }
 
+    @SuppressWarnings("unused")
     public void render(GameContainer game, Graphics g)
     {
         g.copyArea(_backdrop,0,0);
@@ -86,13 +84,14 @@ public class LightMap {
         }*/
     }
 
-    public void addLight(Light light)
+    void addLight(Light light)
     {
         _lights.add(light);
     }
-    public float AbientShadow(){return _shadow;}
-    public void AbientShadow(float amt){_shadow=amt;}
-    public void incAbientShadow(float amt){_shadow+=amt;}
+    float AbientShadow(){return _shadow;}
+    @SuppressWarnings("unused")
+    void AbientShadow(float amt){_shadow=amt;}
+    void incAbientShadow(float amt){_shadow+=amt;}
 
 
 }

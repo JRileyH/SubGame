@@ -25,7 +25,7 @@ public class Ship extends Entity
 	private City _dest;
 	private City _dock;
 	
-	private int _speed = 0;
+	private int _speed;
 	private int _maxSpeed;
 	
 	public Ship(String id, String desc, int x, int y, int spd, City location, City home, Map<String, City> c_ref, Map<String, Stock> ref, int maxpop)
@@ -37,30 +37,31 @@ public class Ship extends Entity
 		_home=home;
 		_dock=location;
 		_dest=null;
+        _speed = 0;
 		_maxSpeed =spd;
 		//console=true;
 	}
 
+	@SuppressWarnings("unused")
 	public City Location()
 	{
 		return _dock;
 	}
+    @SuppressWarnings("unused")
 	public City Destination()
 	{
 		return _dest;
 	}
+    @SuppressWarnings("unused")
 	public City Home()
 	{
 		return _home;
 	}
 
-	public int X(){return _posX;}
-	public int Y(){return _posX;}
-
-	int stallCount = 0;
-	int stallAmt = 200;
-	ArrayList<Transaction> transactions = new ArrayList<>();
-	int maxTransactions=100;
+	private int stallCount = 0;
+	private int stallAmt = 200;
+	private ArrayList<Transaction> transactions = new ArrayList<>();
+	private int maxTransactions=100;
 
 	public void update(int count)
 	{

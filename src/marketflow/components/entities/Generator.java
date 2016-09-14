@@ -1,8 +1,6 @@
 
 package marketflow.components.entities;
 
-import marketflow.components.entities.City;
-import marketflow.components.entities.Entity;
 import marketflow.econ.Stock;
 import org.newdawn.slick.*;
 
@@ -39,31 +37,28 @@ public class Generator extends Entity
 		//console=true;
 	}
 
-	public String Product()
+	private String Product()
 	{
 		return _product;
 	}
+    @SuppressWarnings("unused")
 	public City Home() {return _home;}
 
-	public boolean Procure()
+	private boolean Procure()
 	{//Buy input goods from city market
 		//Find most needed input
 		String Cargo = null;//What cargo will you buy today?
 		int amt = Integer.MAX_VALUE;//How much are you holding?
 
-		for(int i = 0; i < _inputs.length; i++)
-		{
-			if(Resource(_inputs[i])<amt)
-			{//Buy the resource you have the least of
-				Cargo = _inputs[i];
-				amt=Resource(_inputs[i]);
-			}
-			else if(Resource(_inputs[i])==amt&& _home.Price(_inputs[i])< _home.Price(Cargo))
-			{//If you have a tie then buy the cheaper one.
-				Cargo = _inputs[i];
-				amt=Resource(_inputs[i]);
-			}
-		}
+        for (String _input : _inputs) {
+            if (Resource(_input) < amt) {//Buy the resource you have the least of
+                Cargo = _input;
+                amt = Resource(_input);
+            } else if (Resource(_input) == amt && _home.Price(_input) < _home.Price(Cargo)) {//If you have a tie then buy the cheaper one.
+                Cargo = _input;
+                amt = Resource(_input);
+            }
+        }
 
 		if(Resource(Cargo)> _population)
 		{//You've got enough already start producing
@@ -83,7 +78,7 @@ public class Generator extends Entity
 		}
 	}
 
-	public boolean Produce()
+	private boolean Produce()
 	{//spend credit and input goods on producing product
 		//Check if cost of production is available
 		if(_credit < _cost * _population)
@@ -93,21 +88,21 @@ public class Generator extends Entity
 			log("Not enough funds, firing employee, _population: " + Population());
 			return false;
 		}
-		for(int i = 0; i < _inputs.length; i++)
-		{//Check for sufficient ingredients
-			if(Resource(_inputs[i])<=0)
-			{//don't have enough ingredients
-				_state=State.LOADING;
-				log("Not enough Resources to produce");
-				return false;
-			}
-		}
+        for (String _input : _inputs) {
+            //Check for sufficient ingredients
+            if (Resource(_input) <= 0) {
+                //don't have enough ingredients
+                _state = State.LOADING;
+                log("Not enough Resources to produce");
+                return false;
+            }
+        }
 		//Spend cost of production
 		incCredit(-_cost * _population);
-		for(int i = 0; i < _inputs.length; i++)
-		{//Spend each ingredient resource
-			incResource(_inputs[i],-1);
-		}
+        for (String _input : _inputs) {
+            //Spend each ingredient resource
+            incResource(_input, -1);
+        }
 		//produce output product
 		incResource(_product, _output);
 
@@ -115,7 +110,7 @@ public class Generator extends Entity
 		return true;
 	}
 
-	public boolean Vend()
+	private boolean Vend()
 	{//sell produce at city market
 		if(Resource(_product)<=0)
 		{//Out of Goods
@@ -145,7 +140,7 @@ public class Generator extends Entity
 			switch (_state) {
 				case LOADING:
 					if(Procure()){
-
+                        //do nothing
 					}
 					break;
 				case PRODUCING:

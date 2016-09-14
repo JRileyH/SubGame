@@ -1,16 +1,13 @@
 package marketflow.components.entities;
 
 import engine.Game;
-import marketflow.components.entities.Entity;
+
 import marketflow.econ.Stock;
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.Map;
 
-/**
- * Created by Nark on 9/3/2016.
- */
 public class Player extends Entity
 {
     private Vector2f _center;
@@ -134,7 +131,7 @@ public class Player extends Entity
 
     public void GoTo(float x, float y)
     {
-
+        System.out.println(x+","+y);
     }
 
     public void toggleAutoPilot()
@@ -142,17 +139,25 @@ public class Player extends Entity
 
     }
 
-    public int Speed(){return _gear * _gearSize;}
+    private int Speed(){return _gear * _gearSize;}
+    @SuppressWarnings("unused")
     public int Gear(){return _gear;}
+    @SuppressWarnings("unused")
     public void GearSize(int amt){_gearSize =amt;}
     public Vector2f Velocity()
     {
         return new Vector2f(_center.x- _trajectory.x,_center.y- _trajectory.y);
     }
+    @SuppressWarnings("unused")
     public float Handling(){return _handling;}
+    @SuppressWarnings("unused")
     public void Handling(int amt){_handling=amt;}
+    @SuppressWarnings("unused")
     public int MaxGear(){return _maxGear;}
+    @SuppressWarnings("unused")
     public int MinGear(){return _minGear;}
+    @SuppressWarnings("unused")
     public int Yaw(){return _yaw;}
+    @SuppressWarnings("unused")
     public int MaxYaw(){return _maxYaw;}
 }

@@ -3,15 +3,12 @@ package engine;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Riggy on 9/10/2016.
- */
-public class MouseMap
+class MouseMap
 {
     private Map<Integer, String> _mouseMap;
     private Map<Integer, Boolean> _mouseFlags;
     private XMLHandler _xmlh;
-    public MouseMap(XMLHandler xmlh)
+    MouseMap(XMLHandler xmlh)
     {
         _xmlh = xmlh;
         _mouseMap = new HashMap<>();
@@ -19,7 +16,7 @@ public class MouseMap
         mapMouse(Game.state);
     }
 
-    public void mapMouse(Game.State state)
+    void mapMouse(Game.State state)
     {//Initialized each module with its stored key bindings from XML
         switch (state)
         {
@@ -37,7 +34,7 @@ public class MouseMap
                 break;
         }
     }
-    public void press(int b, boolean d, int x, int y)
+    void press(int b, boolean d, int x, int y)
     {
         if(_mouseMap.containsKey(b))
         {

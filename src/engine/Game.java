@@ -10,16 +10,16 @@ public class Game extends BasicGame
 {
 	//Screen
 	public static int WIDTH, HEIGHT;						//screen dimensions
-	public static float SCALE=1f;								//zoom value
+	private static float SCALE=1f;								//zoom value
 	//States
-	public enum State
+	enum State
 	{//What state the game is running in. Controls what logic is done and what is rendered
 		UI,
 		MARKETFLOW,
 		SUBBATTLE,
 		MYESTATE
 	}
-	public static State state = State.MARKETFLOW;			//Starting State
+	static State state = State.MARKETFLOW;			//Starting State
 
 	//Timing
 	private int[] _counts = new int[State.values().length];	//Fast Logic Timers
@@ -27,21 +27,21 @@ public class Game extends BasicGame
 	private int _sec = 0;									//# of Fast Logic ticks until One Second Logic fires
 
 	//Input
-	static KeyMap keymap;									//Keyboard Bindings
-	static MouseMap mousemap;								//Mouse Bindings
+	private static KeyMap keymap;							//Keyboard Bindings
+	private static MouseMap mousemap;						//Mouse Bindings
 
 	//Modules
-	public static ui.Init ui;								//Menu mode.
+	private static ui.Init ui;								//Menu mode.
 	public static marketflow.Init mf;						//World map mode.
-	public static subbattle.Init sb;						//Combat mode.
-	public static myestate.Init me;							//City builder mode.
+	private static subbattle.Init sb;						//Combat mode.
+	private static myestate.Init me;						//City builder mode.
 
 	public Game(String name)
 	{
 		super(name);
 	}				//Constructor
 
-	public static void setState(State s)
+	static void setState(State s)
 	{//Changes the game state enum and resets the bound keys for that state
 		state = s;
 		keymap.mapKeys(s);
