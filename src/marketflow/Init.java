@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import Physics.Collision;
 import engine.*;
 import marketflow.components.entities.*;
 import marketflow.components.lights.*;
@@ -16,6 +17,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Polygon;
+import org.newdawn.slick.geom.Vector2f;
 
 public class Init
 {
@@ -26,6 +28,8 @@ public class Init
 	private Map<String, Ship> _shipColl;
 	private Map<String, Generator> _genColl;
 	private Map<String, Housing> _houseColl;
+
+	private Collision coll = new Collision();
 
 	private ArrayList<Component> _obstacles;
 
@@ -49,7 +53,7 @@ public class Init
                 46,25
         };
 		_player = new Player("Player Name",										//Player Name
-                "res/marketflow/entities/player2.png",                          //Image Path
+                "res/marketflow/entities/ship.png",                          //Image Path
                 new Polygon(p_points),                                                           //hitbox
 				"Your Ship. There are many like it but this one is yours.",		//Description
 				null,															//Stock Reference
@@ -137,6 +141,14 @@ public class Init
 		for(Component o : _obstacles)
 		{
 			o.update(count);
+		}
+
+		for(int c=0; c<_obstacles.size();c++)
+		{
+			if(coll.collCheck(_player.Hitbox(),_obstacles.get(c).Hitbox()) != null)
+			{
+				_player.Velocity(coll.collCheck(_player.Hitbox(),_obstacles.get(c).Hitbox()));
+			}
 		}
 	}
 
