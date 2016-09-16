@@ -6,7 +6,7 @@ import org.newdawn.slick.*;
 
 import java.util.ArrayList;
 
-class LightMap {
+public class LightMap {
     private final int RED=0,GREEN=1,BLUE=2;//value of RGG in array
     private final int NW=0,NE=1,SE=2,SW=3;//value of quadrant in array
     private ArrayList<Light> _lights;
@@ -64,14 +64,33 @@ class LightMap {
         g.copyArea(_backdrop,0,0);
 
         _backdrop.startUse();
-        for (int y=0;y<_lightMapY;y++) {
-            for (int x=0;x<_lightMapX;x++) {
+        for (int y=1;y<_lightMapY;y++) {
+            for (int x=1;x<_lightMapX;x++) {
                 Image lighting = _backdrop.getSubImage(x*_lightBox,y*_lightBox,_lightBox,_lightBox);
 
+                //TOP_LEFT RENDER
                 lighting.setColor(Image.TOP_LEFT,       _lux[x][y][RED],     _lux[x][y][GREEN],       _lux[x][y][BLUE],        _shadow);
                 lighting.setColor(Image.TOP_RIGHT,      _lux[x+1][y][RED],   _lux[x+1][y][GREEN],     _lux[x+1][y][BLUE],      _shadow);
                 lighting.setColor(Image.BOTTOM_RIGHT,   _lux[x+1][y+1][RED], _lux[x+1][y+1][GREEN],   _lux[x+1][y+1][BLUE],    _shadow);
                 lighting.setColor(Image.BOTTOM_LEFT,    _lux[x][y+1][RED],   _lux[x][y+1][GREEN],     _lux[x][y+1][BLUE],      _shadow);
+
+                //TOP_LEFT RENDER
+                /*lighting.setColor(Image.TOP_LEFT,     _lux[x-1][y][RED],   _lux[x-1][y][GREEN],   _lux[x-1][y][BLUE],   _shadow);
+                lighting.setColor(Image.TOP_RIGHT,      _lux[x][y][RED],     _lux[x][y][GREEN],     _lux[x][y][BLUE],     _shadow);
+                lighting.setColor(Image.BOTTOM_RIGHT,   _lux[x][y+1][RED],   _lux[x][y+1][GREEN],   _lux[x][y+1][BLUE],   _shadow);
+                lighting.setColor(Image.BOTTOM_LEFT,    _lux[x-1][y+1][RED], _lux[x-1][y+1][GREEN], _lux[x-1][y+1][BLUE], _shadow);*/
+
+                //BOTTOM_RIGHT RENDER
+                /*lighting.setColor(Image.TOP_LEFT,   _lux[x-1][y-1][RED], _lux[x-1][y-1][GREEN], _lux[x-1][y-1][BLUE], _shadow);
+                lighting.setColor(Image.TOP_RIGHT,    _lux[x][y-1][RED],   _lux[x][y-1][GREEN],   _lux[x][y-1][BLUE],   _shadow);
+                lighting.setColor(Image.BOTTOM_RIGHT, _lux[x][y][RED],     _lux[x][y][GREEN],     _lux[x][y][BLUE],     _shadow);
+                lighting.setColor(Image.BOTTOM_LEFT,  _lux[x-1][y][RED],   _lux[x-1][y][GREEN],   _lux[x-1][y][BLUE],   _shadow);*/
+
+                //TOP_LEFT RENDER
+                /*lighting.setColor(Image.TOP_LEFT,   _lux[x][y-1][RED],   _lux[x][y-1][GREEN],   _lux[x][y-1][BLUE],   _shadow);
+                lighting.setColor(Image.TOP_RIGHT,    _lux[x+1][y-1][RED], _lux[x+1][y-1][GREEN], _lux[x+1][y-1][BLUE], _shadow);
+                lighting.setColor(Image.BOTTOM_RIGHT, _lux[x+1][y][RED],   _lux[x+1][y][GREEN],   _lux[x+1][y][BLUE],   _shadow);
+                lighting.setColor(Image.BOTTOM_LEFT,  _lux[x][y][RED],     _lux[x][y][GREEN],     _lux[x][y][BLUE],     _shadow);*/
 
                 lighting.drawEmbedded(x*_lightBox,y*_lightBox,_lightBox,_lightBox);
             }

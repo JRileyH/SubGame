@@ -59,6 +59,7 @@ class KeyMap
 				break;
 			
 			case "SwitchToUI":
+			    System.out.println("OMG");
 				if(Game.state!=Game.State.UI)Game.setState(Game.State.UI);
 				break;
 			case "SwitchToMF":

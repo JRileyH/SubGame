@@ -80,7 +80,7 @@ public class Game extends BasicGame
 		keymap = new KeyMap(xmlh);
 		mousemap = new MouseMap(xmlh);
 
-		ui = new ui.Init();
+		ui = new ui.Init(xmlh);
 		mf = new marketflow.Init(xmlh);
 		sb = new subbattle.Init(xmlh);
 		me = new myestate.Init(xmlh);

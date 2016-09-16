@@ -31,7 +31,7 @@ public class XMLHandler
 		}
 	}
 	
-	private static Document read(String path)
+	public static Document read(String path)
 	{
 		_xmlSB = new StringBuilder();
 		_xmlSB.append("<?xml version=\"1.0\"?> <class> </class>");
@@ -71,7 +71,7 @@ public class XMLHandler
 		map.clear();
 		Node mouse = doc.getElementsByTagName("Mouse").item(0);
 		Element mouse_elem = (Element) mouse;
-		NodeList bindings = mouse_elem.getElementsByTagName("Binding");
+		NodeList bindings = mouse_elem.getElementsByTagName("BindingSystem");
 		for(int i = 0; i < bindings.getLength(); i++)
 		{
 			Node binding = bindings.item(i);

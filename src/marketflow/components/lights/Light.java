@@ -13,7 +13,13 @@ public class Light extends Component
     protected float _radius;
     private float _lux;
     private boolean _on;
-
+    /**
+     * Creates a source of light which is contained and processed inside a LightMap
+     * @param x X Coordinate
+     * @param y Y Coordinate
+     * @param radius Length in Pixels of light source
+     * @param lux Brightness of light source
+     */
     Light(int x, int y, float radius, float lux)
     {
         super(null, null, x,y);
@@ -29,6 +35,13 @@ public class Light extends Component
         _lux=lux;
         _on=true;
     }
+    /**
+     * Creates a source of light which is contained and processed inside a LightMap
+     * @param x X Coordinate
+     * @param y Y Coordinate
+     * @param radius Length in Pixels of light source
+     * @param lux Brightness of light source
+     */
     public Light(int x, int y, float radius, float lux, Color tint)
     {
         super(null, null, x,y);

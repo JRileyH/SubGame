@@ -53,8 +53,8 @@ public class Init
                 46,25
         };
 		_player = new Player("Player Name",										//Player Name
-                "res/marketflow/entities/ship.png",                          //Image Path
-                new Polygon(p_points),                                                           //hitbox
+                "res/marketflow/entities/player2.png",                          //Image Path
+                new Polygon(p_points),                                          //hitbox
 				"Your Ship. There are many like it but this one is yours.",		//Description
 				null,															//Stock Reference
 				0,																//X
@@ -68,7 +68,7 @@ public class Init
 		);
 
 		_map = new WorldMap(_player, 0, 0);
-		_lmap = new LightMap(15,0.8f);
+		_lmap = new LightMap(15,0.6f);
 
 		cityBook = new HSSFWorkbook();
 		shipBook = new HSSFWorkbook();
@@ -94,11 +94,6 @@ public class Init
 		_lmap.addLight(new Light(575,600,150,0.5f,Color.green));
 		_lmap.addLight(new HeadLight(_player,500,600,550,0.5f,Color.white));
 
-		//GayBones Rainbow Time
-		for(int i = 0; i<1000; i++)
-		{
-			_lmap.addLight(new Light(1400, i*300, 350, (float)Math.random(), new Color((float)Math.random(), (float)Math.random(), (float)Math.random())));
-		}
 
 		//TESTING OBSTACLES
 		float[] o_points=new float[]{
