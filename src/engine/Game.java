@@ -19,7 +19,7 @@ public class Game extends BasicGame
 		SUBBATTLE,
 		MYESTATE
 	}
-	static State state = State.MARKETFLOW;			//Starting State
+	static State state = State.UI;			//Starting State
 
 	//Timing
 	private int[] _counts = new int[State.values().length];	//Fast Logic Timers
@@ -28,6 +28,7 @@ public class Game extends BasicGame
 
 	//Input
 	private static KeyMap keymap;							//Keyboard Bindings
+    public static ButtonMap buttonmap;                      //UI Button Bindings
 	private static MouseMap mousemap;						//Mouse Bindings
 
 	//Modules
@@ -78,9 +79,10 @@ public class Game extends BasicGame
 	{
 		XMLHandler xmlh = new XMLHandler();
 		keymap = new KeyMap(xmlh);
+        buttonmap = new ButtonMap();
 		mousemap = new MouseMap(xmlh);
 
-		ui = new ui.Init(xmlh);
+		ui = new ui.Init(xmlh, game.getInput());
 		mf = new marketflow.Init(xmlh);
 		sb = new subbattle.Init(xmlh);
 		me = new myestate.Init(xmlh);
@@ -116,7 +118,7 @@ public class Game extends BasicGame
 		switch(state)
 		{
 			case UI:
-				ui.update(c);
+				ui.update(game, c);
 				break;
 			case MARKETFLOW:
 				mf.update(c);
@@ -156,7 +158,6 @@ public class Game extends BasicGame
 	
 	public static void main(String[] args)
 	{
-		System.out.println("HEYO");
 		try
 		{
 			AppGameContainer agc;

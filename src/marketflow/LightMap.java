@@ -64,8 +64,8 @@ public class LightMap {
         g.copyArea(_backdrop,0,0);
 
         _backdrop.startUse();
-        for (int y=1;y<_lightMapY;y++) {
-            for (int x=1;x<_lightMapX;x++) {
+        for (int y=0;y<_lightMapY;y++) {
+            for (int x=0;x<_lightMapX;x++) {
                 Image lighting = _backdrop.getSubImage(x*_lightBox,y*_lightBox,_lightBox,_lightBox);
 
                 //TOP_LEFT RENDER
