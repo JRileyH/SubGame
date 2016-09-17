@@ -5,6 +5,10 @@ import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Rectangle;
 import ui.ibs.BindingSystem;
 import ui.tools.Button;
+import ui.tools.Modal;
+import ui.tools.Tool;
+
+import java.util.ArrayList;
 
 public class Init
 {
@@ -17,8 +21,7 @@ public class Init
 
     private Input _input;
 
-    private Button _button;
-    private Button _butto2;
+    private Modal _modal;
 
 	public Init(XMLHandler xmlh, Input input)
 	{
@@ -34,14 +37,22 @@ public class Init
             e.printStackTrace();
         }
         //_ibs = new BindingSystem(xmlh);
-        _button = new Button(_font, "START GAME", 0, "StartGame", 700,400,10,10);
-        _butto2 = new Button(_font, "RIGHT CLICK! :D", 1, "Nothing", 700,500,10,10);
+        ArrayList<Tool> internals = new ArrayList<>();
+        internals.add(new Button(_font, "START GAME", Input.MOUSE_LEFT_BUTTON, 50,50,25,10, "StartGame"));
+        internals.add(new Button(_font, "RIGHT CLICK!", Input.MOUSE_RIGHT_BUTTON, 50,150,25,10, "Nothing"));
+
+        _modal = new Modal(_font, "MODAL TEST", Input.MOUSE_RIGHT_BUTTON, 300, 300, 25, 10, 400, 500, internals);
 	}
     @SuppressWarnings("unused")
 	public void update(GameContainer game, int count)
 	{
-        _button.update(_input.getMouseX(),_input.getMouseY(), _input.isMouseButtonDown(_button.Activator()));
-        _butto2.update(_input.getMouseX(),_input.getMouseY(), _input.isMouseButtonDown(_butto2.Activator()));
+        boolean[] buttonStates = new boolean[5];
+        buttonStates[Input.MOUSE_LEFT_BUTTON]=_input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON);
+        buttonStates[Input.MOUSE_RIGHT_BUTTON]=_input.isMouseButtonDown(Input.MOUSE_RIGHT_BUTTON);
+        buttonStates[Input.MOUSE_MIDDLE_BUTTON]=_input.isMouseButtonDown(Input.MOUSE_MIDDLE_BUTTON);
+        buttonStates[3]=_input.isMouseButtonDown(3);
+        buttonStates[4]=_input.isMouseButtonDown(4);
+        _modal.update(_input.getMouseX(),_input.getMouseY(), buttonStates);
 	}
     @SuppressWarnings("unused")
     public void tick(int count)
@@ -60,7 +71,6 @@ public class Init
         _font_sm.drawString(100, 352, "I THINK WE CAN!");
         _font_xs.drawString(100, 368, "THIS IS JUST TOO MUCH.");
 
-        _button.render(g);
-        _butto2.render(g);
+        _modal.render(g);
 	}
 }

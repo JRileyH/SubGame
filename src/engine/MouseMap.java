@@ -46,9 +46,5 @@ class MouseMap
             }
             _mouseFlags.put(b, d);
         }
-        else
-        {
-            System.out.println("MouseButtonNotBound: "+b);
-        }
     }
 }
