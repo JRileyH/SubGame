@@ -15,11 +15,14 @@ public class Button
     private Image _click;
     private Font _font;
     private String _txt;
+    private int _activator;
     private String _action;
     private int _x, _y, _w, _h, _mx, _my;
     private Rectangle _clickbox;
+    private Boolean _reset;
+    private Boolean _hovering;
 
-    public Button(Font font, String text, String action, int x, int y, int marginx, int marginy)
+    public Button(Font font, String text, int activator, String action, int x, int y, int marginx, int marginy)
     {
         try {
             _plain = new Image("res/ui/button.png");
@@ -31,6 +34,7 @@ public class Button
             e.printStackTrace();
         }
         _txt=text;
+        _activator=activator;
         _action=action;
         _x=x;
         _y=y;
@@ -39,20 +43,27 @@ public class Button
         _mx=marginx;
         _my=marginy;
         _clickbox = new Rectangle(x,y,_w,_h);
+        _reset = false;
+        _hovering=false;
     }
     public void update(float mx, float my, Boolean down)
     {
-        boolean hover = false;
         if(_clickbox.contains(mx,my)){
-            _img=_hover;
-            hover = true;
+            if(!down){
+                _img=_hover;
+                _reset=false;
+                engine.Game.buttonmap.reset(_activator);
+            }
+            _hovering = true;
         }
-        else{
+        else if(_hovering){
+            _hovering=false;
             _img=_plain;
         }
-        if(hover&&down){
+        if(_hovering&&down&&!_reset){
             _img=_click;
-            engine.Game.buttonmap.press(_action);
+            engine.Game.buttonmap.press(_action,_activator);
+            _reset=true;
         }
     }
     public void render(Graphics g)
@@ -61,4 +72,6 @@ public class Button
         _font.drawString(_x+_mx,_y+_my,_txt);
         g.drawRect(_clickbox.getX(),_clickbox.getY(),_clickbox.getWidth(),_clickbox.getHeight());
     }
+
+    public int Activator(){return _activator;}
 }

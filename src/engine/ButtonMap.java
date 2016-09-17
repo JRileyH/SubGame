@@ -1,23 +1,33 @@
 package engine;
 
+import org.newdawn.slick.Input;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class ButtonMap
 {
-	private Map<String, Boolean> _buttonFlags;
+    private boolean[] _down;
+
 	ButtonMap()
 	{
-		_buttonFlags = new HashMap<>();
+        _down=new boolean[5];
 	}
 	
-	public void press(String action)
-	{//registers a button action d: true=pressed, false=released
+	public void press(String action, int button)
+	{
         switch(action)
         {
         case "StartGame":
             if(Game.state!=Game.State.MARKETFLOW)Game.setState(Game.State.MARKETFLOW);
             break;
+        case "Nothing":
+            if(!_down[button])System.out.println("Does Nothing");
+            break;
         }
+        _down[button]=true;
 	}
+	public void reset(int button){
+        _down[button]=false;
+    }
 }

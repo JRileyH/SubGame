@@ -18,6 +18,7 @@ public class Init
     private Input _input;
 
     private Button _button;
+    private Button _butto2;
 
 	public Init(XMLHandler xmlh, Input input)
 	{
@@ -33,12 +34,14 @@ public class Init
             e.printStackTrace();
         }
         //_ibs = new BindingSystem(xmlh);
-        _button = new Button(_font, "START GAME", "StartGame", 700,400,10,10);
+        _button = new Button(_font, "START GAME", 0, "StartGame", 700,400,10,10);
+        _butto2 = new Button(_font, "RIGHT CLICK! :D", 1, "Nothing", 700,500,10,10);
 	}
     @SuppressWarnings("unused")
 	public void update(GameContainer game, int count)
 	{
-        _button.update(_input.getMouseX(),_input.getMouseY(), _input.isMouseButtonDown(0));
+        _button.update(_input.getMouseX(),_input.getMouseY(), _input.isMouseButtonDown(_button.Activator()));
+        _butto2.update(_input.getMouseX(),_input.getMouseY(), _input.isMouseButtonDown(_butto2.Activator()));
 	}
     @SuppressWarnings("unused")
     public void tick(int count)
@@ -58,5 +61,6 @@ public class Init
         _font_xs.drawString(100, 368, "THIS IS JUST TOO MUCH.");
 
         _button.render(g);
+        _butto2.render(g);
 	}
 }
