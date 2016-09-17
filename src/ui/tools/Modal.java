@@ -11,7 +11,6 @@ public class Modal extends Tool
     private int _labelH, _bodyH;
     private ArrayList<Tool> _internals;
     private Rectangle _bodybox;
-    private Rectangle _exitbox;
     private float _oldMouseX, _oldMouseY;
 
     public Modal(Font font, String text, int activator, int x, int y, int marginx, int marginy, int w, int h, ArrayList<Tool> internals)
@@ -57,8 +56,8 @@ public class Modal extends Tool
     {
         super.render(g);
 
-        _img.draw(_bodybox.getX(),_bodybox.getY(),_bodybox.getWidth(),_bodybox.getHeight());
-        g.drawRect(_bodybox.getX(),_bodybox.getY(),_bodybox.getWidth(),_bodybox.getHeight());
+        _img.draw(_bodybox.getX(),_bodybox.getY(),_w,_labelH);
+        g.drawRect(_bodybox.getX(),_bodybox.getY(),_w,_bodyH);
 
         for(Tool t : _internals)
         {
