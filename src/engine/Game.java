@@ -27,7 +27,7 @@ public class Game extends BasicGame
 	private int _sec = 0;									//# of Fast Logic ticks until One Second Logic fires
 
 	//Input
-	private static KeyMap keymap;							//Keyboard Bindings
+	public static KeyMap keymap;							//Keyboard Bindings
     public static ButtonMap buttonmap;                      //UI Button Bindings
 	private static MouseMap mousemap;						//Mouse Bindings
     public static ImageMap imagemap;

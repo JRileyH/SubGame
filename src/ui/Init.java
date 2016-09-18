@@ -6,6 +6,7 @@ import org.newdawn.slick.geom.Rectangle;
 import ui.ibs.BindingSystem;
 import ui.tools.Button;
 import ui.tools.Modal;
+import ui.tools.TextInput;
 import ui.tools.Tool;
 
 import java.util.ArrayList;
@@ -43,6 +44,7 @@ public class Init
         ArrayList<Tool> internals = new ArrayList<>();
         internals.add(new Button(imagemap.get("Standard"), _font, "START GAME", Input.MOUSE_LEFT_BUTTON, 50,50,25,10, "StartGame"));
         internals.add(new Button(imagemap.get("Standard"), _font, "RIGHT CLICK!", Input.MOUSE_RIGHT_BUTTON, 50,150,25,10, "Nothing"));
+        internals.add(new TextInput(imagemap.get("Standard"), _font, "", Input.MOUSE_LEFT_BUTTON, 50, 250, 25, 10, 300));
 
         _modal = new Modal(imagemap.get("Standard"), _font, "MODAL TEST", Input.MOUSE_LEFT_BUTTON, 300, 300, 25, 10, 400, 500, internals);
         _modal.Activate(true);

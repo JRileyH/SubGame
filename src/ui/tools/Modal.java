@@ -46,7 +46,7 @@ public class Modal extends Tool
         if(_active) {
             super.update(mx, my, down);
             if(_closeButton.Clicked()){_active=false;}
-            if(_minButton.Clicked()&&!_reset){_minimized=!_minimized;}
+            if(_minButton.Clicked()&&!_clicking){_minimized=!_minimized;}
 
             if (_hovering && down[_activator]) {
                 int deltaX = (int) (mx - _oldMouseX);

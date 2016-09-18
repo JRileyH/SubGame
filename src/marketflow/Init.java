@@ -68,7 +68,7 @@ public class Init
 		);
 
 		_map = new WorldMap(_player, 0, 0);
-		_lmap = new LightMap(15,0.6f);
+		_lmap = new LightMap(15,1f);
 
 		cityBook = new HSSFWorkbook();
 		shipBook = new HSSFWorkbook();

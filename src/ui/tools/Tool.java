@@ -17,7 +17,7 @@ public class Tool
     protected int _activator;
     protected Rectangle _clickbox;
     protected Boolean _hovering;
-    protected boolean _reset;
+    protected boolean _clicking;
 
     public Tool(Image[] imgset, int activator, int x, int y, int w, int h)
     {
@@ -30,8 +30,9 @@ public class Tool
         _y=y;
         _w=w;
         _h=h;
+        _clickbox = new Rectangle(x,y,_w,_h);
         _hovering = false;
-        _reset=false;
+        _clicking =false;
     }
 
     public Tool(Image[] imgset, Font font, String text, int activator, int x, int y, int mx, int my)
@@ -45,8 +46,11 @@ public class Tool
         _y=y;
         _mx=mx;
         _my=my;
+        _w=(mx*2)+font.getWidth(text);
+        _h=(my*2)+font.getLineHeight();
+        _clickbox = new Rectangle(x,y,_w,_h);
         _hovering = false;
-        _reset=false;
+        _clicking = false;
     }
 
     public void update(float mx, float my, boolean[] down)
@@ -62,14 +66,14 @@ public class Tool
             _img=_imgset[PLAIN];
         }
         if(_hovering&&down[_activator]) {
-            if(!_reset) {
+            if(!_clicking) {
                 _img = _imgset[CLICK];
-                _reset = true;
+                _clicking = true;
             }
         }
-        else if(_reset)
+        else if(_clicking)
         {
-            _reset=false;
+            _clicking =false;
             _img=_imgset[PLAIN];
         }
     }

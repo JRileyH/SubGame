@@ -3,11 +3,12 @@ package engine;
 import java.util.HashMap;
 import java.util.Map;
 
-class KeyMap
+public class KeyMap
 {
 	private Map<Integer, String> _keyMap;
 	private Map<Integer, Boolean> _keyFlags;
 	private XMLHandler _xmlh;
+    private boolean _disabled;
 
 	KeyMap(XMLHandler xmlh)
 	{
@@ -15,6 +16,7 @@ class KeyMap
 		_keyMap = new HashMap<>();
 		_keyFlags = new HashMap<>();
 		mapKeys(Game.state);
+        _disabled = false;
 	}
 	
 	void mapKeys(Game.State state)
@@ -38,7 +40,7 @@ class KeyMap
 	
 	void press(int c, boolean d)
 	{//registers a key action d: true=pressed, false=released
-		if(_keyMap.containsKey(c))
+		if(_keyMap.containsKey(c)&&!_disabled)
 		{
 			switch(_keyMap.get(c))
 			{
@@ -77,9 +79,14 @@ class KeyMap
 			}
 			_keyFlags.put(c, d);
 		}
-		else
+		else if(!_disabled)
 		{
 			System.out.println("KeyNotBound: "+c);
 		}
 	}
+
+	public void Disable(boolean state)
+    {
+        _disabled=state;
+    }
 }

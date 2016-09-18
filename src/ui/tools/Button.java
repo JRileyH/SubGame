@@ -13,9 +13,6 @@ public class Button extends Tool
     {
         super(imgset, activator, x, y, w, h);
         _action=action;
-        _w=w;
-        _h=h;
-        _clickbox = new Rectangle(x,y,_w,_h);
         _clicked=false;
     }
 
@@ -23,11 +20,6 @@ public class Button extends Tool
     {
         super(imgset, font, text, activator, x, y, marginx, marginy);
         _action=action;
-        _w=(marginx*2)+font.getWidth(text);
-        _h=(marginy*2)+font.getLineHeight();
-        _mx=marginx;
-        _my=marginy;
-        _clickbox = new Rectangle(x,y,_w,_h);
         _clicked=false;
     }
 
