@@ -3,15 +3,13 @@ package ui.tools;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
+import static engine.ImageMap.*;
 
 public class Tool
 {
     protected Image _img;
-    protected Image _plain;
-    protected Image _hover;
-    protected Image _click;
+    protected Image[] _imgset;
 
     protected Font _font;
     protected String _txt;
@@ -19,18 +17,27 @@ public class Tool
     protected int _activator;
     protected Rectangle _clickbox;
     protected Boolean _hovering;
+    protected boolean _reset;
 
-    public Tool(Font font, String text, int activator, int x, int y, int mx, int my)
+    public Tool(Image[] imgset, int activator, int x, int y, int w, int h)
     {
-        try {
-            _plain = new Image("res/ui/button.png");
-            _hover = new Image("res/ui/hover.png");
-            _click = new Image("res/ui/click.png");
-            _img=_plain;
-        } catch (SlickException e) {
-            e.printStackTrace();
-        }
+        _img=imgset[PLAIN];
+        _imgset=imgset;
+        _font=null;
+        _txt=null;
+        _activator=activator;
+        _x=x;
+        _y=y;
+        _w=w;
+        _h=h;
+        _hovering = false;
+        _reset=false;
+    }
 
+    public Tool(Image[] imgset, Font font, String text, int activator, int x, int y, int mx, int my)
+    {
+        _img=imgset[PLAIN];
+        _imgset=imgset;
         _font=font;
         _txt=text;
         _activator=activator;
@@ -39,20 +46,31 @@ public class Tool
         _mx=mx;
         _my=my;
         _hovering = false;
+        _reset=false;
     }
 
     public void update(float mx, float my, boolean[] down)
     {
         if(_clickbox.contains(mx,my)){
-            _hovering = true;
-            _img=_hover;
+            if(!_hovering) {
+                _hovering = true;
+                _img = _imgset[HOVER];
+            }
         }
         else if(_hovering&&!down[_activator]){
             _hovering=false;
-            _img=_plain;
+            _img=_imgset[PLAIN];
         }
         if(_hovering&&down[_activator]) {
-            _img=_click;
+            if(!_reset) {
+                _img = _imgset[CLICK];
+                _reset = true;
+            }
+        }
+        else if(_reset)
+        {
+            _reset=false;
+            _img=_imgset[PLAIN];
         }
     }
 
@@ -60,7 +78,7 @@ public class Tool
     {
         _img.draw(_clickbox.getX(),_clickbox.getY(),_clickbox.getWidth(),_clickbox.getHeight());
         g.drawRect(_clickbox.getX(),_clickbox.getY(),_clickbox.getWidth(),_clickbox.getHeight());
-        _font.drawString(_x+_mx,_y+_my,_txt);
+        if(_font!=null)_font.drawString(_x+_mx,_y+_my,_txt);
     }
 
     public int Activator(){return _activator;}

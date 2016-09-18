@@ -30,6 +30,7 @@ public class Game extends BasicGame
 	private static KeyMap keymap;							//Keyboard Bindings
     public static ButtonMap buttonmap;                      //UI Button Bindings
 	private static MouseMap mousemap;						//Mouse Bindings
+    public static ImageMap imagemap;
 
 	//Modules
 	private static ui.Init ui;								//Menu mode.
@@ -81,6 +82,7 @@ public class Game extends BasicGame
 		keymap = new KeyMap(xmlh);
         buttonmap = new ButtonMap();
 		mousemap = new MouseMap(xmlh);
+        imagemap = new ImageMap();
 
 		ui = new ui.Init(xmlh, game.getInput());
 		mf = new marketflow.Init(xmlh);

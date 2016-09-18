@@ -10,6 +10,9 @@ import ui.tools.Tool;
 
 import java.util.ArrayList;
 
+import static engine.Game.imagemap;
+import static org.newdawn.slick.Game.*;
+
 public class Init
 {
     //private BindingSystem _ibs;
@@ -38,10 +41,11 @@ public class Init
         }
         //_ibs = new BindingSystem(xmlh);
         ArrayList<Tool> internals = new ArrayList<>();
-        internals.add(new Button(_font, "START GAME", Input.MOUSE_LEFT_BUTTON, 50,50,25,10, "StartGame"));
-        internals.add(new Button(_font, "RIGHT CLICK!", Input.MOUSE_RIGHT_BUTTON, 50,150,25,10, "Nothing"));
+        internals.add(new Button(imagemap.get("Standard"), _font, "START GAME", Input.MOUSE_LEFT_BUTTON, 50,50,25,10, "StartGame"));
+        internals.add(new Button(imagemap.get("Standard"), _font, "RIGHT CLICK!", Input.MOUSE_RIGHT_BUTTON, 50,150,25,10, "Nothing"));
 
-        _modal = new Modal(_font, "MODAL TEST", Input.MOUSE_RIGHT_BUTTON, 300, 300, 25, 10, 400, 500, internals);
+        _modal = new Modal(imagemap.get("Standard"), _font, "MODAL TEST", Input.MOUSE_LEFT_BUTTON, 300, 300, 25, 10, 400, 500, internals);
+        _modal.Activate(true);
 	}
     @SuppressWarnings("unused")
 	public void update(GameContainer game, int count)
