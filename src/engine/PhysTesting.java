@@ -32,7 +32,7 @@ public class PhysTesting extends BasicGame
 
     @Override
     public void update(GameContainer game, int i) throws SlickException {
-        System.out.println("pickle");
+
     }
 
     @Override

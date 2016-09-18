@@ -1,6 +1,7 @@
 package marketflow.components.entities;
 
 import Physics.Collision;
+import Physics.Point;
 import engine.Game;
 
 import marketflow.econ.Stock;
@@ -14,9 +15,9 @@ import java.util.Map;
 public class Player extends Entity
 {
     private Collision coll;
-    private Vector2f _center;
-    private Vector2f _trajectory;
-    private Vector2f _carrot;
+    private Point _center;
+    private Point _trajectory;
+    private Point _carrot;
     private float _angle;
     private int _gear;
     private int _gearSize;
@@ -32,9 +33,9 @@ public class Player extends Entity
     {
         super(id, desc, st_ref, path, hitbox, x, y);
         coll = new Collision(this);
-        _center = new Vector2f((Game.WIDTH/2),(Game.HEIGHT/2));
-        _trajectory = new Vector2f((Game.WIDTH/2),(Game.HEIGHT/2));
-        _carrot = new Vector2f((Game.WIDTH/2),(Game.HEIGHT/2));
+        _center = new Point((Game.WIDTH/2),(Game.HEIGHT/2));
+        _trajectory = new Point((Game.WIDTH/2),(Game.HEIGHT/2));
+        _carrot = new Point((Game.WIDTH/2),(Game.HEIGHT/2));
         _gear = 0;
         _gearSize=gear;
         _maxGear =max_gear;
@@ -55,19 +56,23 @@ public class Player extends Entity
         _img.setRotation(_img.getRotation() + (float) Math.toDegrees(_handling * _yaw));
 
         _hitbox = (Polygon)_hitbox.transform(Transform.createRotateTransform(_handling * _yaw));
-        _hitbox.setCenterX(_center.x);
-        _hitbox.setCenterY(_center.y);
+        _hitbox.setCenterX(_center.x());
+        _hitbox.setCenterY(_center.y());
 
         //Set Carrot
-        _carrot.x = (float) (_center.x - (Speed() * Math.cos(_angle)));
-        _carrot.y = (float) (_center.y - (Speed() * Math.sin(_angle)));
+        _carrot.move(
+            _center.x() - (Speed() * Math.cos(_angle)),
+            _center.y() - (Speed() * Math.sin(_angle))
+        );
 
         //Catch Up to Carrot
-        double deltaX = _carrot.x - _trajectory.x;
-        double deltaY = _carrot.y - _trajectory.y;
-        float delta = (float) Math.atan2(deltaY, deltaX);
-        _trajectory.x += (float) (_drag * Math.cos(delta));
-        _trajectory.y += (float) (_drag * Math.sin(delta));
+        double deltaX = _carrot.x() - _trajectory.x();
+        double deltaY = _carrot.y() - _trajectory.y();
+        double delta =  Math.atan2(deltaY, deltaX);
+        _trajectory.shift(
+            _drag * Math.cos(delta),
+            _drag * Math.sin(delta)
+        );
 
         _posX=Game.WIDTH/2;
         _posY=Game.HEIGHT/2;
@@ -75,7 +80,6 @@ public class Player extends Entity
         _relX = _posX + Game.mf.Map().OffsetX() - _width / 2 + Game.mf.Map().PanX();
         _relY = _posY + Game.mf.Map().OffsetY() - _height / 2 + Game.mf.Map().PanY();
 
-        System.out.println(Game.mf._obstacles.size());
         for(int c=0; c<Game.mf._obstacles.size();c++)
         {
             coll.pointToLine(Game.mf._obstacles.get(c).Hitbox());
@@ -101,14 +105,14 @@ public class Player extends Entity
         g.draw(_hitbox);
 
         g.setColor(Color.green);
-        g.drawOval(_center.x-3,_center.y-3,6,6);
-        g.drawOval(_center.x-13,_center.y-13,26,26);
+        g.drawOval(_center.x()-3,_center.y()-3,6,6);
+        g.drawOval(_center.x()-13,_center.y()-13,26,26);
         g.setColor(Color.red);
-        g.drawOval(_carrot.x-3,_carrot.y-3,6,6);
-        g.drawOval(_carrot.x-13,_carrot.y-13,26,26);
+        g.drawOval(_carrot.x()-3,_carrot.y()-3,6,6);
+        g.drawOval(_carrot.x()-13,_carrot.y()-13,26,26);
         g.setColor(Color.blue);
-        g.drawOval(_trajectory.x-3, _trajectory.y-3,6,6);
-        g.drawOval(_trajectory.x-13, _trajectory.y-13,26,26);
+        g.drawOval(_trajectory.x()-3, _trajectory.y()-3,6,6);
+        g.drawOval(_trajectory.x()-13, _trajectory.y()-13,26,26);
         g.setColor(Color.black);
 
         g.drawString("Gear: "+ _gear , x+50,y+50);
@@ -162,9 +166,9 @@ public class Player extends Entity
     }
 
     @Override
-    public int relX(){return (int)_center.x;}
+    public int relX(){return (int)_center.x();}
     @Override
-    public int relY(){return (int)_center.y;}
+    public int relY(){return (int)_center.y();}
 
     private int Speed(){return _gear * _gearSize;}
     @SuppressWarnings("unused")
@@ -173,7 +177,7 @@ public class Player extends Entity
     public void GearSize(int amt){_gearSize =amt;}
     public Vector2f Velocity()
     {
-        return new Vector2f(_center.x- _trajectory.x,_center.y- _trajectory.y);
+        return new Vector2f(_center.x()- _trajectory.x(),_center.y()- _trajectory.y());
     }
     public void Velocity(Vector2f v){ Velocity().set(v);}
     @SuppressWarnings("unused")
@@ -188,4 +192,13 @@ public class Player extends Entity
     public int Yaw(){return _yaw;}
     @SuppressWarnings("unused")
     public int MaxYaw(){return _maxYaw;}
+
+    public void FlipTrajectory() {
+        float x = _center.x()-_trajectory.x();
+        float y = _center.y()-_trajectory.y();
+        x+=_center.x();
+        y+=_center.y();
+        _trajectory.move(x, y);
+        _yaw=-_yaw;
+    }
 }

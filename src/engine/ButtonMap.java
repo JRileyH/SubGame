@@ -21,7 +21,6 @@ public class ButtonMap
 
         case "UI":
             if(Game.state!=Game.State.UI||!_down[button]){
-                System.out.println("POWER");
                 Game.setState(Game.State.UI);
                 closeAllModals();
                 Game.ui.reinit();
@@ -29,7 +28,6 @@ public class ButtonMap
             break;
         case "MarketFlow":
             if(Game.state!=Game.State.MARKETFLOW||!_down[button]){
-                System.out.println("FUCK");
                 Game.setState(Game.State.MARKETFLOW);
                 closeAllModals();
                 Game.mf.reinit();

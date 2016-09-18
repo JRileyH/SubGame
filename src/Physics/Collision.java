@@ -1,13 +1,10 @@
 package Physics;
 
 import marketflow.components.entities.Player;
-import org.lwjgl.Sys;
-import org.lwjgl.util.Point;
+
 import org.newdawn.slick.geom.Polygon;
 import org.newdawn.slick.geom.Vector2f;
 
-import java.awt.geom.Point2D;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -16,44 +13,58 @@ import java.util.ArrayList;
 public class Collision
 {
     Player _owner;
-
-    Point collPoint = new Point();
+    boolean _cleared;
+    /*Point collPoint = new Point(0,0);
     Vector2f testV = new Vector2f();
-    ArrayList<Vector2f> collPointNorms = new ArrayList<>();
+    ArrayList<Vector2f> collPointNorms = new ArrayList<>();*/
+
+
+
 
     public Collision(Player owner)
     {
         _owner=owner;
+        _cleared = true;
     }
+
     public void pointToLine(Polygon poly2)
     {
         if(poly2.intersects(_owner.Hitbox()))
         {
-            float[] points = _owner.Hitbox().getPoints();
-            System.out.println("===POINTS========");
-            System.out.println(java.util.Arrays.toString(points));
-            System.out.println("====================");
-            Vector2f[] vectors = new Vector2f[points.length/2];
-            for(int i = 0; i < points.length; i+=2)
+            float[] pointdata = _owner.Hitbox().getPoints();
+            Point[] points = new Point[pointdata.length/2];
+            for(int i = 0; i < pointdata.length; i+=2)
             {
-                vectors[i/2]=new Vector2f(points[i],points[i+1]);
+                points[i/2]=new Point(pointdata[i],pointdata[i+1]);
             }
-            System.out.println("===VECTORS===========");
-            System.out.println(java.util.Arrays.toString(vectors));
-            System.out.println("====================");
+            //System.out.print("[");
+            for(Point p : points)
+            {
+                if(poly2.contains(p.x(),p.y()))
+                {
+                    //System.err.print(p.toString() + ", ");
+                }
+                else {
+                    //System.out.print(p.toString() + ", ");
+                }
+            }
+            //System.out.print("]");
+            //System.out.println();
+
+            if(_cleared){_owner.FlipTrajectory();_cleared=false;}
 
 
 
 
-                    System.out.println("intersects!");
+                    /*System.out.println("intersects!");
             for(int c=0;c<_owner.Hitbox().getPointCount();c++)
             {
                 if(poly2.contains(_owner.Hitbox().getPoint(c)[0],_owner.Hitbox().getPoint(c)[1]))
                 {
                     System.out.println("C: "+c+" | Size: "+_owner.Hitbox().getPointCount());
                     System.out.println("points: " + _owner.Hitbox().getPoint(c)[0] + "," + _owner.Hitbox().getPoint(c)[1]);
-                    collPoint.setX((int)_owner.Hitbox().getPoint(c)[0]);
-                    collPoint.setY((int)_owner.Hitbox().getPoint(c)[1]);
+                    collPoint.x(_owner.Hitbox().getPoint(c)[0]);
+                    collPoint.y(_owner.Hitbox().getPoint(c)[1]);*/
                     //collPointNorms.add(new Vector2f(poly2.getNormal(c)[0],poly2.getNormal(c)[1]));
                     /*System.out.print(poly2.getNormal(c)[0]);
                     System.out.println(" + "+poly2.getNormal(c)[1]);
@@ -61,8 +72,12 @@ public class Collision
                     System.out.println(testV.getNormal().getX()+" + "+testV.getNormal().getY());*/
 
                     //_owner.Velocity().setTheta(_owner.Velocity().dot(new Vector2f(poly2.getNormal(c)[0],poly2.getNormal(c)[1])));
-                }
-            }
+                //}
+            //}
+        }
+        else if(!_cleared)
+        {
+            _cleared=true;
         }
     }
 
