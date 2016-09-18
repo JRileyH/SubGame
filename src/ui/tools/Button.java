@@ -1,8 +1,8 @@
 package ui.tools;
 
+import org.lwjgl.Sys;
 import org.newdawn.slick.Font;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.geom.Rectangle;
 
 public class Button extends Tool
 {
@@ -41,4 +41,5 @@ public class Button extends Tool
     {
         return _clicked;
     }
+    public void reinit(){ _hovering=false;_clicked=false;}
 }

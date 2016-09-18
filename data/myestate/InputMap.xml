@@ -2,9 +2,6 @@
 <class>
 	<Mouse></Mouse>
 	<Keys>
-		<Binding id="2" action="SwitchToUI"></Binding>
-		<Binding id="3" action="SwitchToMF"></Binding>
-		<Binding id="4" action="SwitchToSB"></Binding>
-		<Binding id="5" action="SwitchToME"></Binding>
+        <Binding id="1" action="Menu"></Binding>
 	</Keys>
 </class>

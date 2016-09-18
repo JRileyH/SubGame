@@ -19,7 +19,7 @@ public class Game extends BasicGame
 		SUBBATTLE,
 		MYESTATE
 	}
-	static State state = State.UI;			//Starting State
+	static State state = State.MARKETFLOW;			//Starting State
 
 	//Timing
 	private int[] _counts = new int[State.values().length];	//Fast Logic Timers
@@ -33,10 +33,10 @@ public class Game extends BasicGame
     public static ImageMap imagemap;
 
 	//Modules
-	private static ui.Init ui;								//Menu mode.
+	public static ui.Init ui;								//Menu mode.
 	public static marketflow.Init mf;						//World map mode.
-	private static subbattle.Init sb;						//Combat mode.
-	private static myestate.Init me;						//City builder mode.
+	public static subbattle.Init sb;						//Combat mode.
+	public static myestate.Init me;						//City builder mode.
 
 	public Game(String name)
 	{
@@ -85,9 +85,9 @@ public class Game extends BasicGame
         imagemap = new ImageMap();
 
 		ui = new ui.Init(xmlh, game.getInput());
-		mf = new marketflow.Init(xmlh);
-		sb = new subbattle.Init(xmlh);
-		me = new myestate.Init(xmlh);
+		mf = new marketflow.Init(xmlh, game.getInput());
+		sb = new subbattle.Init(xmlh, game.getInput());
+		me = new myestate.Init(xmlh, game.getInput());
 	}
 
 	@Override
@@ -123,13 +123,13 @@ public class Game extends BasicGame
 				ui.update(game, c);
 				break;
 			case MARKETFLOW:
-				mf.update(c);
+				mf.update(game, c);
 				break;
 			case SUBBATTLE:
-				sb.update(c);
+				sb.update(game, c);
 				break;
 			case MYESTATE:
-				me.update(c);
+				me.update(game, c);
 				break;
 		}
 	}

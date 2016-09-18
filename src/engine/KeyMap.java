@@ -1,5 +1,7 @@
 package engine;
 
+import ui.tools.TextInput;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,7 +10,7 @@ public class KeyMap
 	private Map<Integer, String> _keyMap;
 	private Map<Integer, Boolean> _keyFlags;
 	private XMLHandler _xmlh;
-    private boolean _disabled;
+    private TextInput _textinput;
 
 	KeyMap(XMLHandler xmlh)
 	{
@@ -16,7 +18,7 @@ public class KeyMap
 		_keyMap = new HashMap<>();
 		_keyFlags = new HashMap<>();
 		mapKeys(Game.state);
-        _disabled = false;
+        _textinput = null;
 	}
 	
 	void mapKeys(Game.State state)
@@ -37,13 +39,36 @@ public class KeyMap
 			break;
 		}
 	}
-	
+
+	public void setTextInput(TextInput ti)
+    {
+        _textinput =ti;
+    }
+
 	void press(int c, boolean d)
 	{//registers a key action d: true=pressed, false=released
-		if(_keyMap.containsKey(c)&&!_disabled)
+		if(_keyMap.containsKey(c)&& _textinput ==null)
 		{
 			switch(_keyMap.get(c))
 			{
+
+                case "Menu":
+                    switch (Game.state){
+                        case UI:
+                            Game.ui._menumodal.Activate(true);
+                            break;
+                        case MARKETFLOW:
+                            Game.mf._menumodal.Activate(true);
+                            break;
+                        case SUBBATTLE:
+                            Game.sb._menumodal.Activate(true);
+                            break;
+                        case MYESTATE:
+                            Game.me._menumodal.Activate(true);
+                            break;
+                    }
+                    break;
+
 			case "TackLeft":
 				Game.mf.Player().tackLeft(d);
 				break;
@@ -59,19 +84,6 @@ public class KeyMap
 			case "ToggleLight":
 				if(!_keyFlags.get(c)){Game.mf.Player().toggleLight();}
 				break;
-			
-			case "SwitchToUI":
-				if(Game.state!=Game.State.UI)Game.setState(Game.State.UI);
-				break;
-			case "SwitchToMF":
-				if(Game.state!=Game.State.MARKETFLOW)Game.setState(Game.State.MARKETFLOW);
-				break;
-			case "SwitchToSB":
-				if(Game.state!=Game.State.SUBBATTLE)Game.setState(Game.State.SUBBATTLE);
-				break;
-			case "SwitchToME":
-				if(Game.state!=Game.State.MYESTATE)Game.setState(Game.State.MYESTATE);
-				break;
 
 			case "Report":
 				if(d){Game.mf.Report();}
@@ -79,14 +91,9 @@ public class KeyMap
 			}
 			_keyFlags.put(c, d);
 		}
-		else if(!_disabled)
-		{
-			System.out.println("KeyNotBound: "+c);
-		}
+		else if(_textinput!=null)
+        {
+            _textinput.processKey(c, d);
+        }
 	}
-
-	public void Disable(boolean state)
-    {
-        _disabled=state;
-    }
 }

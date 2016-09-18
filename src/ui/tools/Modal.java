@@ -6,13 +6,14 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Rectangle;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static engine.Game.imagemap;
 
 public class Modal extends Tool
 {
     private int _labelH, _bodyH;
-    private ArrayList<Tool> _internals;
+    private HashMap<String, Tool> _internals;
     private Rectangle _bodybox;
     private float _oldMouseX, _oldMouseY;
     private boolean _active;
@@ -20,7 +21,7 @@ public class Modal extends Tool
     private Button _closeButton;
     private Button _minButton;
 
-    public Modal(Image[] imgset, Font font, String text, int activator, int x, int y, int marginx, int marginy, int w, int h, ArrayList<Tool> internals)
+    public Modal(Image[] imgset, Font font, String text, int activator, int x, int y, int marginx, int marginy, int w, int h, HashMap<String, Tool> internals)
     {
         super(imgset, font, text, activator, x, y, marginx, marginy);
         _closeButton = new Button(imagemap.get("Close"), _activator, (x+w)-marginx-_font.getLineHeight(), y+marginy, _font.getLineHeight(), _font.getLineHeight(), null);
@@ -35,7 +36,7 @@ public class Modal extends Tool
         _active = false;
         _minimized=false;
 
-        for(Tool t : _internals)
+        for(Tool t : _internals.values())
         {
             t.move(_x+t.X(), _y+t.Y()+ _labelH);
         }
@@ -56,7 +57,7 @@ public class Modal extends Tool
                 _bodybox.setY(_y + _labelH);
                 _closeButton.shift(deltaX, deltaY);
                 _minButton.shift(deltaX, deltaY);
-                for (Tool t : _internals) {
+                for (Tool t : _internals.values()) {
                     t.shift(deltaX, deltaY);
                 }
             }
@@ -65,7 +66,7 @@ public class Modal extends Tool
             _closeButton.update(mx,my,down);
             _minButton.update(mx,my,down);
             if(!_minimized) {
-                for (Tool t : _internals) {
+                for (Tool t : _internals.values()) {
                     t.update(mx, my, down);
                 }
             }
@@ -81,7 +82,7 @@ public class Modal extends Tool
             if(!_minimized) {
                 _img.draw(_bodybox.getX(), _bodybox.getY(), _w, _bodyH);
                 g.drawRect(_bodybox.getX(), _bodybox.getY(), _w, _bodyH);
-                for (Tool t : _internals) {
+                for (Tool t : _internals.values()) {
                     t.render(g);
                 }
             }
@@ -93,6 +94,10 @@ public class Modal extends Tool
     public void Activate(boolean active)
     {
         _active=active;
+    }
+    public boolean Active()
+    {
+        return _active;
     }
     public void Minimize(boolean min)
     {
