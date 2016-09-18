@@ -34,7 +34,7 @@ public class Init extends Module {
     private Map<String, Generator> _genColl;
     private Map<String, Housing> _houseColl;
 
-    private ArrayList<Component> _obstacles;
+    public ArrayList<Component> _obstacles;
 
     public static HSSFWorkbook cityBook;
     public static HSSFWorkbook shipBook;

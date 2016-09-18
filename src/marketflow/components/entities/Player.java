@@ -1,5 +1,6 @@
 package marketflow.components.entities;
 
+import Physics.Collision;
 import engine.Game;
 
 import marketflow.econ.Stock;
@@ -12,6 +13,7 @@ import java.util.Map;
 
 public class Player extends Entity
 {
+    private Collision coll;
     private Vector2f _center;
     private Vector2f _trajectory;
     private Vector2f _carrot;
@@ -29,6 +31,7 @@ public class Player extends Entity
     public Player(String id, String path, Polygon hitbox, String desc, Map<String, Stock> st_ref, int x, int y, int gear, int max_gear, int min_gear, int max_yaw, float drag, float handling)
     {
         super(id, desc, st_ref, path, hitbox, x, y);
+        coll = new Collision(this);
         _center = new Vector2f((Game.WIDTH/2),(Game.HEIGHT/2));
         _trajectory = new Vector2f((Game.WIDTH/2),(Game.HEIGHT/2));
         _carrot = new Vector2f((Game.WIDTH/2),(Game.HEIGHT/2));
@@ -71,6 +74,12 @@ public class Player extends Entity
 
         _relX = _posX + Game.mf.Map().OffsetX() - _width / 2 + Game.mf.Map().PanX();
         _relY = _posY + Game.mf.Map().OffsetY() - _height / 2 + Game.mf.Map().PanY();
+
+        System.out.println(Game.mf._obstacles.size());
+        for(int c=0; c<Game.mf._obstacles.size();c++)
+        {
+            coll.pointToLine(Game.mf._obstacles.get(c).Hitbox());
+        }
     }
 
     @Override
