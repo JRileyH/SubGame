@@ -24,9 +24,11 @@ public class Player extends Entity
     private int _maxGear;
     private int _minGear;
     private int _yaw;
+    private float _angleoffset;
     private int _maxYaw;
     private float _drag;
     private float _handling;
+    private float _bounce;
 
 
     public Player(String id, String path, Polygon hitbox, String desc, Map<String, Stock> st_ref, int x, int y, int gear, int max_gear, int min_gear, int max_yaw, float drag, float handling)
@@ -45,6 +47,7 @@ public class Player extends Entity
         _maxYaw = max_yaw;
         _drag=drag;
         _handling=handling;
+        _bounce = 0;
         renderable=true;
     }
 
@@ -52,8 +55,10 @@ public class Player extends Entity
 
     public void update(int count) {
         //Determine yaw
-        _angle += _handling * _yaw;
+        _angle += (_handling * _yaw)+_bounce;
         _img.setRotation(_img.getRotation() + (float) Math.toDegrees(_handling * _yaw));
+
+        if(_bounce>0.1){_bounce-=0.1;}else if(_bounce<-0.1){_bounce+=0.1;}else{_bounce=0;}
 
         _hitbox = (Polygon)_hitbox.transform(Transform.createRotateTransform(_handling * _yaw));
         _hitbox.setCenterX(_center.x());
@@ -199,6 +204,6 @@ public class Player extends Entity
         x+=_center.x();
         y+=_center.y();
         _trajectory.move(x, y);
-        _yaw=-_yaw;
+        _bounce=-_yaw;
     }
 }

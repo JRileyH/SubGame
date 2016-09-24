@@ -19,7 +19,7 @@ public class Game extends BasicGame
 		SUBBATTLE,
 		MYESTATE
 	}
-	static State state = State.MARKETFLOW;			//Starting State
+	static State state = State.UI;			                //Starting State
 
 	//Timing
 	private int[] _counts = new int[State.values().length];	//Fast Logic Timers

@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<class>
+
+    <Layout id="A1" width="500" step="50">
+
+        <Floor leftbound="10" rightbound="100">
+            <Station id="0" x="20"></Station>
+            <Ladder x="80"></Ladder>
+        </Floor>
+
+        <Floor leftbound="10" rightbound="260">
+            <Station id="1" x="20"></Station>
+            <Ladder x="100"></Ladder>
+            <Station id="2" x="120"></Station>
+            <Ladder x="180"></Ladder>
+            <Station id="3" x="200"></Station>
+        </Floor>
+
+        <Floor leftbound="90" rightbound="200">
+            <Station id="4" x="120"></Station>
+        </Floor>
+
+    </Layout>
+
+</class>

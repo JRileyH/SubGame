@@ -1,9 +1,13 @@
 package engine;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.parsers.*;
+
+import Physics.Point;
 import org.w3c.dom.*;
 
 import marketflow.components.entities.City;
@@ -11,6 +15,8 @@ import marketflow.components.entities.Generator;
 import marketflow.components.entities.Housing;
 import marketflow.components.entities.Ship;
 import marketflow.econ.Stock;
+import subbattle.Track;
+import subbattle.Vessel;
 
 public class XMLHandler
 {
@@ -453,9 +459,62 @@ public class XMLHandler
 	}
 
 
-	public void processSubBattle()
+	public Vessel processSubBattle(String layout)
 	{
-		// TODO Auto-generated method stub
+        Document doc = read("data/subbattle/Layouts.xml");
+        NodeList layouts = doc.getElementsByTagName("Layout");
+        Node layoutNode = null;
+        Element layoutElem = null;
+        ArrayList<Point> trackList = new ArrayList<>();
+        ArrayList<Point> stationList = new ArrayList<>();
+        int trackCount = 0;
+        int stepSize = 0;
+
+        for(int i = 0; i < layouts.getLength(); i++) {
+            Node tempNode = layouts.item(i);
+            Element tempElem = (Element) tempNode;
+
+            if(tempElem.getAttribute("id").equals(layout)) {
+                stepSize = Integer.parseInt(tempElem.getAttribute("step"));
+                layoutNode = tempNode;
+                layoutElem = tempElem;
+                break;
+            }
+        }
+        if(layoutNode==null){System.err.println("Could Not Find "+layout+" Layout.");return null;}
+
+        NodeList floors = layoutElem.getElementsByTagName("Floor");
+        for(int i = 0; i < floors.getLength(); i++)
+        {
+            Node floorNode = floors.item(i);
+            Element floorElem = (Element) floorNode;
+            int y = stepSize*(i+1);
+
+            trackList.add(trackCount++, new Point(Integer.parseInt(floorElem.getAttribute("leftbound")), y));
+            trackList.add(trackCount++, new Point(Integer.parseInt(floorElem.getAttribute("rightbound")), y));
+
+            NodeList stations = floorElem.getElementsByTagName("Station");
+            for(int j = 0; j < stations.getLength(); j++)
+            {
+                Node stationNode = stations.item(j);
+                Element stationElem = (Element) stationNode;
+
+                stationList.add(Integer.parseInt(stationElem.getAttribute("id")), new Point(Integer.parseInt(stationElem.getAttribute("x")), y-25));
+            }
+
+            NodeList ladders = floorElem.getElementsByTagName("Ladder");
+            for(int j = 0; j < ladders.getLength(); j++)
+            {
+                Node ladderNode = ladders.item(j);
+                Element ladderElem = (Element) ladderNode;
+                int x = Integer.parseInt(ladderElem.getAttribute("x"));
+
+                trackList.add(trackCount++, new Point(x, y));
+                trackList.add(trackCount++, new Point(x, y+stepSize));
+            }
+        }
+        System.out.println(trackList);
+        return new Vessel(new Point(500,400), new Track(trackList), stationList);
 	}
 	public void processMyEstate()
 	{
