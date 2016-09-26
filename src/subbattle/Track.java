@@ -26,12 +26,11 @@ public class Track
         for(int i = 0; i < (_points.length/2)+2; i+=2)
         {
             if(_points[i].y()==_points[i+1].y()){
-                System.out.println("FLAT");
                 _floors.add(level, _points[i].y());
                 level++;
             }
             if(_points[i].x()==_points[i+1].x()){
-                System.out.println("LEVEL DOWN");
+
             }
         }
     }

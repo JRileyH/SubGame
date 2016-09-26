@@ -2,10 +2,25 @@ package Physics;
 public class Point
 {
     private float _x, _y;
+    public Point(int x, int y)
+    {
+        _x=x;
+        _y=y;
+    }
     public Point(float x, float y)
     {
         _x=x;
         _y=y;
+    }
+    public Point(double x, double y)
+    {
+        _x=(float)x;
+        _y=(float)y;
+    }
+    public Point(Point p)
+    {
+        _x=p.x();
+        _y=p.y();
     }
     public float x(){return _x;}
     public void x(int x){_x=x;}

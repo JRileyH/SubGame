@@ -11,8 +11,8 @@ import java.util.Stack;
 public class Crew
 {
     int _floor;
-    float _x, _y;
-    float _w, _h;
+    Point _position;
+    Point _dimensions;
     int _step;
 
     Stack<Point> _instructions = new Stack<>();
@@ -22,39 +22,37 @@ public class Crew
     public Crew(int floor, float x, int step)
     {
         _floor = floor;
-        _w=10;
-        _h=20;
+        _dimensions = new Point(10,20);
         _step=step;
-        _x=x;
-        _y=((floor+1)*step)-_h;
+        _position = new Point(x, ((floor+1)*step)-_dimensions.y());
 
         _instructions.push(new Point(120,150));
         _instructions.push(new Point(100,150));
         _instructions.push(new Point(100,100));
         _instructions.push(new Point(80,100));
         _instructions.push(new Point(80,50));
-        _next=new Point(_x,_y);
+        _next=new Point(_position);
     }
 
     public void update()
     {
         if(_moving)
         {
-            if(_x==_next.x()&&_y==_next.y()-_h)
+            if(_position.x()==_next.x()&&_position.y()==_next.y()-_dimensions.y())
             {
                 _moving=false;
             }
             else
             {
-                if(_x<_next.x()){_x++;}else if(_x>_next.x()){_x--;}
-                if(_y<_next.y()-_h){_y++;}else if(_y>_next.y()-_h){_y--;}
+                if(_position.x()<_next.x()){_position.shift(1,0);}else if(_position.x()>_next.x()){_position.shift(-1,0);}
+                if(_position.y()<_next.y()-_dimensions.y()){_position.shift(0,1);}else if(_position.y()>_next.y()-_dimensions.y()){_position.shift(0,-1);}
             }
 
         }
         else if(_instructions.size()>0)
         {
-            if( ((_floor+1)*_step)>_y+_h ){_floor--;}else
-            if( ((_floor+1)*_step)<_y+_h ){_floor++;}
+            if( ((_floor+1)*_step)>_position.y()+_dimensions.y() ){_floor--;}else
+            if( ((_floor+1)*_step)<_position.y()+_dimensions.y() ){_floor++;}
 
             _next=_instructions.pop();
             _moving=true;
@@ -64,7 +62,7 @@ public class Crew
     public void render(GameContainer game, Graphics g, Point pos)
     {
         g.setColor(Color.blue);
-        g.drawRect(pos.x()+_x, pos.y()+_y, _w, _h);
+        g.drawRect(pos.x()+_position.x(), pos.y()+_position.y(), _dimensions.x(), _dimensions.y());
     }
 
     public void addInstruction(Point p)
@@ -73,4 +71,6 @@ public class Crew
     }
 
     public int Floor(){return _floor;}
+
+    public Point Position(){return _position;}
 }

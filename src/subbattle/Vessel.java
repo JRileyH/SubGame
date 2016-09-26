@@ -24,10 +24,6 @@ public class Vessel
         _track = track;
         _stations = stations;
         _crew = new Crew(0, 20, _track.StepSize());
-
-        System.out.println(track.FindLadders(0));
-        System.out.println(track.FindLadders(1));
-        System.out.println(track.FindLadders(2));
     }
 
     public void update(int count)
@@ -43,11 +39,12 @@ public class Vessel
 
     public void moveCrew(int crew, int station)
     {
-        if(_stations.size()>station) {
+        if(_stations.size()>station&&_crew._instructions.size()==0) {
             int sFloor = _stations.get(station).Floor();
             int sX = (int)_stations.get(station)._position.x();
             int cFloor = _crew.Floor();
-            int cX = (int)_crew._x;
+            int cX = (int)_crew.Position().x();
+
 
             int f2g = sFloor - cFloor;
             int x2g = sX - cX;
@@ -60,7 +57,32 @@ public class Vessel
                 int i = sFloor;
                 while(i!=cFloor)
                 {
-                    //if(goingup);
+                    if(cFloor>sFloor)
+                    {
+                        float ladder = Integer.MAX_VALUE;
+                        for(Float l : _track.FindLadders(i))
+                        {
+                            if(Math.abs(l-cX)+Math.abs(l-sX)<ladder)
+                            {
+                                ladder=l;
+                            }
+                        }
+                        _crew._instructions.push(new Point(ladder, (i++ + 1)*_track.StepSize() ) );
+                        _crew._instructions.push(new Point(ladder, (i + 1)*_track.StepSize() ) );
+                    }
+                    else
+                    {
+                        float ladder = Integer.MAX_VALUE;
+                        for(Float l : _track.FindLadders(i-1))
+                        {
+                            if(Math.abs(l-cX)+Math.abs(l-sX)<ladder)
+                            {
+                                ladder=l;
+                            }
+                        }
+                        _crew._instructions.push(new Point(ladder, (i-- + 1)*_track.StepSize() ) );
+                        _crew._instructions.push(new Point(ladder, (i + 1)*_track.StepSize() ) );
+                    }
                 }
             }
 
@@ -70,10 +92,6 @@ public class Vessel
 
     public void render(GameContainer game, Graphics g)
     {
-        for(float i :_track.FindLadders(0)) {
-
-        }
-
         _track.render(game, g, _position);
         for(Station s : _stations)
         {
