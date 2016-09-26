@@ -10,14 +10,14 @@ import java.util.Stack;
 
 public class Crew
 {
-    int _floor;
-    Point _position;
-    Point _dimensions;
-    int _step;
+    private int _floor;
+    private Point _position;
+    private Point _dimensions;
+    private int _step;
 
-    Stack<Point> _instructions = new Stack<>();
-    Point _next;
-    boolean _moving = false;
+    private Stack<Point> _instructions = new Stack<>();
+    private Point _next;
+    private boolean _moving = false;
 
     public Crew(int floor, float x, int step)
     {
@@ -26,11 +26,6 @@ public class Crew
         _step=step;
         _position = new Point(x, ((floor+1)*step)-_dimensions.y());
 
-        _instructions.push(new Point(120,150));
-        _instructions.push(new Point(100,150));
-        _instructions.push(new Point(100,100));
-        _instructions.push(new Point(80,100));
-        _instructions.push(new Point(80,50));
         _next=new Point(_position);
     }
 
@@ -69,6 +64,7 @@ public class Crew
     {
         _instructions.push(p);
     }
+    public Stack<Point> Instructions(){return _instructions;}
 
     public int Floor(){return _floor;}
 

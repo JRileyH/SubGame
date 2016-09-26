@@ -39,7 +39,7 @@ public class Vessel
 
     public void moveCrew(int crew, int station)
     {
-        if(_stations.size()>station&&_crew._instructions.size()==0) {
+        if(_stations.size()>station&&_crew.Instructions().size()==0) {
             int sFloor = _stations.get(station).Floor();
             int sX = (int)_stations.get(station)._position.x();
             int cFloor = _crew.Floor();
@@ -67,8 +67,8 @@ public class Vessel
                                 ladder=l;
                             }
                         }
-                        _crew._instructions.push(new Point(ladder, (i++ + 1)*_track.StepSize() ) );
-                        _crew._instructions.push(new Point(ladder, (i + 1)*_track.StepSize() ) );
+                        _crew.addInstruction(new Point(ladder, (i++ + 1)*_track.StepSize() ) );
+                        _crew.addInstruction(new Point(ladder, (i + 1)*_track.StepSize() ) );
                     }
                     else
                     {
@@ -80,8 +80,8 @@ public class Vessel
                                 ladder=l;
                             }
                         }
-                        _crew._instructions.push(new Point(ladder, (i-- + 1)*_track.StepSize() ) );
-                        _crew._instructions.push(new Point(ladder, (i + 1)*_track.StepSize() ) );
+                        _crew.addInstruction(new Point(ladder, (i-- + 1)*_track.StepSize() ) );
+                        _crew.addInstruction(new Point(ladder, (i + 1)*_track.StepSize() ) );
                     }
                 }
             }
