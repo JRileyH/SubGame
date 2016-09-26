@@ -52,22 +52,22 @@ public class KeyMap
 			switch(_keyMap.get(c))
 			{
 
-                case "Menu":
-                    switch (Game.state){
-                        case UI:
-                            Game.ui._menumodal.Activate(true);
-                            break;
-                        case MARKETFLOW:
-                            Game.mf._menumodal.Activate(true);
-                            break;
-                        case SUBBATTLE:
-                            Game.sb._menumodal.Activate(true);
-                            break;
-                        case MYESTATE:
-                            Game.me._menumodal.Activate(true);
-                            break;
-                    }
-                    break;
+            case "Menu":
+                switch (Game.state){
+                    case UI:
+                        Game.ui._menumodal.Activate(true);
+                        break;
+                    case MARKETFLOW:
+                        Game.mf._menumodal.Activate(true);
+                        break;
+                    case SUBBATTLE:
+                        Game.sb._menumodal.Activate(true);
+                        break;
+                    case MYESTATE:
+                        Game.me._menumodal.Activate(true);
+                        break;
+                }
+                break;
 
 			case "TackLeft":
 				Game.mf.Player().tackLeft(d);
@@ -88,6 +88,37 @@ public class KeyMap
 			case "Report":
 				if(d){Game.mf.Report();}
 				break;
+
+            case "Station0":
+                if(!d) Game.sb._vessel.moveCrew(0,0);
+                break;
+            case "Station1":
+                if(!d) Game.sb._vessel.moveCrew(0,1);
+                break;
+            case "Station2":
+                if(!d) Game.sb._vessel.moveCrew(0,2);
+                break;
+            case "Station3":
+                if(!d) Game.sb._vessel.moveCrew(0,3);
+                break;
+            case "Station4":
+                if(!d) Game.sb._vessel.moveCrew(0,4);
+                break;
+            case "Station5":
+                if(!d) Game.sb._vessel.moveCrew(0,5);
+                break;
+            case "Station6":
+                if(!d) Game.sb._vessel.moveCrew(0,6);
+                break;
+            case "Station7":
+                if(!d) Game.sb._vessel.moveCrew(0,7);
+                break;
+            case "Station8":
+                if(!d) Game.sb._vessel.moveCrew(0,8);
+                break;
+            case "Station9":
+                if(!d) Game.sb._vessel.moveCrew(0,9);
+                break;
 			}
 			_keyFlags.put(c, d);
 		}

@@ -3,5 +3,16 @@
 	<Mouse></Mouse>
 	<Keys>
         <Binding id="1" action="Menu"></Binding>
+
+        <Binding id="11" action="Station0"></Binding>
+        <Binding id="2" action="Station1"></Binding>
+        <Binding id="3" action="Station2"></Binding>
+        <Binding id="4" action="Station3"></Binding>
+        <Binding id="5" action="Station4"></Binding>
+        <Binding id="6" action="Station5"></Binding>
+        <Binding id="7" action="Station6"></Binding>
+        <Binding id="8" action="Station7"></Binding>
+        <Binding id="9" action="Station8"></Binding>
+        <Binding id="10" action="Station9"></Binding>
 	</Keys>
 </class>

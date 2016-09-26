@@ -15,6 +15,7 @@ import marketflow.components.entities.Generator;
 import marketflow.components.entities.Housing;
 import marketflow.components.entities.Ship;
 import marketflow.econ.Stock;
+import subbattle.Station;
 import subbattle.Track;
 import subbattle.Vessel;
 
@@ -466,7 +467,7 @@ public class XMLHandler
         Node layoutNode = null;
         Element layoutElem = null;
         ArrayList<Point> trackList = new ArrayList<>();
-        ArrayList<Point> stationList = new ArrayList<>();
+        ArrayList<Station> stationList = new ArrayList<>();
         int trackCount = 0;
         int stepSize = 0;
 
@@ -499,7 +500,11 @@ public class XMLHandler
                 Node stationNode = stations.item(j);
                 Element stationElem = (Element) stationNode;
 
-                stationList.add(Integer.parseInt(stationElem.getAttribute("id")), new Point(Integer.parseInt(stationElem.getAttribute("x")), y-25));
+                stationList.add(new Station(Integer.parseInt(stationElem.getAttribute("id")),
+                        i,
+                        Integer.parseInt(stationElem.getAttribute("x")),
+                        stepSize)
+                );
             }
 
             NodeList ladders = floorElem.getElementsByTagName("Ladder");
@@ -514,7 +519,7 @@ public class XMLHandler
             }
         }
         System.out.println(trackList);
-        return new Vessel(new Point(500,400), new Track(trackList), stationList);
+        return new Vessel(new Point(500,400), new Track(trackList, stepSize), stationList);
 	}
 	public void processMyEstate()
 	{

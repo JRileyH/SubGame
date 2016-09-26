@@ -4,6 +4,7 @@ import Physics.Point;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.geom.Vector2f;
 
 import java.util.ArrayList;
 
@@ -17,20 +18,21 @@ public class Vessel
     private Crew _crew;
 
 
-    public Vessel(Point pos, Track track, ArrayList<Point> stations)
+    public Vessel(Point pos, Track track, ArrayList<Station> stations)
     {
         _position = pos;
         _track = track;
-        for(int i = 0; i < stations.size(); i++)
-        {
-            _stations.add(new Station(i, stations.get(i), new Point(_spw,_sph)));
-        }
-        //_crew = new Crew();
+        _stations = stations;
+        _crew = new Crew(0, 20, _track.StepSize());
+
+        System.out.println(track.FindLadders(0));
+        System.out.println(track.FindLadders(1));
+        System.out.println(track.FindLadders(2));
     }
 
     public void update(int count)
     {
-
+        _crew.update();
     }
 
     public void tick(int count)
@@ -38,15 +40,45 @@ public class Vessel
 
     }
 
+
+    public void moveCrew(int crew, int station)
+    {
+        if(_stations.size()>station) {
+            int sFloor = _stations.get(station).Floor();
+            int sX = (int)_stations.get(station)._position.x();
+            int cFloor = _crew.Floor();
+            int cX = (int)_crew._x;
+
+            int f2g = sFloor - cFloor;
+            int x2g = sX - cX;
+
+            boolean goingUp = (f2g<0);
+            _crew.addInstruction(new Point(sX, (sFloor+1)*_track.StepSize()));
+
+            if(f2g!=0)
+            {
+                int i = sFloor;
+                while(i!=cFloor)
+                {
+                    //if(goingup);
+                }
+            }
+
+
+        }
+    }
+
     public void render(GameContainer game, Graphics g)
     {
+        for(float i :_track.FindLadders(0)) {
+
+        }
+
         _track.render(game, g, _position);
         for(Station s : _stations)
         {
             s.render(game,g,_position);
         }
-
-        g.setColor(Color.blue);
-        g.drawRect(_position.x(),_position.y(),10,20);
+        _crew.render(game, g, _position);
     }
 }

@@ -15,7 +15,7 @@ import static engine.Game.imagemap;
 
 public class Init extends Module
 {
-    Vessel _vessel;
+    public Vessel _vessel;
 	public Init(XMLHandler xmlh, Input input)
 	{
         super(input);
